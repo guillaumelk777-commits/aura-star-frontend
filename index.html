@@ -28,60 +28,18 @@
 <div id="login" class="scan" style="background:rgba(3,5,10,.97)"><div class="card" style="width:min(92vw,390px);text-align:center"><div class="brand" style="justify-content:center;margin-bottom:18px"><span class="brand-icon"></span><div class="logo">AURA STAR</div></div><h2 style="margin:0 0 8px">Entrá a AURA STAR</h2><p class="hint" style="margin:0 0 18px">Usá tu cuenta de Google o Apple para guardar tu identidad, Aura y batallas.</p><button class="primary" onclick="signInWith('google')" style="background:#fff;color:#111827;box-shadow:none">🌐 Continuar con Google</button><button class="secondary" onclick="signInWith('apple')" style="background:#000;border-color:#333;margin-top:10px"> Continuar con Apple</button><p id="loginHint" class="hint" style="margin:14px 0 0">Tu cuenta se vincula de forma segura con Google o Apple. Si el proveedor no está configurado en Supabase, verás un mensaje de error.</p></div></div><div id="onboard" class="scan" style="background:rgba(3,5,10,.94)"><div class="card" style="width:min(92vw,380px)"><h2 style="margin-top:0">Bienvenido a AURA STAR</h2><p class="hint">Elegí tu nombre y rango de edad. Tu perfil quedará vinculado a tu cuenta de Google o Apple.</p><input id="onboardUsername" class="search" placeholder="Nombre de usuario" maxlength="40"><select id="onboardAge" class="search"><option value="18_plus">18 años o más</option><option value="13_17">13 a 17 años</option></select><button class="primary" onclick="createProfile()">Continuar</button></div></div>
 <script>
 const CONFIG={API:'https://aura-backend-oflg.onrender.com/api',SUPABASE_URL:'https://saqhaofycdjlwdauzhtv.supabase.co',SUPABASE_ANON_KEY:'sb_publishable_itAVUVk2JCkBjqKXSgQYrw_WsweKG1H',LOCAL_COST:20,MIN_VOTES:10,MIN_DIFF:3,ARBITER_CLOSE_VOTES:30,LOCAL_HOURS:2};
-const OAUTH_REDIRECT=window.location.origin+window.location.pathname;
+const OAUTH_REDIRECT='https://guillaumelk777-commits.github.io/aura-star-frontend/';
 const sb=supabase.createClient(CONFIG.SUPABASE_URL,CONFIG.SUPABASE_ANON_KEY);
 let CURRENT_USER=null,cache=[],currentMode='video',scanStream=null,scanTimer=null;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 function getUserId(){return CURRENT_USER?.id||''}
 function toast(t){const x=document.getElementById('toast');x.textContent=t;x.style.display='block';clearTimeout(x._t);x._t=setTimeout(()=>x.style.display='none',2600)}
-async function api(path,opt={}){const {data:{session}}=await sb.auth.getSession();const headers={...(opt.body instanceof FormData?{}:{'Content-Type':'application/json'}),...(opt.headers||{})};if(session?.access_token)headers.Authorization='Bearer '+session.access_token;const r=await fetch(CONFIG.API+path,{...opt,headers});const d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.error||'Error de API');return d}
-async function signInWith(provider){
-  const hint=document.getElementById('loginHint');
-  try{
-    hint.textContent='Conectando con '+(provider==='google'?'Google':'Apple')+'…';
-    const {data,error}=await sb.auth.signInWithOAuth({
-      provider,
-      options:{
-        redirectTo:OAUTH_REDIRECT,
-        skipBrowserRedirect:false
-      }
-    });
-    if(error) throw error;
-    if(data?.url) window.location.assign(data.url);
-  }catch(e){
-    console.error('OAuth error',e);
-    hint.textContent='No se pudo iniciar sesión: '+(e.message||'error de autenticación');
-    toast(e.message||'No se pudo iniciar sesión.');
-  }
-}
-async function createProfile(){const name=document.getElementById('onboardUsername').value.trim(),age=document.getElementById('onboardAge').value;if(!CURRENT_USER)return toast('Primero iniciá sesión.');if(!name)return toast('Ingresá un nombre.');try{await api('/users',{method:'POST',body:JSON.stringify({id:CURRENT_USER.id,username:name,age_bracket:age})});document.getElementById('onboard').classList.remove('active');initUser()}catch(e){toast(e.message)}}
-async function initUser(){
-  if(!CURRENT_USER){document.getElementById('login').classList.add('active');return}
-  try{
-    const u=await api('/users/'+encodeURIComponent(CURRENT_USER.id));
-    document.getElementById('avatar').textContent=(u.username||'★')[0].toUpperCase();
-    document.getElementById('login').classList.remove('active');
-    document.getElementById('onboard').classList.remove('active');
-    loadBattles();
-  }catch(e){
-    document.getElementById('login').classList.remove('active');
-    document.getElementById('onboard').classList.add('active');
-  }
-}
-async function handleAuth(){const {data:{session},error}=await sb.auth.getSession();if(error)return toast(error.message);CURRENT_USER=session?.user||null;if(CURRENT_USER)initUser();else document.getElementById('login').classList.add('active')}
-(function handleOAuthCallback(){
-  const params=new URLSearchParams(window.location.search);
-  const hash=new URLSearchParams(window.location.hash.replace(/^#/,''));
-  const err=params.get('error_description')||params.get('error')||hash.get('error_description')||hash.get('error');
-  if(err){
-    const hint=document.getElementById('loginHint');
-    if(hint) hint.textContent='Error de inicio de sesión: '+decodeURIComponent(err.replace(/\+/g,' '));
-    document.getElementById('login')?.classList.add('active');
-    history.replaceState({},document.title,OAUTH_REDIRECT);
-  }
-})();
-
-sb.auth.onAuthStateChange((event,session)=>{CURRENT_USER=session?.user||null;if(event==='SIGNED_IN'&&CURRENT_USER)setTimeout(initUser,0);if(event==='SIGNED_OUT'){CURRENT_USER=null;document.getElementById('login').classList.add('active');document.getElementById('onboard').classList.remove('active')}});
+async function api(path,opt={}){const {data:{session}}=await sb.auth.getSession();if(!session?.access_token)throw Object.assign(new Error('Sesión de Google/Apple no disponible.'),{code:'NO_SESSION'});const headers={...(opt.body instanceof FormData?{}:{'Content-Type':'application/json'}),...(opt.headers||{})};headers.Authorization='Bearer '+session.access_token;const r=await fetch(CONFIG.API+path,{...opt,headers});const d=await r.json().catch(()=>({}));if(!r.ok){const err=Object.assign(new Error(d.error||'Error de API'),{status:r.status,code:d.code});if(r.status===401){await sb.auth.signOut().catch(()=>{});CURRENT_USER=null}throw err}return d}
+async function signInWith(provider){const hint=document.getElementById('loginHint');hint.textContent='Redirigiendo a '+(provider==='google'?'Google':'Apple')+'…';try{const {data,error}=await sb.auth.signInWithOAuth({provider,options:{redirectTo:OAUTH_REDIRECT,queryParams:provider==='google'?{access_type:'offline',prompt:'select_account'}:undefined}});if(error)throw error;if(data?.url)window.location.assign(data.url)}catch(e){hint.textContent='Error de inicio de sesión: '+(e.message||'No se pudo iniciar sesión.')}}
+async function createProfile(){const name=document.getElementById('onboardUsername').value.trim(),age=document.getElementById('onboardAge').value;if(!CURRENT_USER)return toast('Primero iniciá sesión con Google o Apple.');if(!name)return toast('Ingresá un nombre.');try{await api('/users',{method:'POST',body:JSON.stringify({username:name,age_bracket:age})});document.getElementById('onboard').classList.remove('active');await initUser()}catch(e){toast(e.message)}}
+async function initUser(){if(!CURRENT_USER){document.getElementById('login').classList.add('active');document.getElementById('onboard').classList.remove('active');return}try{const u=await api('/users/'+encodeURIComponent(CURRENT_USER.id));document.getElementById('avatar').textContent=(u.username||'★')[0].toUpperCase();document.getElementById('login').classList.remove('active');document.getElementById('onboard').classList.remove('active');loadBattles()}catch(e){if(e.status===404||e.code==='PROFILE_NOT_FOUND'){document.getElementById('login').classList.remove('active');document.getElementById('onboard').classList.add('active')}else{document.getElementById('login').classList.add('active');document.getElementById('onboard').classList.remove('active');document.getElementById('loginHint').textContent='No pudimos validar tu sesión con AURA STAR. '+(e.message||'Volvé a iniciar sesión.')}}}
+async function handleAuth(){const {data:{session},error}=await sb.auth.getSession();if(error){document.getElementById('login').classList.add('active');return}CURRENT_USER=session?.user||null;if(CURRENT_USER)await initUser();else document.getElementById('login').classList.add('active')}
+sb.auth.onAuthStateChange((event,session)=>{CURRENT_USER=session?.user||null;if(event==='SIGNED_IN'&&CURRENT_USER)setTimeout(()=>initUser(),0);if(event==='SIGNED_OUT'){CURRENT_USER=null;document.getElementById('login').classList.add('active');document.getElementById('onboard').classList.remove('active')}});
 function show(v){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(v).classList.add('active');document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.view===v));if(v==='home')loadBattles();if(v==='rank')loadRanking();if(v==='profile')loadProfile();if(v==='store')loadStore();if(v==='local')document.getElementById('localSearch').focus()}
 function battlePeople(b){return b.mode==='local'?[b.local_a_name||b.local_participant_a,b.local_b_name||b.local_participant_b]:[b.creator_name||b.creator_id,b.opponent_name||b.opponent_id||'Esperando…']}
 function battleCard(b){const[aName,oName]=battlePeople(b),a=+b.votes_creator||0,o=+b.votes_opponent||0,p=Math.round(a/Math.max(1,a+o)*100);const local=b.mode==='local';return `<div class="card battle-card"><span class="badge">${local?'🏟️ Local':modeLabel(b.mode)}</span><div class="battle-title">${esc(b.title)}</div>${b.theme?`<div class="muted">Tema: ${esc(b.theme)}</div>`:''}<div class="players"><div class="player">${esc(aName)}<div class="score">${a}</div></div><div class="vs">VS</div><div class="player">${esc(oName)}<div class="score">${o}</div></div></div><div class="bar"><i style="width:${p}%"></i></div><div class="meta"><span>${a+o} votos${local?' · '+timeLeft(b.local_closes_at):''}</span><button class="linkbtn" onclick="openBattle('${b.id}')">Ver →</button></div></div>`}
@@ -116,4 +74,3 @@ async function signOut(){await sb.auth.signOut();location.reload()}
 async function deleteAccount(){if(!confirm('¿Eliminar definitivamente tu cuenta?'))return;try{await api('/users/'+encodeURIComponent(CURRENT_USER.id),{method:'DELETE'});await sb.auth.signOut();localStorage.clear();location.reload()}catch(e){toast(e.message)}}
 setInterval(()=>{if(document.getElementById('home').classList.contains('active')&&CURRENT_USER)loadBattles()},60000);renderCreate();handleAuth();
 </script></body></html>
-
