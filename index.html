@@ -48,18 +48,18 @@ header{border-bottom:1px solid rgba(246,196,83,.18);box-shadow:0 8px 30px rgba(0
 .linkbtn{color:#e8c96f}
 input:focus,select:focus{border-color:rgba(246,196,83,.6)!important;box-shadow:0 0 0 3px rgba(246,196,83,.08)!important}
 .login-gold{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:#d6ad50;margin-bottom:8px;font-weight:800}
-</style></head>
+.share-card{background:linear-gradient(145deg,rgba(246,196,83,.08),rgba(139,92,246,.08));border:1px solid rgba(246,196,83,.22)}.share-progress{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:12px 0}.share-count{font-size:1.55rem;font-weight:900;color:var(--gold)}.share-next{color:var(--muted);font-size:.74rem;text-align:right}.share-btn{background:linear-gradient(135deg,#f6c453,#b98218);color:#15110a;border:0;box-shadow:0 8px 22px rgba(246,196,83,.18)}</style></head>
 <body>
 <div class="app"><header><div class="brand"><span class="brand-icon"></span><div class="logo">AURA STAR</div></div><button class="avatar" id="avatar" onclick="show('profile')">★</button></header>
 <main>
-<section id="home" class="view active"><div class="hero"><h1>La comunidad<br><span style="color:var(--purple2)">decide quién tiene Aura.</span></h1><p>Video, audio, foto o batallas en vivo.</p></div><div class="grid"><button class="action" onclick="show('create')"><strong>⚔️ Crear batalla</strong><span>Elegí cómo competir</span></button><button class="action" onclick="show('local')"><strong>🏟️ Batallas locales</strong><span>Encontrá una en tu zona</span></button></div><div class="section-title"><h2>🔥 Batallas activas</h2><span class="muted" id="battleCount"></span></div><div id="battles"></div></section>
+<section id="home" class="view active"><div class="hero"><h1>La comunidad<br><span style="color:var(--purple2)">decide quién tiene Aura.</span></h1><p>Video, audio, foto o batallas en vivo.</p></div><div class="grid"><button class="action" onclick="show('create')"><strong>⚔️ Crear batalla</strong><span>Elegí cómo competir</span></button><button class="action" onclick="show('local')"><strong>🏟️ Batallas locales</strong><span>Encontrá una en tu zona</span></button></div><div class="card share-card" id="shareHomeCard"><div class="section-title" style="margin:0 0 8px"><h2>🚀 Compartí AURA STAR</h2><span class="muted" id="shareCountHome"></span></div><p class="hint" style="margin:0 0 10px">Invitá usuarios reales. Cuando completen el registro desde tu enlace, cuentan como usuarios verificados y podés desbloquear Aura.</p><div class="share-progress"><div><span class="share-count" id="shareVerifiedHome">0</span><div class="muted">usuarios verificados</div></div><div class="share-next" id="shareNextHome">Cargando recompensa…</div></div><button class="primary share-btn" onclick="shareApp()">📤 Compartir mi enlace</button></div><div class="section-title"><h2>🔥 Batallas activas</h2><span class="muted" id="battleCount"></span></div><div id="battles"></div></section>
 
 <section id="create" class="view"><div class="hero"><h1>Crear batalla</h1><p>Elegí el formato que mejor representa tu desafío.</p></div><div class="tabs"><button class="tab active" data-mode="video" onclick="setMode('video')">🎥 Video</button><button class="tab" data-mode="audio" onclick="setMode('audio')">🎙️ Audio</button><button class="tab" data-mode="photo" onclick="setMode('photo')">📸 Foto</button><button class="tab" data-mode="local" onclick="setMode('local')">🏟️ Local</button></div><div id="createCard" class="card"></div></section>
 
 <section id="battle" class="view"><div id="battleDetail"></div></section>
 <section id="local" class="view"><div class="hero"><h1>🏟️ Batallas locales</h1><p>Encontrá una batalla presencial por su nombre y votá desde el lugar.</p></div><div class="card local-search"><input class="search" id="localSearch" placeholder="Buscar batalla por nombre…" oninput="searchLocal()"><div id="localResults"><div class="empty">Escribí al menos 2 caracteres.</div></div></div></section>
 <section id="rank" class="view"><div class="hero"><h1>🏆 Ranking</h1><p>Las estrellas con más Aura.</p></div><div id="ranking"></div></section>
-<section id="profile" class="view"><div class="hero"><h1>Mi perfil</h1><p id="profileSubtitle">Tu identidad dentro de AURA STAR.</p></div><div class="card" id="profileCard"></div><div id="profileData"></div></section>
+<section id="profile" class="view"><div class="hero"><h1>Mi perfil</h1><p id="profileSubtitle">Tu identidad dentro de AURA STAR.</p></div><div class="card" id="profileCard"></div><div class="card share-card"><h3 style="margin:0 0 6px">🚀 Recompensas por compartir</h3><div id="shareProfileData" class="hint">Cargando…</div><button class="primary share-btn" onclick="shareApp()">📤 Compartir mi enlace</button></div><div id="profileData"></div></section>
 <section id="store" class="view"><div class="hero"><h1>⭐ Tienda Aura</h1><p>Comprá puntos regalables para enviar a otros usuarios o habilitar batallas locales.</p></div><div class="card"><div class="mode-info"><b>💳 Compras seguras</b><br>La compra se procesará mediante la plataforma de pagos configurada para AURA STAR. Los puntos comprados no aumentan tu Aura: sirven para regalar o crear batallas locales.</div><div id="storePackages" class="store-grid"></div><p class="hint" style="margin-top:12px">El proveedor de pagos todavía debe configurarse en el backend antes de habilitar cobros reales.</p></div></section>
 </main>
 <nav class="bottom"><button class="nav active" data-view="home" onclick="show('home')"><b>⌂</b>Inicio</button><button class="nav" data-view="create" onclick="show('create')"><b>＋</b>Crear</button><button class="nav" data-view="rank" onclick="show('rank')"><b>♛</b>Ranking</button><button class="nav" data-view="profile" onclick="show('profile')"><b>●</b>Perfil</button></nav><div class="toast" id="toast"></div></div>
@@ -129,6 +129,8 @@ async function initUser(){
     document.getElementById('avatar').textContent=(u.username||'★')[0].toUpperCase();
     document.getElementById('login').classList.remove('active');
     document.getElementById('onboard').classList.remove('active');
+    await claimPendingReferral();
+    loadShareStatus();
     loadBattles();
   }catch(e){
     if(e.status===404){
@@ -149,6 +151,7 @@ async function initUser(){
   }
 }
 async function handleAuth(){
+  captureShareToken();
   const params=new URLSearchParams(location.search);
   if(params.get('error')){
     const desc=params.get('error_description')||params.get('error');
@@ -168,7 +171,7 @@ sb.auth.onAuthStateChange((event,session)=>{
   if(event==='TOKEN_REFRESHED'&&CURRENT_USER)setTimeout(()=>initUser(),50);
   if(event==='SIGNED_OUT'){CURRENT_USER=null;document.getElementById('login').classList.add('active');document.getElementById('onboard').classList.remove('active');}
 });
-function show(v){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(v).classList.add('active');document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.view===v));if(v==='home')loadBattles();if(v==='rank')loadRanking();if(v==='profile')loadProfile();if(v==='store')loadStore();if(v==='local')document.getElementById('localSearch').focus()}
+function show(v){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(v).classList.add('active');document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.view===v));if(v==='home')loadBattles();if(v==='rank')loadRanking();if(v==='profile'){loadProfile();loadShareStatus();}if(v==='store')loadStore();if(v==='local')document.getElementById('localSearch').focus()}
 function battlePeople(b){return b.mode==='local'?[b.local_a_name||b.local_participant_a,b.local_b_name||b.local_participant_b]:[b.creator_name||b.creator_id,b.opponent_name||b.opponent_id||'Esperando…']}
 function battleCard(b){const[aName,oName]=battlePeople(b),a=+b.votes_creator||0,o=+b.votes_opponent||0,p=Math.round(a/Math.max(1,a+o)*100);const local=b.mode==='local';return `<div class="card battle-card"><span class="badge">${local?'🏟️ Local':modeLabel(b.mode)}</span><div class="battle-title">${esc(b.title)}</div>${b.theme?`<div class="muted">Tema: ${esc(b.theme)}</div>`:''}<div class="players"><div class="player">${esc(aName)}<div class="score">${a}</div></div><div class="vs">VS</div><div class="player">${esc(oName)}<div class="score">${o}</div></div></div><div class="bar"><i style="width:${p}%"></i></div><div class="meta"><span>${a+o} votos${local?' · '+timeLeft(b.local_closes_at):''}</span><button class="linkbtn" onclick="openBattle('${b.id}')">Ver →</button></div></div>`}
 function modeLabel(m){return m==='audio'?'🎙️ Audio':m==='photo'?'📸 Foto':'🎥 Video'} function timeLeft(d){if(!d)return'';const ms=new Date(d)-Date.now();if(ms<=0)return'finalizando';const h=Math.floor(ms/3600000),m=Math.floor(ms%3600000/60000);return h?`${h}h ${m}m`: `${m}m`}
@@ -212,6 +215,52 @@ function scanFor(target){window.scanTarget=target;startScanner()}
 async function startScanner(){const el=document.getElementById('scanner');el.classList.add('active');try{scanStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});const v=document.getElementById('scanVideo');v.srcObject=scanStream;scanTimer=setInterval(scanFrame,250)}catch(e){stopScanner();const id=prompt('No se pudo abrir la cámara. Pegá el ID del usuario:');if(id)document.getElementById(window.scanTarget).value=id}}
 function scanFrame(){const v=document.getElementById('scanVideo'),c=document.getElementById('scanCanvas');if(v.readyState<2)return;c.width=v.videoWidth;c.height=v.videoHeight;const ctx=c.getContext('2d');ctx.drawImage(v,0,0,c.width,c.height);const data=ctx.getImageData(0,0,c.width,c.height);const code=window.jsQR?jsQR(data.data,c.width,c.height):null;if(code){const val=code.data.replace(/^aura:user:/,'');if(val){document.getElementById(window.scanTarget).value=val;stopScanner();toast('QR identificado')}}}
 function stopScanner(){clearInterval(scanTimer);scanTimer=null;if(scanStream)scanStream.getTracks().forEach(t=>t.stop());scanStream=null;document.getElementById('scanner').classList.remove('active')}
+let pendingShareToken='';
+function captureShareToken(){
+  const token=new URLSearchParams(location.search).get('ref');
+  if(token && /^[A-Za-z0-9_-]{20,100}$/.test(token)){
+    pendingShareToken=token;
+    localStorage.setItem('aura_pending_ref',token);
+    history.replaceState({},document.title,location.pathname);
+  }else if(!pendingShareToken){
+    pendingShareToken=localStorage.getItem('aura_pending_ref')||'';
+  }
+}
+async function claimPendingReferral(){
+  const token=pendingShareToken||localStorage.getItem('aura_pending_ref')||'';
+  if(!token)return;
+  try{
+    const r=await api('/share/claim',{method:'POST',body:JSON.stringify({token})});
+    if(r?.credited) toast(`🎉 ${r.message}`); else if(r?.verified_users) toast('Invitación verificada.');
+    localStorage.removeItem('aura_pending_ref');pendingShareToken='';
+  }catch(e){
+    if(e.status===400) localStorage.removeItem('aura_pending_ref');
+  }
+}
+async function loadShareStatus(){
+  try{
+    const d=await api('/share');
+    const count=Number(d.verified_users||0),next=d.next_milestone;
+    const homeCount=document.getElementById('shareVerifiedHome');if(homeCount)homeCount.textContent=count;
+    const nextHome=document.getElementById('shareNextHome');if(nextHome)nextHome.textContent=next?`Próximo hito: ${next.users} usuarios → +${next.points} Aura`:'¡Todos los hitos alcanzados!';
+    const homeSmall=document.getElementById('shareCountHome');if(homeSmall)homeSmall.textContent=d.total_aura_awarded?`+${d.total_aura_awarded} Aura`:'Sin recompensas todavía';
+    const profile=document.getElementById('shareProfileData');if(profile)profile.innerHTML=`<b>${count} usuarios verificados</b> · ${d.total_aura_awarded||0} Aura obtenidos por compartir.<br>${next?`Te faltan <b>${Math.max(0,next.users-count)}</b> usuarios para +${next.points} Aura.`:'Ya alcanzaste todos los hitos configurados.'}`;
+  }catch(e){
+    const profile=document.getElementById('shareProfileData');if(profile)profile.textContent='No se pudo cargar el progreso de compartir.';
+  }
+}
+async function shareApp(){
+  try{
+    const d=await api('/share');
+    const url=d.share_url;
+    const title='AURA STAR';
+    const text='Entrá a AURA STAR y descubrí quién tiene Aura. ⚡';
+    if(navigator.share){await navigator.share({title,text,url});toast('¡Enlace compartido!');}
+    else if(navigator.clipboard){await navigator.clipboard.writeText(url);toast('Enlace copiado. Compartilo con tus amigos.');}
+    else{window.prompt('Copiá tu enlace de AURA STAR:',url);}
+  }catch(e){toast(e.message||'No se pudo preparar el enlace');}
+}
+
 async function loadRanking(){const box=document.getElementById('ranking');try{const rows=await api('/users/ranking');box.innerHTML=rows.length?rows.map((u,i)=>`<div class="card rank"><div class="ranknum">#${i+1}</div><div class="rankavatar">${esc((u.username||'?')[0]).toUpperCase()}</div><div class="rankname">${esc(u.username)}<small>${u.battles_won||0} victorias</small></div><div class="aura">★ ${u.aura_points||0}</div></div>`).join(''):'<div class="empty">El ranking aparecerá cuando haya usuarios.</div>'}catch(e){box.innerHTML='<div class="empty">No se pudo cargar el ranking.</div>'}}
 const STORE_PACKAGES=[{id:'starter',points:50,price:'Configurar precio'},{id:'plus',points:120,price:'Configurar precio'},{id:'pro',points:300,price:'Configurar precio'},{id:'mega',points:700,price:'Configurar precio'}];
 function loadStore(){const box=document.getElementById('storePackages');if(!box)return;box.innerHTML=STORE_PACKAGES.map(x=>`<div class="store-item"><b>🎁 ${x.points} puntos</b><div class="price">${x.price}</div><button class="secondary" onclick="startPurchase('${x.id}')">Elegir</button></div>`).join('')}
