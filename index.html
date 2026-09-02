@@ -48,18 +48,18 @@ header{border-bottom:1px solid rgba(246,196,83,.18);box-shadow:0 8px 30px rgba(0
 .linkbtn{color:#e8c96f}
 input:focus,select:focus{border-color:rgba(246,196,83,.6)!important;box-shadow:0 0 0 3px rgba(246,196,83,.08)!important}
 .login-gold{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:#d6ad50;margin-bottom:8px;font-weight:800}
-.share-card{background:linear-gradient(145deg,rgba(246,196,83,.08),rgba(139,92,246,.08));border:1px solid rgba(246,196,83,.22)}.share-progress{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:12px 0}.share-count{font-size:1.55rem;font-weight:900;color:var(--gold)}.share-next{color:var(--muted);font-size:.74rem;text-align:right}.share-btn{background:linear-gradient(135deg,#f6c453,#b98218);color:#15110a;border:0;box-shadow:0 8px 22px rgba(246,196,83,.18)}</style></head>
+.share-card{background:linear-gradient(145deg,rgba(246,196,83,.08),rgba(139,92,246,.08));border:1px solid rgba(246,196,83,.22)}.share-btn{background:linear-gradient(135deg,#f6c453,#b98218);color:#15110a;border:0;box-shadow:0 8px 22px rgba(246,196,83,.18)}</style></head>
 <body>
 <div class="app"><header><div class="brand"><span class="brand-icon"></span><div class="logo">AURA STAR</div></div><button class="avatar" id="avatar" onclick="show('profile')">★</button></header>
 <main>
-<section id="home" class="view active"><div class="hero"><h1>La comunidad<br><span style="color:var(--purple2)">decide quién tiene Aura.</span></h1><p>Video, audio, foto o batallas en vivo.</p></div><div class="grid"><button class="action" onclick="show('create')"><strong>⚔️ Crear batalla</strong><span>Elegí cómo competir</span></button><button class="action" onclick="show('local')"><strong>🏟️ Batallas locales</strong><span>Encontrá una en tu zona</span></button></div><div class="card share-card" id="shareHomeCard"><div class="section-title" style="margin:0 0 8px"><h2>🚀 Compartí AURA STAR</h2><span class="muted" id="shareCountHome"></span></div><p class="hint" style="margin:0 0 10px">Invitá usuarios reales. Cuando completen el registro desde tu enlace, cuentan como usuarios verificados y podés desbloquear Aura.</p><div class="share-progress"><div><span class="share-count" id="shareVerifiedHome">0</span><div class="muted">usuarios verificados</div></div><div class="share-next" id="shareNextHome">Cargando recompensa…</div></div><button class="primary share-btn" onclick="shareApp()">📤 Compartir mi enlace</button></div><div class="section-title"><h2>🔥 Batallas activas</h2><span class="muted" id="battleCount"></span></div><div id="battles"></div></section>
+<section id="home" class="view active"><div class="hero"><h1>La comunidad<br><span style="color:var(--purple2)">decide quién tiene Aura.</span></h1><p>Video, audio, foto o batallas en vivo.</p></div><div class="grid"><button class="action" onclick="show('create')"><strong>⚔️ Crear batalla</strong><span>Elegí cómo competir</span></button><button class="action" onclick="show('local')"><strong>🏟️ Batallas locales</strong><span>Encontrá una en tu zona</span></button></div><div class="section-title"><h2>🔥 Batallas activas</h2><span class="muted" id="battleCount"></span></div><div id="battles"></div></section>
 
 <section id="create" class="view"><div class="hero"><h1>Crear batalla</h1><p>Elegí el formato que mejor representa tu desafío.</p></div><div class="tabs"><button class="tab active" data-mode="video" onclick="setMode('video')">🎥 Video</button><button class="tab" data-mode="audio" onclick="setMode('audio')">🎙️ Audio</button><button class="tab" data-mode="photo" onclick="setMode('photo')">📸 Foto</button><button class="tab" data-mode="local" onclick="setMode('local')">🏟️ Local</button></div><div id="createCard" class="card"></div></section>
 
 <section id="battle" class="view"><div id="battleDetail"></div></section>
 <section id="local" class="view"><div class="hero"><h1>🏟️ Batallas locales</h1><p>Encontrá una batalla presencial por su nombre y votá desde el lugar.</p></div><div class="card local-search"><input class="search" id="localSearch" placeholder="Buscar batalla por nombre…" oninput="searchLocal()"><div id="localResults"><div class="empty">Escribí al menos 2 caracteres.</div></div></div></section>
 <section id="rank" class="view"><div class="hero"><h1>🏆 Ranking</h1><p>Las estrellas con más Aura.</p></div><div id="ranking"></div></section>
-<section id="profile" class="view"><div class="hero"><h1>Mi perfil</h1><p id="profileSubtitle">Tu identidad dentro de AURA STAR.</p></div><div class="card" id="profileCard"></div><div class="card share-card"><h3 style="margin:0 0 6px">🚀 Recompensas por compartir</h3><div id="shareProfileData" class="hint">Cargando…</div><button class="primary share-btn" onclick="shareApp()">📤 Compartir mi enlace</button></div><div id="profileData"></div></section>
+<section id="profile" class="view"><div class="hero"><h1>Mi perfil</h1><p id="profileSubtitle">Tu identidad dentro de AURA STAR.</p></div><div class="card" id="profileCard"></div><div class="card share-card"><h3 style="margin:0 0 6px">🚀 Recompensas por compartir</h3><div id="shareProfileData" class="hint" style="margin-bottom:12px">Cargando…</div><button class="primary share-btn" onclick="shareApp()">📤 Compartir mi enlace</button></div><div id="profileData"></div></section>
 <section id="store" class="view"><div class="hero"><h1>⭐ Tienda Aura</h1><p>Comprá puntos regalables para enviar a otros usuarios o habilitar batallas locales.</p></div><div class="card"><div class="mode-info"><b>💳 Compras seguras</b><br>La compra se procesará mediante la plataforma de pagos configurada para AURA STAR. Los puntos comprados no aumentan tu Aura: sirven para regalar o crear batallas locales.</div><div id="storePackages" class="store-grid"></div><p class="hint" style="margin-top:12px">El proveedor de pagos todavía debe configurarse en el backend antes de habilitar cobros reales.</p></div></section>
 </main>
 <nav class="bottom"><button class="nav active" data-view="home" onclick="show('home')"><b>⌂</b>Inicio</button><button class="nav" data-view="create" onclick="show('create')"><b>＋</b>Crear</button><button class="nav" data-view="rank" onclick="show('rank')"><b>♛</b>Ranking</button><button class="nav" data-view="profile" onclick="show('profile')"><b>●</b>Perfil</button></nav><div class="toast" id="toast"></div></div>
@@ -130,7 +130,6 @@ async function initUser(){
     document.getElementById('login').classList.remove('active');
     document.getElementById('onboard').classList.remove('active');
     await claimPendingReferral();
-    loadShareStatus();
     loadBattles();
   }catch(e){
     if(e.status===404){
@@ -241,9 +240,6 @@ async function loadShareStatus(){
   try{
     const d=await api('/share');
     const count=Number(d.verified_users||0),next=d.next_milestone;
-    const homeCount=document.getElementById('shareVerifiedHome');if(homeCount)homeCount.textContent=count;
-    const nextHome=document.getElementById('shareNextHome');if(nextHome)nextHome.textContent=next?`Próximo hito: ${next.users} usuarios → +${next.points} Aura`:'¡Todos los hitos alcanzados!';
-    const homeSmall=document.getElementById('shareCountHome');if(homeSmall)homeSmall.textContent=d.total_aura_awarded?`+${d.total_aura_awarded} Aura`:'Sin recompensas todavía';
     const profile=document.getElementById('shareProfileData');if(profile)profile.innerHTML=`<b>${count} usuarios verificados</b> · ${d.total_aura_awarded||0} Aura obtenidos por compartir.<br>${next?`Te faltan <b>${Math.max(0,next.users-count)}</b> usuarios para +${next.points} Aura.`:'Ya alcanzaste todos los hitos configurados.'}`;
   }catch(e){
     const profile=document.getElementById('shareProfileData');if(profile)profile.textContent='No se pudo cargar el progreso de compartir.';
