@@ -48,7 +48,52 @@ header{border-bottom:1px solid rgba(246,196,83,.18);box-shadow:0 8px 30px rgba(0
 .linkbtn{color:#e8c96f}
 input:focus,select:focus{border-color:rgba(246,196,83,.6)!important;box-shadow:0 0 0 3px rgba(246,196,83,.08)!important}
 .login-gold{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:#d6ad50;margin-bottom:8px;font-weight:800}
-.share-card{background:linear-gradient(145deg,rgba(246,196,83,.08),rgba(139,92,246,.08));border:1px solid rgba(246,196,83,.22)}.share-btn{background:linear-gradient(135deg,#f6c453,#b98218);color:#15110a;border:0;box-shadow:0 8px 22px rgba(246,196,83,.18)}</style></head>
+.share-card{background:linear-gradient(145deg,rgba(246,196,83,.08),rgba(139,92,246,.08));border:1px solid rgba(246,196,83,.22)}.share-btn{background:linear-gradient(135deg,#f6c453,#b98218);color:#15110a;border:0;box-shadow:0 8px 22px rgba(246,196,83,.18)}
+/* AURA INITIAL TEST */
+.aura-test{position:fixed;inset:0;background:radial-gradient(circle at 50% 15%,rgba(246,196,83,.12),transparent 28%),rgba(3,5,10,.985);z-index:70;display:none;overflow:auto}
+.aura-test.active{display:block}
+.aura-test-inner{width:min(100%,480px);min-height:100%;margin:auto;padding:22px 16px 34px;display:flex;flex-direction:column}
+.aura-test-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.aura-test-step{font-size:.7rem;color:#e8c96f;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.aura-test-progress{height:5px;background:#0b0e17;border-radius:99px;overflow:hidden;border:1px solid rgba(246,196,83,.12);margin-bottom:22px}
+.aura-test-progress i{display:block;height:100%;width:20%;background:linear-gradient(90deg,#8b5cf6,#f6c453,#ffe7a0);border-radius:99px;transition:width .35s ease}
+.aura-test-title{font-size:1.75rem;line-height:1.08;font-weight:900;margin:0 0 8px;letter-spacing:-.5px}
+.aura-test-subtitle{color:var(--muted);font-size:.82rem;line-height:1.5;margin:0 0 18px}
+.aura-test-card{background:linear-gradient(145deg,rgba(20,25,39,.94),rgba(8,11,19,.97));border:1px solid rgba(246,196,83,.18);border-radius:24px;padding:18px;box-shadow:0 22px 55px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.03);position:relative;overflow:hidden}
+.aura-test-card:before{content:"";position:absolute;left:8%;right:8%;top:0;height:1px;background:linear-gradient(90deg,transparent,#f6c453,transparent);opacity:.65}
+.aura-question{font-size:1.08rem;font-weight:850;line-height:1.3;margin-bottom:15px}
+.aura-options{display:grid;gap:10px}
+.aura-option{width:100%;padding:15px;text-align:left;border-radius:16px;background:rgba(255,255,255,.035);color:#fff;border:1px solid rgba(246,196,83,.12);transition:.2s}
+.aura-option:hover{border-color:rgba(246,196,83,.35);background:rgba(246,196,83,.055)}
+.aura-option.selected{border-color:#f6c453;background:linear-gradient(135deg,rgba(139,92,246,.18),rgba(246,196,83,.10));box-shadow:0 0 22px rgba(246,196,83,.08)}
+.aura-option b{display:block;font-size:.88rem;margin-bottom:3px}
+.aura-option span{display:block;color:var(--muted);font-size:.7rem;line-height:1.35}
+.aura-camera-choice{display:grid;gap:10px;margin-top:15px}
+.aura-camera-choice button{min-height:50px}
+.aura-camera-note{font-size:.68rem;color:var(--muted);line-height:1.45;text-align:center;margin-top:10px}
+.aura-camera{position:relative;border-radius:22px;overflow:hidden;background:#000;border:1px solid rgba(246,196,83,.3);aspect-ratio:3/4;box-shadow:0 0 35px rgba(246,196,83,.08)}
+.aura-camera video{width:100%;height:100%;object-fit:cover;display:block;transform:scaleX(-1)}
+.aura-camera:after{content:"";position:absolute;inset:12%;border:1px solid rgba(246,196,83,.5);border-radius:46% 46% 40% 40%;box-shadow:0 0 0 999px rgba(0,0,0,.08),inset 0 0 25px rgba(246,196,83,.06);pointer-events:none}
+.aura-scanline{position:absolute;left:10%;right:10%;height:2px;top:18%;background:linear-gradient(90deg,transparent,#ffe7a0,#f6c453,transparent);box-shadow:0 0 15px rgba(246,196,83,.8);animation:auraScan 2.4s ease-in-out infinite;z-index:2}
+@keyframes auraScan{0%,100%{top:18%;opacity:.25}50%{top:82%;opacity:1}}
+.aura-scan-label{position:absolute;left:0;right:0;bottom:13px;text-align:center;z-index:3;font-size:.68rem;font-weight:850;letter-spacing:.08em;text-transform:uppercase;color:#fff3bf;text-shadow:0 1px 8px #000}
+.aura-calculating{display:none;text-align:center;padding:12px 4px 2px}
+.aura-calculating.active{display:block}
+.aura-orbit{width:110px;height:110px;margin:4px auto 16px;border-radius:50%;border:1px solid rgba(246,196,83,.35);position:relative;animation:auraSpin 2s linear infinite;box-shadow:0 0 30px rgba(246,196,83,.1)}
+.aura-orbit:before,.aura-orbit:after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(139,92,246,.4)}
+.aura-orbit:before{inset:15px}
+.aura-orbit:after{inset:30px;border-color:rgba(246,196,83,.55)}
+@keyframes auraSpin{to{transform:rotate(360deg)}}
+.aura-result{display:none;text-align:center}
+.aura-result.active{display:block}
+.aura-result-glow{width:190px;height:190px;margin:4px auto 18px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,rgba(246,196,83,.22),rgba(139,92,246,.08) 45%,transparent 70%);animation:auraPulse 1.8s ease-in-out infinite}
+@keyframes auraPulse{50%{transform:scale(1.045);filter:brightness(1.12)}}
+.aura-result-number{font-size:4.8rem;line-height:1;font-weight:900;letter-spacing:-3px;background:linear-gradient(135deg,#fff,#ffe7a0,#f6c453);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 35px rgba(246,196,83,.18)}
+.aura-result-label{font-size:.72rem;color:#e8c96f;text-transform:uppercase;letter-spacing:.18em;font-weight:900}
+.aura-earned{font-size:1rem;font-weight:900;margin:10px 0 4px;color:#fff}
+.aura-result-copy{color:var(--muted);font-size:.78rem;line-height:1.5;max-width:310px;margin:0 auto 18px}
+.aura-share-result{display:none}
+</style></head>
 <body>
 <div class="app"><header><div class="brand"><span class="brand-icon"></span><div class="logo">AURA STAR</div></div><button class="avatar" id="avatar" onclick="show('profile')">★</button></header>
 <main>
@@ -170,6 +215,7 @@ async function initUser(){
     document.getElementById('onboard').classList.remove('active');
     await claimPendingReferral();
     loadBattles();
+    await maybeShowAuraTest(u);
   }catch(e){
     if(e.status===404){
       document.getElementById('login').classList.remove('active');
@@ -320,5 +366,285 @@ async function loadProfile(){const box=document.getElementById('profileCard'),da
 function showQr(){const q=document.getElementById('myQr');if(!q)return;q.innerHTML='';if(window.QRCode)new QRCode(q,{text:'aura:user:'+getUserId(),width:180,height:180,colorDark:'#000',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.M})}
 async function signOut(){await sb.auth.signOut();location.reload()}
 async function deleteAccount(){if(!confirm('¿Eliminar definitivamente tu cuenta?'))return;try{await api('/users/'+encodeURIComponent(CURRENT_USER.id),{method:'DELETE'});await sb.auth.signOut();localStorage.clear();location.reload()}catch(e){toast(e.message)}}
+
+/* =========================
+   AURA INITIAL TEST
+   ========================= */
+const AURA_TEST_QUESTIONS=[
+  {q:'Cuando aparece un desafío inesperado, ¿qué hacés primero?',o:[
+    ['Voy de frente.','Me gusta actuar rápido.'],
+    ['Observo y pienso.','Prefiero entender antes de moverme.'],
+    ['Busco una alternativa.','Siempre intento encontrar otro camino.'],
+    ['Me adapto sobre la marcha.','La presión me activa.']
+  ]},
+  {q:'¿Qué situación te representa más?',o:[
+    ['Ser el centro de atención.','Disfruto mostrar lo que hago.'],
+    ['Sorprender sin avisar.','Me gusta lo inesperado.'],
+    ['Ayudar a alguien a destacar.','Prefiero potenciar a otros.'],
+    ['Competir hasta el final.','No me gusta rendirme.']
+  ]},
+  {q:'Si tenés que elegir una energía para tu día, ¿cuál preferís?',o:[
+    ['Intensa.','Mucho movimiento y acción.'],
+    ['Tranquila.','Calma, foco y control.'],
+    ['Creativa.','Ideas, música y cosas nuevas.'],
+    ['Social.','Personas, risas y conexión.']
+  ]},
+  {q:'¿Qué hacés cuando algo no sale como esperabas?',o:[
+    ['Lo intento de nuevo.','No me gusta dejarlo a medias.'],
+    ['Cambio de estrategia.','Si no funciona, pruebo otra cosa.'],
+    ['Me tomo un momento.','Prefiero recuperar el foco.'],
+    ['Me río y sigo.','No dejo que me corte la energía.']
+  ]},
+  {q:'Elegí la frase que más se parece a vos.',o:[
+    ['“Voy a intentarlo.”','Aunque no sepa cómo todavía.'],
+    ['“Tengo una idea.”','Siempre se me ocurre algo.'],
+    ['“Vamos juntos.”','La energía compartida es mejor.'],
+    ['“Mirá esto.”','Me gusta sorprender.']
+  ]}
+];
+
+let auraTestState={index:0,answers:[],cameraWanted:false,cameraStream:null,visualDone:false,submitting:false};
+
+function auraTestCompleted(u){
+  return !!(u && (u.aura_test_completed===true || u.aura_test_completed==='true' || Number(u.aura_test_completed)===1));
+}
+
+function openAuraTest(){
+  const el=document.getElementById('auraTest');
+  if(!el)return;
+  auraTestState={index:0,answers:[],cameraWanted:false,cameraStream:null,visualDone:false,submitting:false};
+  document.getElementById('auraTestIntro').classList.remove('hidden');
+  document.getElementById('auraTestQuestion').classList.add('hidden');
+  document.getElementById('auraCameraStage').classList.add('hidden');
+  document.getElementById('auraCalculating').classList.remove('active');
+  document.getElementById('auraResult').classList.remove('active');
+  updateAuraTestProgress(0);
+  el.classList.add('active');
+}
+
+function closeAuraTest(){
+  stopAuraCamera();
+  document.getElementById('auraTest')?.classList.remove('active');
+}
+
+function updateAuraTestProgress(step){
+  const pct=step<=0?0:Math.min(100,(step/5)*100);
+  document.getElementById('auraTestProgress').style.width=(pct||20)+'%';
+  document.getElementById('auraTestStep').textContent=step<5?`Pregunta ${Math.min(step+1,5)} de 5`:'Lectura final';
+}
+
+function beginAuraTest(){
+  document.getElementById('auraTestIntro').classList.add('hidden');
+  auraTestState.index=0;
+  renderAuraQuestion();
+}
+
+function renderAuraQuestion(){
+  const q=AURA_TEST_QUESTIONS[auraTestState.index];
+  const box=document.getElementById('auraTestQuestion');
+  updateAuraTestProgress(auraTestState.index);
+  box.classList.remove('hidden');
+  box.innerHTML=`<div class="aura-test-card">
+    <div class="muted" style="margin-bottom:8px">PREGUNTA ${auraTestState.index+1} / 5</div>
+    <div class="aura-question">${esc(q.q)}</div>
+    <div class="aura-options">${q.o.map((x,i)=>`<button class="aura-option" onclick="selectAuraAnswer(${i})"><b>${esc(x[0])}</b><span>${esc(x[1])}</span></button>`).join('')}</div>
+  </div>`;
+}
+
+function selectAuraAnswer(i){
+  auraTestState.answers[auraTestState.index]=i;
+  if(auraTestState.index<4){
+    auraTestState.index++;
+    renderAuraQuestion();
+  }else{
+    document.getElementById('auraTestQuestion').classList.add('hidden');
+    showAuraCameraChoice();
+  }
+}
+
+function showAuraCameraChoice(){
+  updateAuraTestProgress(5);
+  const box=document.getElementById('auraCameraStage');
+  box.classList.remove('hidden');
+  box.innerHTML=`<div class="aura-test-card">
+    <div style="font-size:2rem;margin-bottom:8px">📷</div>
+    <h2 style="margin:0 0 8px">Activá la cámara</h2>
+    <p class="hint" style="margin:0">Podés usar la cámara para disfrutar la experiencia visual de lectura de Aura. No guardamos tu imagen y el puntaje no se calcula a partir de tu rostro.</p>
+    <div class="aura-camera-choice">
+      <button class="primary" onclick="enableAuraCamera()">📷 Activar cámara</button>
+      <button class="secondary" onclick="skipAuraCamera()">Continuar sin cámara</button>
+    </div>
+  </div>`;
+}
+
+async function enableAuraCamera(){
+  auraTestState.cameraWanted=true;
+  const box=document.getElementById('auraCameraStage');
+  try{
+    if(!navigator.mediaDevices?.getUserMedia)throw Error('Este navegador no permite cámara.');
+    const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});
+    auraTestState.cameraStream=stream;
+    box.innerHTML=`<div class="aura-test-card">
+      <div class="aura-camera">
+        <video id="auraCameraVideo" autoplay playsinline muted></video>
+        <div class="aura-scanline"></div>
+        <div id="auraScanLabel" class="aura-scan-label">Calibrando experiencia…</div>
+      </div>
+      <p class="aura-camera-note">La cámara aporta el efecto visual de la experiencia. El puntaje no se obtiene de tu rostro ni de datos biométricos.</p>
+      <button id="auraCameraContinue" class="primary" onclick="finishAuraVisualStep()">Continuar</button>
+    </div>`;
+    const video=document.getElementById('auraCameraVideo');
+    video.srcObject=stream;
+    const labels=['Calibrando experiencia…','Sincronizando respuestas…','Preparando lectura…','Casi listo…'];
+    let n=0;
+    const timer=setInterval(()=>{
+      if(!document.getElementById('auraCameraStage')?.classList.contains('hidden') && document.getElementById('auraScanLabel')){
+        document.getElementById('auraScanLabel').textContent=labels[n++%labels.length];
+      }else clearInterval(timer);
+    },850);
+  }catch(e){
+    toast('No pudimos abrir la cámara. Podés continuar sin ella.');
+    skipAuraCamera();
+  }
+}
+
+function skipAuraCamera(){
+  auraTestState.cameraWanted=false;
+  stopAuraCamera();
+  finishAuraVisualStep();
+}
+
+function finishAuraVisualStep(){
+  auraTestState.visualDone=true;
+  stopAuraCamera();
+  document.getElementById('auraCameraStage').classList.add('hidden');
+  calculateAndSubmitAuraTest();
+}
+
+function stopAuraCamera(){
+  if(auraTestState.cameraStream){
+    auraTestState.cameraStream.getTracks().forEach(t=>t.stop());
+    auraTestState.cameraStream=null;
+  }
+  const v=document.getElementById('auraCameraVideo');
+  if(v)v.srcObject=null;
+}
+
+function auraRangeFromAnswers(){
+  // Las respuestas generan un rango. Dentro del rango, el resultado final es aleatorio.
+  const weights=[0,0,0,0];
+  auraTestState.answers.forEach((a,i)=>{
+    const base=[1,3,2,4][i];
+    weights[a]=(weights[a]||0)+base;
+  });
+  const total=weights.reduce((a,b)=>a+b,0)||1;
+  const dominant=weights.indexOf(Math.max(...weights));
+  const spread=[0,4,8,12][dominant];
+  const normalized=Math.round((weights[dominant]/total)*25);
+  const min=Math.max(20,20+normalized+spread);
+  const max=Math.min(100,min+28);
+  return [Math.min(min,max),Math.max(min,max)];
+}
+
+async function calculateAndSubmitAuraTest(){
+  if(auraTestState.submitting)return;
+  auraTestState.submitting=true;
+  document.getElementById('auraCalculating').classList.add('active');
+  document.getElementById('auraTestStep').textContent='Lectura final';
+  const texts=[
+    ['Conectando con tu Aura…','Interpretando tus respuestas…'],
+    ['Sincronizando energía…','Combinando tu perfil con la lectura inicial…'],
+    ['Determinando intensidad…','Preparando tu resultado…'],
+    ['Lectura completa.','Revelando tu Aura…']
+  ];
+  for(const [title,text] of texts){
+    const t=document.getElementById('auraCalcTitle'),p=document.getElementById('auraCalcText');
+    if(t)t.textContent=title;if(p)p.textContent=text;
+    await new Promise(r=>setTimeout(r,650));
+  }
+  try{
+    const [rangeMin,rangeMax]=auraRangeFromAnswers();
+    const r=await api('/users/aura-test',{
+      method:'POST',
+      body:JSON.stringify({
+        answers:auraTestState.answers,
+        camera_used:!!auraTestState.cameraWanted,
+        score_min:rangeMin,
+        score_max:rangeMax
+      })
+    });
+    if(typeof r?.credited_aura!=='number')throw Error('El backend no confirmó el resultado del test.');
+    document.getElementById('auraCalculating').classList.remove('active');
+    document.getElementById('auraResult').classList.add('active');
+    document.getElementById('auraResultNumber').textContent=r.credited_aura;
+    document.getElementById('auraEarned').textContent=`+${r.credited_aura} Aura inicial`;
+    updateAuraTestProgress(5);
+  }catch(e){
+    document.getElementById('auraCalculating').classList.remove('active');
+    auraTestState.submitting=false;
+    toast(e.message||'No se pudo completar el test.');
+    // Si el servidor indica que ya fue realizado, no dejamos al usuario atrapado.
+    if(e.status===409 || /ya realizaste|already/i.test(e.message||'')) closeAuraTest();
+    else document.getElementById('auraTestQuestion').classList.remove('hidden');
+  }
+}
+
+async function maybeShowAuraTest(u){
+  if(!CURRENT_USER || auraTestCompleted(u))return;
+  // Pequeño retraso para que la transición desde login/onboarding se sienta natural.
+  setTimeout(()=>openAuraTest(),450);
+}
+
 setInterval(()=>{if(document.getElementById('home').classList.contains('active')&&CURRENT_USER)loadBattles()},60000);renderCreate();handleAuth();
-</script></body></html>
+</script>
+<div id="auraTest" class="aura-test" aria-modal="true" role="dialog">
+  <div class="aura-test-inner">
+    <div class="aura-test-top">
+      <div class="brand"><span class="brand-icon"></span><div class="logo">AURA STAR</div></div>
+      <span id="auraTestStep" class="aura-test-step">Test inicial</span>
+    </div>
+    <div class="aura-test-progress"><i id="auraTestProgress"></i></div>
+
+    <div id="auraTestIntro">
+      <h1 class="aura-test-title">✨ Descubrí tu Aura inicial</h1>
+      <p class="aura-test-subtitle">Respondé 5 preguntas y viví una breve experiencia de lectura de Aura. Tu resultado inicial estará entre <b>20 y 100 Aura</b>.</p>
+      <div class="aura-test-card">
+        <div style="font-size:2rem;margin-bottom:8px">◈</div>
+        <h2 style="margin:0 0 8px">¿Listo para descubrirla?</h2>
+        <p class="hint" style="margin:0">La cámara es opcional. Si la activás, se utiliza únicamente para crear la experiencia visual del test y <b>no guardamos tu imagen</b>.</p>
+        <button class="primary" style="margin-top:18px" onclick="beginAuraTest()">Comenzar test</button>
+      </div>
+    </div>
+
+    <div id="auraTestQuestion" class="hidden"></div>
+
+    <div id="auraCameraStage" class="hidden">
+      <div class="aura-test-card">
+        <div class="aura-camera">
+          <video id="auraCameraVideo" autoplay playsinline muted></video>
+          <div class="aura-scanline"></div>
+          <div id="auraScanLabel" class="aura-scan-label">Preparando experiencia…</div>
+        </div>
+        <p class="aura-camera-note">La cámara aporta el efecto visual de la experiencia. El puntaje no se obtiene de tu rostro ni de datos biométricos.</p>
+        <button id="auraCameraContinue" class="primary" onclick="finishAuraVisualStep()">Continuar</button>
+        <button class="secondary" onclick="skipAuraCamera()">Continuar sin cámara</button>
+      </div>
+    </div>
+
+    <div id="auraCalculating" class="aura-calculating">
+      <div class="aura-orbit"></div>
+      <h2 id="auraCalcTitle" style="margin:0 0 7px">Conectando con tu Aura…</h2>
+      <p id="auraCalcText" class="hint">Interpretando tus respuestas…</p>
+    </div>
+
+    <div id="auraResult" class="aura-result">
+      <div class="aura-test-card">
+        <div class="aura-result-glow"><div><div id="auraResultNumber" class="aura-result-number">--</div><div class="aura-result-label">Aura</div></div></div>
+        <div id="auraEarned" class="aura-earned">+0 Aura inicial</div>
+        <p class="aura-result-copy">Tu lectura inicial está lista. Este resultado se incorpora a tu Aura y solo puede obtenerse una vez.</p>
+        <button class="primary" onclick="closeAuraTest()">Entrar a AURA STAR</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body></html>
