@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>AURA STAR — Arena de desafíos</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path fill='%23f6c453' d='M50 0 L65 35 L100 50 L65 65 L50 100 L35 65 L0 50 L35 35 Z'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <style>
@@ -92,7 +93,6 @@ input:focus,select:focus{border-color:rgba(246,196,83,.6)!important;box-shadow:0
 .aura-result-label{font-size:.72rem;color:#e8c96f;text-transform:uppercase;letter-spacing:.18em;font-weight:900}
 .aura-earned{font-size:1rem;font-weight:900;margin:10px 0 4px;color:#fff}
 .aura-result-copy{color:var(--muted);font-size:.78rem;line-height:1.5;max-width:310px;margin:0 auto 18px}
-.aura-share-result{display:none}
 </style></head>
 <body>
 <div class="app"><header><div class="brand"><span class="brand-icon"></span><div class="logo">AURA STAR</div></div><button class="avatar" id="avatar" onclick="show('profile')">★</button></header>
@@ -108,6 +108,7 @@ input:focus,select:focus{border-color:rgba(246,196,83,.6)!important;box-shadow:0
 <section id="store" class="view"><div class="hero"><h1>⭐ Tienda Aura</h1><p>Comprá puntos regalables para enviar a otros usuarios o habilitar batallas locales.</p></div><div class="card"><div class="mode-info"><b>💳 Compras seguras</b><br>La compra se procesará mediante la plataforma de pagos configurada para AURA STAR. Los puntos comprados no aumentan tu Aura: sirven para regalar o crear batallas locales.</div><div id="storePackages" class="store-grid"></div><p class="hint" style="margin-top:12px">El proveedor de pagos todavía debe configurarse en el backend antes de habilitar cobros reales.</p></div></section>
 </main>
 <nav class="bottom"><button class="nav active" data-view="home" onclick="show('home')"><b>⌂</b>Inicio</button><button class="nav" data-view="create" onclick="show('create')"><b>＋</b>Crear</button><button class="nav" data-view="rank" onclick="show('rank')"><b>♛</b>Ranking</button><button class="nav" data-view="profile" onclick="show('profile')"><b>●</b>Perfil</button></nav><div class="toast" id="toast"></div></div>
+
 <div class="scan" id="scanner"><div style="font-weight:900;font-size:1.1rem;margin-bottom:12px">Escanear QR de usuario</div><video id="scanVideo" autoplay playsinline></video><canvas id="scanCanvas"></canvas><div class="hint" style="margin-top:10px;text-align:center">Apuntá al QR de AURA STAR. Si tu navegador no permite cámara, podés ingresar el ID manualmente.</div><button class="secondary close" onclick="stopScanner()">Cerrar</button></div>
 
 <div id="login" class="scan" style="background:rgba(3,5,10,.97)">
@@ -129,6 +130,58 @@ input:focus,select:focus{border-color:rgba(246,196,83,.6)!important;box-shadow:0
 </div>
 
 <div id="onboard" class="scan" style="background:rgba(3,5,10,.94)"><div class="card" style="width:min(92vw,380px)"><h2 style="margin-top:0">Bienvenido a AURA STAR</h2><p class="hint">Elegí tu nombre y rango de edad. Tu perfil quedará vinculado a tu cuenta.</p><p id="onboardEmail" class="hint" style="margin-top:-6px;font-weight:700"></p><input id="onboardUsername" class="search" placeholder="Nombre de usuario" maxlength="40"><select id="onboardAge" class="search"><option value="18_plus">18 años o más</option><option value="13_17">13 a 17 años</option></select><button class="primary" onclick="createProfile()">Continuar</button><button class="linkbtn" style="width:100%;margin-top:8px" onclick="signOut()">¿No es tu cuenta? Cerrar sesión</button></div></div>
+
+<!-- MODAL TEST DE AURA INICIAL -->
+<div id="auraTest" class="aura-test" aria-modal="true" role="dialog">
+  <div class="aura-test-inner">
+    <div class="aura-test-top">
+      <div class="brand"><span class="brand-icon"></span><div class="logo">AURA STAR</div></div>
+      <span id="auraTestStep" class="aura-test-step">Test inicial</span>
+    </div>
+    <div class="aura-test-progress"><i id="auraTestProgress"></i></div>
+
+    <div id="auraTestIntro">
+      <h1 class="aura-test-title">✨ Descubrí tu Aura inicial</h1>
+      <p class="aura-test-subtitle">Respondé 5 preguntas y viví una breve experiencia de lectura de Aura. Tu resultado inicial estará entre <b>20 y 100 Aura</b>.</p>
+      <div class="aura-test-card">
+        <div style="font-size:2rem;margin-bottom:8px">◈</div>
+        <h2 style="margin:0 0 8px">¿Listo para descubrirla?</h2>
+        <p class="hint" style="margin:0">La cámara es opcional. Si la activás, se utiliza únicamente para crear la experiencia visual del test y <b>no guardamos tu imagen</b>.</p>
+        <button class="primary" style="margin-top:18px" onclick="beginAuraTest()">Comenzar test</button>
+      </div>
+    </div>
+
+    <div id="auraTestQuestion" class="hidden"></div>
+
+    <div id="auraCameraStage" class="hidden">
+      <div class="aura-test-card">
+        <div class="aura-camera">
+          <video id="auraCameraVideo" autoplay playsinline muted></video>
+          <div class="aura-scanline"></div>
+          <div id="auraScanLabel" class="aura-scan-label">Preparando experiencia…</div>
+        </div>
+        <p class="aura-camera-note">La cámara aporta el efecto visual de la experiencia. El puntaje no se obtiene de tu rostro ni de datos biométricos.</p>
+        <button id="auraCameraContinue" class="primary" onclick="finishAuraVisualStep()">Continuar</button>
+        <button class="secondary" style="margin-top:8px" onclick="skipAuraCamera()">Continuar sin cámara</button>
+      </div>
+    </div>
+
+    <div id="auraCalculating" class="aura-calculating">
+      <div class="aura-orbit"></div>
+      <h2 id="auraCalcTitle" style="margin:0 0 7px">Conectando con tu Aura…</h2>
+      <p id="auraCalcText" class="hint">Interpretando tus respuestas…</p>
+    </div>
+
+    <div id="auraResult" class="aura-result">
+      <div class="aura-test-card">
+        <div class="aura-result-glow"><div><div id="auraResultNumber" class="aura-result-number">--</div><div class="aura-result-label">Aura</div></div></div>
+        <div id="auraEarned" class="aura-earned">+0 Aura inicial</div>
+        <p class="aura-result-copy">Tu lectura inicial está lista. Este resultado se incorpora a tu Aura y solo puede obtenerse una vez.</p>
+        <button class="primary" onclick="closeAuraTest()">Entrar a AURA STAR</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 const CONFIG={API:'https://aura-backend-oflg.onrender.com/api',SUPABASE_URL:'https://saqhaofycdjlwdauzhtv.supabase.co',SUPABASE_ANON_KEY:'sb_publishable_itAVUVk2JCkBjqKXSgQYrw_WsweKG1H',LOCAL_COST:20,MIN_VOTES:10,MIN_DIFF:3,ARBITER_CLOSE_VOTES:30,LOCAL_HOURS:2};
@@ -530,22 +583,6 @@ function stopAuraCamera(){
   if(v)v.srcObject=null;
 }
 
-function auraRangeFromAnswers(){
-  // Las respuestas generan un rango. Dentro del rango, el resultado final es aleatorio.
-  const weights=[0,0,0,0];
-  auraTestState.answers.forEach((a,i)=>{
-    const base=[1,3,2,4][i];
-    weights[a]=(weights[a]||0)+base;
-  });
-  const total=weights.reduce((a,b)=>a+b,0)||1;
-  const dominant=weights.indexOf(Math.max(...weights));
-  const spread=[0,4,8,12][dominant];
-  const normalized=Math.round((weights[dominant]/total)*25);
-  const min=Math.max(20,20+normalized+spread);
-  const max=Math.min(100,min+28);
-  return [Math.min(min,max),Math.max(min,max)];
-}
-
 async function calculateAndSubmitAuraTest(){
   if(auraTestState.submitting)return;
   auraTestState.submitting=true;
@@ -563,14 +600,11 @@ async function calculateAndSubmitAuraTest(){
     await new Promise(r=>setTimeout(r,650));
   }
   try{
-    const [rangeMin,rangeMax]=auraRangeFromAnswers();
     const r=await api('/users/aura-test',{
       method:'POST',
       body:JSON.stringify({
         answers:auraTestState.answers,
-        camera_used:!!auraTestState.cameraWanted,
-        score_min:rangeMin,
-        score_max:rangeMax
+        camera_used:!!auraTestState.cameraWanted
       })
     });
     if(typeof r?.credited_aura!=='number')throw Error('El backend no confirmó el resultado del test.');
@@ -583,7 +617,6 @@ async function calculateAndSubmitAuraTest(){
     document.getElementById('auraCalculating').classList.remove('active');
     auraTestState.submitting=false;
     toast(e.message||'No se pudo completar el test.');
-    // Si el servidor indica que ya fue realizado, no dejamos al usuario atrapado.
     if(e.status===409 || /ya realizaste|already/i.test(e.message||'')) closeAuraTest();
     else document.getElementById('auraTestQuestion').classList.remove('hidden');
   }
@@ -591,60 +624,9 @@ async function calculateAndSubmitAuraTest(){
 
 async function maybeShowAuraTest(u){
   if(!CURRENT_USER || auraTestCompleted(u))return;
-  // Pequeño retraso para que la transición desde login/onboarding se sienta natural.
   setTimeout(()=>openAuraTest(),450);
 }
 
 setInterval(()=>{if(document.getElementById('home').classList.contains('active')&&CURRENT_USER)loadBattles()},60000);renderCreate();handleAuth();
 </script>
-<div id="auraTest" class="aura-test" aria-modal="true" role="dialog">
-  <div class="aura-test-inner">
-    <div class="aura-test-top">
-      <div class="brand"><span class="brand-icon"></span><div class="logo">AURA STAR</div></div>
-      <span id="auraTestStep" class="aura-test-step">Test inicial</span>
-    </div>
-    <div class="aura-test-progress"><i id="auraTestProgress"></i></div>
-
-    <div id="auraTestIntro">
-      <h1 class="aura-test-title">✨ Descubrí tu Aura inicial</h1>
-      <p class="aura-test-subtitle">Respondé 5 preguntas y viví una breve experiencia de lectura de Aura. Tu resultado inicial estará entre <b>20 y 100 Aura</b>.</p>
-      <div class="aura-test-card">
-        <div style="font-size:2rem;margin-bottom:8px">◈</div>
-        <h2 style="margin:0 0 8px">¿Listo para descubrirla?</h2>
-        <p class="hint" style="margin:0">La cámara es opcional. Si la activás, se utiliza únicamente para crear la experiencia visual del test y <b>no guardamos tu imagen</b>.</p>
-        <button class="primary" style="margin-top:18px" onclick="beginAuraTest()">Comenzar test</button>
-      </div>
-    </div>
-
-    <div id="auraTestQuestion" class="hidden"></div>
-
-    <div id="auraCameraStage" class="hidden">
-      <div class="aura-test-card">
-        <div class="aura-camera">
-          <video id="auraCameraVideo" autoplay playsinline muted></video>
-          <div class="aura-scanline"></div>
-          <div id="auraScanLabel" class="aura-scan-label">Preparando experiencia…</div>
-        </div>
-        <p class="aura-camera-note">La cámara aporta el efecto visual de la experiencia. El puntaje no se obtiene de tu rostro ni de datos biométricos.</p>
-        <button id="auraCameraContinue" class="primary" onclick="finishAuraVisualStep()">Continuar</button>
-        <button class="secondary" onclick="skipAuraCamera()">Continuar sin cámara</button>
-      </div>
-    </div>
-
-    <div id="auraCalculating" class="aura-calculating">
-      <div class="aura-orbit"></div>
-      <h2 id="auraCalcTitle" style="margin:0 0 7px">Conectando con tu Aura…</h2>
-      <p id="auraCalcText" class="hint">Interpretando tus respuestas…</p>
-    </div>
-
-    <div id="auraResult" class="aura-result">
-      <div class="aura-test-card">
-        <div class="aura-result-glow"><div><div id="auraResultNumber" class="aura-result-number">--</div><div class="aura-result-label">Aura</div></div></div>
-        <div id="auraEarned" class="aura-earned">+0 Aura inicial</div>
-        <p class="aura-result-copy">Tu lectura inicial está lista. Este resultado se incorpora a tu Aura y solo puede obtenerse una vez.</p>
-        <button class="primary" onclick="closeAuraTest()">Entrar a AURA STAR</button>
-      </div>
-    </div>
-  </div>
-</div>
 </body></html>
