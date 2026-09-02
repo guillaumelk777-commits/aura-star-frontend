@@ -64,16 +64,36 @@ input:focus,select:focus{border-color:rgba(246,196,83,.6)!important;box-shadow:0
 </main>
 <nav class="bottom"><button class="nav active" data-view="home" onclick="show('home')"><b>⌂</b>Inicio</button><button class="nav" data-view="create" onclick="show('create')"><b>＋</b>Crear</button><button class="nav" data-view="rank" onclick="show('rank')"><b>♛</b>Ranking</button><button class="nav" data-view="profile" onclick="show('profile')"><b>●</b>Perfil</button></nav><div class="toast" id="toast"></div></div>
 <div class="scan" id="scanner"><div style="font-weight:900;font-size:1.1rem;margin-bottom:12px">Escanear QR de usuario</div><video id="scanVideo" autoplay playsinline></video><canvas id="scanCanvas"></canvas><div class="hint" style="margin-top:10px;text-align:center">Apuntá al QR de AURA STAR. Si tu navegador no permite cámara, podés ingresar el ID manualmente.</div><button class="secondary close" onclick="stopScanner()">Cerrar</button></div>
-<div id="login" class="scan" style="background:rgba(3,5,10,.97)"><div class="card" style="width:min(92vw,390px);text-align:center"><div class="brand" style="justify-content:center;margin-bottom:18px"><span class="brand-icon"></span><div class="logo">AURA STAR</div></div><div class="login-gold">TU IDENTIDAD · TU AURA · TU ARENA</div><h2 style="margin:0 0 8px">Entrá a AURA STAR</h2><p class="hint" style="margin:0 0 18px">Usá tu cuenta de Google o Apple para guardar tu identidad, Aura y batallas.</p><button class="primary" onclick="signInWith('google')" style="background:#fff;color:#111827;box-shadow:none">🌐 Continuar con Google</button><button class="secondary" onclick="signInWith('apple')" style="background:#000;border-color:#333;margin-top:10px"> Continuar con Apple</button><p id="loginHint" class="hint" style="margin:14px 0 0">Tu cuenta se vincula de forma segura con Google o Apple. Si el proveedor no está configurado en Supabase, verás un mensaje de error.</p></div></div><div id="onboard" class="scan" style="background:rgba(3,5,10,.94)"><div class="card" style="width:min(92vw,380px)"><h2 style="margin-top:0">Bienvenido a AURA STAR</h2><p class="hint">Elegí tu nombre y rango de edad. Tu perfil quedará vinculado a tu cuenta de Google o Apple.</p><p id="onboardEmail" class="hint" style="margin-top:-6px;font-weight:700"></p><input id="onboardUsername" class="search" placeholder="Nombre de usuario" maxlength="40"><select id="onboardAge" class="search"><option value="18_plus">18 años o más</option><option value="13_17">13 a 17 años</option></select><button class="primary" onclick="createProfile()">Continuar</button><button class="linkbtn" style="width:100%;margin-top:8px" onclick="signOut()">¿No es tu cuenta? Cerrar sesión</button></div></div>
+
+<div id="login" class="scan" style="background:rgba(3,5,10,.97)">
+  <div class="card" style="width:min(92vw,390px);text-align:center">
+    <div class="brand" style="justify-content:center;margin-bottom:18px"><span class="brand-icon"></span><div class="logo">AURA STAR</div></div>
+    <div class="login-gold">TU IDENTIDAD · TU AURA · TU ARENA</div>
+    <h2 style="margin:0 0 8px">Entrá a AURA STAR</h2>
+    <p class="hint" style="margin:0 0 16px">Iniciá sesión con Google o ingresá tu email para recibir un enlace de acceso instantáneo.</p>
+    
+    <button class="primary" onclick="signInWith('google')" style="background:#fff;color:#111827;box-shadow:none">🌐 Continuar con Google</button>
+    
+    <div style="display:flex;align-items:center;margin:16px 0;color:var(--muted);font-size:.75rem"><hr style="flex:1;border:0;border-top:1px solid var(--border)"><span style="padding:0 8px">O INGRESÁ CON EMAIL</span><hr style="flex:1;border:0;border-top:1px solid var(--border)"></div>
+    
+    <input id="emailInput" class="search" type="email" placeholder="tu@email.com" style="margin-bottom:8px">
+    <button class="secondary" onclick="signInWithEmail()" style="margin-top:0">✉️ Enviar enlace mágico</button>
+    
+    <p id="loginHint" class="hint" style="margin:14px 0 0">Al ingresar con email te enviaremos un enlace de acceso seguro a tu casilla.</p>
+  </div>
+</div>
+
+<div id="onboard" class="scan" style="background:rgba(3,5,10,.94)"><div class="card" style="width:min(92vw,380px)"><h2 style="margin-top:0">Bienvenido a AURA STAR</h2><p class="hint">Elegí tu nombre y rango de edad. Tu perfil quedará vinculado a tu cuenta.</p><p id="onboardEmail" class="hint" style="margin-top:-6px;font-weight:700"></p><input id="onboardUsername" class="search" placeholder="Nombre de usuario" maxlength="40"><select id="onboardAge" class="search"><option value="18_plus">18 años o más</option><option value="13_17">13 a 17 años</option></select><button class="primary" onclick="createProfile()">Continuar</button><button class="linkbtn" style="width:100%;margin-top:8px" onclick="signOut()">¿No es tu cuenta? Cerrar sesión</button></div></div>
+
 <script>
 const CONFIG={API:'https://aura-backend-oflg.onrender.com/api',SUPABASE_URL:'https://saqhaofycdjlwdauzhtv.supabase.co',SUPABASE_ANON_KEY:'sb_publishable_itAVUVk2JCkBjqKXSgQYrw_WsweKG1H',LOCAL_COST:20,MIN_VOTES:10,MIN_DIFF:3,ARBITER_CLOSE_VOTES:30,LOCAL_HOURS:2};
 const OAUTH_REDIRECT='https://guillaumelk777-commits.github.io/aura-star-frontend/';
-const OAUTH_PROVIDERS=['google','apple'];
 const sb=supabase.createClient(CONFIG.SUPABASE_URL,CONFIG.SUPABASE_ANON_KEY);
 let CURRENT_USER=null,cache=[],currentMode='video',scanStream=null,scanTimer=null;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 function getUserId(){return CURRENT_USER?.id||''}
 function toast(t){const x=document.getElementById('toast');x.textContent=t;x.style.display='block';clearTimeout(x._t);x._t=setTimeout(()=>x.style.display='none',2600)}
+
 async function api(path,opt={}){
   let auth=await sb.auth.getSession();
   let sess=auth?.data?.session;
@@ -81,7 +101,7 @@ async function api(path,opt={}){
     const refreshed=await sb.auth.refreshSession().catch(()=>null);
     sess=refreshed?.data?.session||null;
   }
-  if(!sess?.access_token)throw Object.assign(new Error('Tu sesión de Google/Apple no está disponible. Volvé a iniciar sesión.'),{code:'NO_SESSION'});
+  if(!sess?.access_token)throw Object.assign(new Error('Tu sesión no está disponible. Volvé a iniciar sesión.'),{code:'NO_SESSION'});
   const headers={...(opt.body instanceof FormData?{}:{'Content-Type':'application/json'}),...(opt.headers||{})};
   headers.Authorization='Bearer '+sess.access_token;
   let r=await fetch(CONFIG.API+path,{...opt,headers});
@@ -101,27 +121,46 @@ async function api(path,opt={}){
   }
   return d;
 }
+
 async function signInWith(provider){
   const hint=document.getElementById('loginHint');
-  if(!OAUTH_PROVIDERS.includes(provider))return;
-  hint.textContent='Abriendo '+(provider==='google'?'Google':'Apple')+'…';
+  if(provider!=='google')return;
+  hint.textContent='Abriendo Google…';
   try{
     const {data,error}=await sb.auth.signInWithOAuth({
-      provider,
-      options:{
-        redirectTo:OAUTH_REDIRECT,
-        queryParams:provider==='google'?{prompt:'select_account'}:undefined
-      }
+      provider:'google',
+      options:{ redirectTo:OAUTH_REDIRECT, queryParams:{prompt:'select_account'} }
     });
     if(error)throw error;
     if(data?.url) window.location.assign(data.url);
   }catch(e){
-    console.error('OAuth '+provider,e);
-    hint.textContent='No se pudo iniciar sesión: '+(e.message||'Error de OAuth');
+    hint.textContent='No se pudo iniciar sesión: '+(e.message||'Error de Google');
     toast(hint.textContent);
   }
 }
-async function createProfile(){const name=document.getElementById('onboardUsername').value.trim(),age=document.getElementById('onboardAge').value;if(!CURRENT_USER)return toast('Primero iniciá sesión con Google o Apple.');if(!name)return toast('Ingresá un nombre.');const btn=document.querySelector('#onboard button.primary');btn.disabled=true;btn.textContent='Creando perfil…';try{const r=await api('/users',{method:'POST',body:JSON.stringify({username:name,age_bracket:age})});if(!r?.id)throw Error('El backend no confirmó la creación del perfil.');document.getElementById('onboard').classList.remove('active');await initUser()}catch(e){console.error('createProfile',e);toast(e.message)}finally{btn.disabled=false;btn.textContent='Continuar'}}
+
+async function signInWithEmail(){
+  const emailInput=document.getElementById('emailInput'), email=emailInput.value.trim();
+  const hint=document.getElementById('loginHint');
+  if(!email || !/\S+@\S+\.\S+/.test(email)) return toast('Ingresá un email válido.');
+  
+  hint.textContent='Enviando enlace mágico a '+email+'…';
+  try{
+    const {error}=await sb.auth.signInWithOtp({
+      email,
+      options:{ emailRedirectTo: OAUTH_REDIRECT }
+    });
+    if(error) throw error;
+    hint.textContent='¡Enlace enviado! Revisá tu casilla de correo para entrar.';
+    toast('✉️ Enlace enviado a tu email');
+  }catch(e){
+    hint.textContent='Error al enviar email: '+(e.message||'');
+    toast('No se pudo enviar el email');
+  }
+}
+
+async function createProfile(){const name=document.getElementById('onboardUsername').value.trim(),age=document.getElementById('onboardAge').value;if(!CURRENT_USER)return toast('Primero iniciá sesión.');if(!name)return toast('Ingresá un nombre.');const btn=document.querySelector('#onboard button.primary');btn.disabled=true;btn.textContent='Creando perfil…';try{const r=await api('/users',{method:'POST',body:JSON.stringify({username:name,age_bracket:age})});if(!r?.id)throw Error('El backend no confirmó la creación del perfil.');document.getElementById('onboard').classList.remove('active');await initUser()}catch(e){console.error('createProfile',e);toast(e.message)}finally{btn.disabled=false;btn.textContent='Continuar'}}
+
 async function initUser(){
   if(!CURRENT_USER){ document.getElementById('login').classList.add('active'); document.getElementById('onboard').classList.remove('active'); return; }
   try{
@@ -141,7 +180,7 @@ async function initUser(){
     }else if(e.status===401||e.code==='NO_SESSION'){
       document.getElementById('login').classList.add('active');
       document.getElementById('onboard').classList.remove('active');
-      document.getElementById('loginHint').textContent='La sesión no pudo validarse. Presioná Google o Apple para volver a autenticarte.';
+      document.getElementById('loginHint').textContent='La sesión no pudo validarse. Volvé a ingresar.';
     }else{
       document.getElementById('login').classList.add('active');
       document.getElementById('onboard').classList.remove('active');
@@ -149,6 +188,7 @@ async function initUser(){
     }
   }
 }
+
 async function handleAuth(){
   captureShareToken();
   const params=new URLSearchParams(location.search);
@@ -156,7 +196,7 @@ async function handleAuth(){
     const desc=params.get('error_description')||params.get('error');
     history.replaceState({},document.title,location.pathname);
     document.getElementById('login').classList.add('active');
-    document.getElementById('loginHint').textContent='Google/Apple rechazó el acceso: '+decodeURIComponent(desc);
+    document.getElementById('loginHint').textContent='Error de acceso: '+decodeURIComponent(desc);
     return;
   }
   const {data,error}=await sb.auth.getSession();
@@ -164,12 +204,14 @@ async function handleAuth(){
   CURRENT_USER=data.session?.user||null;
   if(CURRENT_USER) await initUser(); else document.getElementById('login').classList.add('active');
 }
+
 sb.auth.onAuthStateChange((event,session)=>{
   CURRENT_USER=session?.user||null;
   if(event==='SIGNED_IN'&&CURRENT_USER)setTimeout(()=>initUser(),50);
   if(event==='TOKEN_REFRESHED'&&CURRENT_USER)setTimeout(()=>initUser(),50);
   if(event==='SIGNED_OUT'){CURRENT_USER=null;document.getElementById('login').classList.add('active');document.getElementById('onboard').classList.remove('active');}
 });
+
 function show(v){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(v).classList.add('active');document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.view===v));if(v==='home')loadBattles();if(v==='rank')loadRanking();if(v==='profile'){loadProfile();loadShareStatus();}if(v==='store')loadStore();if(v==='local')document.getElementById('localSearch').focus()}
 function battlePeople(b){return b.mode==='local'?[b.local_a_name||b.local_participant_a,b.local_b_name||b.local_participant_b]:[b.creator_name||b.creator_id,b.opponent_name||b.opponent_id||'Esperando…']}
 function battleCard(b){const[aName,oName]=battlePeople(b),a=+b.votes_creator||0,o=+b.votes_opponent||0,p=Math.round(a/Math.max(1,a+o)*100);const local=b.mode==='local';return `<div class="card battle-card"><span class="badge">${local?'🏟️ Local':modeLabel(b.mode)}</span><div class="battle-title">${esc(b.title)}</div>${b.theme?`<div class="muted">Tema: ${esc(b.theme)}</div>`:''}<div class="players"><div class="player">${esc(aName)}<div class="score">${a}</div></div><div class="vs">VS</div><div class="player">${esc(oName)}<div class="score">${o}</div></div></div><div class="bar"><i style="width:${p}%"></i></div><div class="meta"><span>${a+o} votos${local?' · '+timeLeft(b.local_closes_at):''}</span><button class="linkbtn" onclick="openBattle('${b.id}')">Ver →</button></div></div>`}
@@ -249,15 +291,11 @@ async function shareApp(){
   try{
     const d=await api('/share');
     let url = d.share_url || '';
-    
-    // Garantiza que la dirección sea una URL absoluta válida (https://...)
     if(!url.startsWith('http')){
       url = 'https://guillaumelk777-commits.github.io/aura-star-frontend/' + (url.startsWith('/') ? url.slice(1) : url);
     }
-    
     const title='AURA STAR';
     const text='Entrá a AURA STAR y descubrí quién tiene Aura. ⚡';
-    
     if(navigator.share){
       await navigator.share({title, text, url});
       toast('¡Enlace compartido!');
