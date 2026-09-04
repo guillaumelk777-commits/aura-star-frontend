@@ -396,16 +396,51 @@ async function loadRanking(){
   const box=document.getElementById('ranking');
   if(!box)return;
   box.innerHTML='<div class="empty">Cargando ranking…</div>';
-  try{
-    const r=await fetch(CONFIG.API+'/users/ranking',{method:'GET',headers:{Accept:'application/json'},cache:'no-store'});
-    const d=await r.json().catch(()=>null);
-    if(!r.ok)throw Error(d?.error||`No se pudo cargar el ranking (${r.status}).`);
-    const rows=Array.isArray(d)?d:(Array.isArray(d?.ranking)?d.ranking:Array.isArray(d?.data)?d.data:[]);
-    box.innerHTML=rows.length?rows.map((u,i)=>`<div class="card rank"><div class="ranknum">#${i+1}</div><div class="rankavatar">${esc((u.username||'?')[0]).toUpperCase()}</div><div class="rankname">${esc(u.username||'Usuario')}<small>${u.battles_won||0} victorias</small></div><div class="aura">★ ${u.aura_points||0}</div></div>`).join(''):'<div class="empty">El ranking aparecerá cuando haya usuarios.</div>';
-  }catch(e){
-    console.error('loadRanking',e);
-    box.innerHTML=`<div class="empty">No se pudo cargar el ranking.<br><small>${esc(e.message||'Error de conexión')}</small><br><button class="secondary" style="margin-top:10px" onclick="loadRanking()">Reintentar</button></div>`;
+
+  const normalizeRanking=(d)=>{
+    if(Array.isArray(d))return d;
+    if(Array.isArray(d?.ranking))return d.ranking;
+    if(Array.isArray(d?.data))return d.data;
+    if(Array.isArray(d?.users))return d.users;
+    return [];
+  };
+
+  const renderRanking=(rows)=>{
+    const valid=rows.filter(u=>u && (u.username||u.aura_points!==undefined));
+    box.innerHTML=valid.length?valid.map((u,i)=>`<div class="card rank"><div class="ranknum">#${i+1}</div><div class="rankavatar">${esc((u.username||'?')[0]).toUpperCase()}</div><div class="rankname">${esc(u.username||'Usuario')}<small>${u.battles_won||0} victorias</small></div><div class="aura">★ ${Number(u.aura_points||0)}</div></div>`).join(''):'<div class="empty">El ranking aparecerá cuando haya usuarios.</div>';
+  };
+
+  let lastError=null;
+  for(let attempt=1;attempt<=3;attempt++){
+    try{
+      const controller=new AbortController();
+      const timer=setTimeout(()=>controller.abort(),8000);
+      const r=await fetch(CONFIG.API+'/users/ranking?limit=50',{method:'GET',headers:{Accept:'application/json'},cache:'no-store',signal:controller.signal});
+      clearTimeout(timer);
+      const d=await r.json().catch(()=>null);
+      if(!r.ok)throw Error(d?.error||`No se pudo cargar el ranking (${r.status}).`);
+      const rows=normalizeRanking(d);
+      renderRanking(rows);
+      return;
+    }catch(e){
+      lastError=e;
+      console.error('loadRanking intento '+attempt,e);
+      if(attempt<3)await new Promise(r=>setTimeout(r,700*attempt));
+    }
   }
+
+  // Último intento usando la sesión autenticada, por si el endpoint público está protegido en el backend desplegado.
+  try{
+    const d=await api('/users/ranking');
+    const rows=normalizeRanking(d);
+    renderRanking(rows);
+    return;
+  }catch(e){
+    console.error('loadRanking fallback autenticado',e);
+    lastError=e||lastError;
+  }
+
+  box.innerHTML=`<div class="empty">No se pudo cargar el ranking.<br><small>${esc(lastError?.message||'Error de conexión con el servidor')}</small><br><button class="secondary" style="margin-top:10px" onclick="loadRanking()">Reintentar</button></div>`;
 }
 const STORE_PACKAGES=[{id:'starter',points:50,price:'Configurar precio'},{id:'plus',points:120,price:'Configurar precio'},{id:'pro',points:300,price:'Configurar precio'},{id:'mega',points:700,price:'Configurar precio'}];
 function loadStore(){const box=document.getElementById('storePackages');if(!box)return;box.innerHTML=STORE_PACKAGES.map(x=>`<div class="store-item"><b>🎁 ${x.points} puntos</b><div class="price">${x.price}</div><button class="secondary" onclick="startPurchase('${x.id}')">Elegir</button></div>`).join('')}
