@@ -114,7 +114,7 @@ input:focus,select:focus{border-color:rgba(246,196,83,.6)!important;box-shadow:0
 <section id="events" class="view"><div class="hero"><h1>🎪 Eventos</h1><p>Torneos locales de 4 u 8 participantes, con bracket automático y QR para el público.</p></div><div class="grid"><button class="action" onclick="openTournamentCreate()"><strong>🏆 Crear torneo</strong><span>Organizá un evento presencial</span></button><button class="action" onclick="loadEvents()"><strong>📍 Eventos cercanos</strong><span>Descubrí eventos sin mostrar ubicaciones exactas</span></button><button class="action" onclick="startEventScanner()"><strong>📷 Escanear QR</strong><span>Entrá directamente al evento</span></button></div><div class="mode-info" style="margin-top:12px"><b>🛡️ Seguridad</b><br>Los torneos están separados por rango de edad. AURA STAR no publica coordenadas exactas ni organiza físicamente el evento.</div><div id="eventCreate" class="card" style="display:none;margin-top:12px"></div><div id="eventsList"></div><div id="tournamentDetail"></div></section>
 <section id="rank" class="view"><div class="hero"><h1>🏆 Ranking</h1><p>Las estrellas con más Aura.</p></div><div id="ranking"></div></section>
 <section id="profile" class="view"><div class="hero"><h1>Mi perfil</h1><p id="profileSubtitle">Tu identidad dentro de AURA STAR.</p></div><div class="card" id="profileCard"></div><div class="card share-card"><h3 style="margin:0 0 6px">🚀 Recompensas por compartir</h3><div id="shareProfileData" class="hint" style="margin-bottom:12px">Cargando…</div><button class="primary share-btn" onclick="shareApp()">📤 Compartir mi enlace</button></div><div id="profileData"></div>
-<div id="adminSection" class="card admin-card" style="display:none"><h3 style="margin:0 0 6px">🛡️ Modo Moderador / Admin</h3><p class="hint" style="margin-top:0">Herramientas internas. Las acciones sensibles quedan registradas.</p><div id="adminSummary" class="mode-info" style="margin-bottom:10px">Cargando resumen…</div><input id="adminSearchUser" class="search" placeholder="Buscar usuario por nombre o ID…" oninput="searchAdminUsers()"><div id="adminUserResults"><div class="empty">Escribí al menos 2 caracteres.</div></div></div>
+<div id="adminSection" class="card admin-card" style="display:none"><h3 style="margin:0 0 6px">🛡️ Modo Moderador / Admin</h3><p class="hint" style="margin-top:0">Herramientas internas. Las acciones sensibles quedan registrada.</p><div id="adminSummary" class="mode-info" style="margin-bottom:10px">Cargando resumen…</div><input id="adminSearchUser" class="search" placeholder="Buscar usuario por nombre o ID…" oninput="searchAdminUsers()"><div id="adminUserResults"><div class="empty">Escribí al menos 2 caracteres.</div></div></div>
 </section>
 <section id="store" class="view"><div class="hero"><h1>⭐ Tienda Aura</h1><p>Comprá puntos regalables para enviar a otros usuarios o habilitar batallas locales.</p></div><div class="card"><div class="mode-info"><b>💳 Compras seguras</b><br>La compra se procesará mediante la plataforma de pagos configurada para AURA STAR. Los puntos comprados no aumentan tu Aura: sirven para regalar o crear batallas locales.</div><div id="storePackages" class="store-grid"></div><p class="hint" style="margin-top:12px">El proveedor de pagos todavía debe configurarse en el backend antes de habilitar cobros reales.</p></div></section>
 </main>
@@ -145,7 +145,7 @@ input:focus,select:focus{border-color:rgba(246,196,83,.6)!important;box-shadow:0
 const CONFIG={API:'https://aura-backend-oflg.onrender.com/api',SUPABASE_URL:'https://saqhaofycdjlwdauzhtv.supabase.co',SUPABASE_ANON_KEY:'sb_publishable_itAVUVk2JCkBjqKXSgQYrw_WsweKG1H',LOCAL_COST:0,TOURNAMENT_COST:0,MIN_VOTES:10,MIN_DIFF:3,ARBITER_CLOSE_VOTES:30,LOCAL_HOURS:2};
 const OAUTH_REDIRECT='https://guillaumelk777-commits.github.io/aura-star-frontend/';
 const sb=supabase.createClient(CONFIG.SUPABASE_URL,CONFIG.SUPABASE_ANON_KEY);
-let CURRENT_USER=null,cache=[],currentMode='video',scanStream=null,scanTimer=null;
+let CURRENT_USER=null,IS_ADMIN=false,cache=[],currentMode='video',scanStream=null,scanTimer=null;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 function getUserId(){return CURRENT_USER?.id||''}
 function toast(t){const x=document.getElementById('toast');x.textContent=t;x.style.display='block';clearTimeout(x._t);x._t=setTimeout(()=>x.style.display='none',2600)}
@@ -221,6 +221,7 @@ async function initUser(){
   if(!CURRENT_USER){ document.getElementById('login').classList.add('active'); document.getElementById('onboard').classList.remove('active'); return; }
   try{
     const u=await api('/users/'+encodeURIComponent(CURRENT_USER.id));
+    IS_ADMIN=!!(u.is_admin||u.moderation_role==='admin');
     document.getElementById('avatar').textContent=(u.username||'★')[0].toUpperCase();
     document.getElementById('login').classList.remove('active');
     document.getElementById('onboard').classList.remove('active');
@@ -266,7 +267,7 @@ sb.auth.onAuthStateChange((event,session)=>{
   CURRENT_USER=session?.user||null;
   if(event==='SIGNED_IN'&&CURRENT_USER)setTimeout(()=>initUser(),50);
   if(event==='TOKEN_REFRESHED'&&CURRENT_USER)setTimeout(()=>initUser(),50);
-  if(event==='SIGNED_OUT'){CURRENT_USER=null;document.getElementById('login').classList.add('active');document.getElementById('onboard').classList.remove('active');}
+  if(event==='SIGNED_OUT'){CURRENT_USER=null;IS_ADMIN=false;document.getElementById('login').classList.add('active');document.getElementById('onboard').classList.remove('active');}
 });
 
 function show(v){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(v).classList.add('active');document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.view===v));if(v==='home')loadBattles();if(v==='rank')loadRanking();if(v==='profile'){loadProfile();loadShareStatus();loadAdminSection();}if(v==='store')loadStore();if(v==='local')document.getElementById('localSearch').focus();if(v==='events')loadEvents()}
@@ -323,7 +324,22 @@ async function uploadFile(file){
 async function openBattle(id){show('battle');const box=document.getElementById('battleDetail');box.innerHTML='<button class="backbtn" onclick="backToFeed()"><span>←</span> Volver al feed</button><div class="empty">Cargando batalla…</div>';try{const b=await api('/battles/'+id);renderBattle(b)}catch(e){box.innerHTML='<button class="backbtn" onclick="backToFeed()"><span>←</span> Volver al feed</button><div class="card empty">'+esc(e.message)+'</div>'}}
 function backToFeed(){show('home')}
 function mediaHtml(url,mode){if(!url)return'<div style="aspect-ratio:9/16;border-radius:15px;background:#090c14;display:grid;place-items:center;color:var(--muted)">Sin participación</div>';if(mode==='photo')return`<img src="${esc(url)}" alt="Participación">`;if(mode==='audio')return`<div class="audio-box"><div style="font-size:2rem;margin-bottom:10px">🎙️</div><audio controls src="${esc(url)}"></audio></div>`;return`<video controls playsinline preload="metadata" src="${esc(url)}"></video>`}
-function renderBattle(b){const local=b.mode==='local',[pa,pb]=local?[b.local_a_name||b.local_participant_a,b.local_b_name||b.local_participant_b]:[b.creator_name||b.creator_id,b.opponent_name||b.opponent_id||'Esperando…'];const a=+b.votes_creator||0,o=+b.votes_opponent||0,total=a+o,diff=Math.abs(a-o);let action='';if(local&&b.local_neutral&&b.creator_id===getUserId()&&total>=CONFIG.ARBITER_CLOSE_VOTES&&diff>=CONFIG.MIN_DIFF)action='<button class="primary" onclick="arbiterClose(\''+b.id+'\')">⚖️ Cerrar batalla como árbitro</button>';if(!local&&!b.opponent_id)action='<button class="primary" onclick="joinMediaBattle(\''+b.id+'\')">⚔️ Unirme y presentar mi '+modeLabel(b.mode).replace(/^\S+ /,'').toLowerCase()+'</button>';const timer=local?`<div class="timer">⏱️ ${timeLeft(b.local_closes_at)} restantes</div>`:'';document.getElementById('battleDetail').innerHTML=`<button class="backbtn" onclick="backToFeed()"><span>←</span> Volver al feed</button><div class="hero"><span class="badge">${local?'🏟️ Batalla local':modeLabel(b.mode)}</span><h1>${esc(b.title)}</h1><p>La comunidad decide.</p></div><div class="card">${local?'':`<div class="media-grid"><div>${mediaHtml(b.media_url_creator,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pa)}</small></div><div>${mediaHtml(b.media_url_opponent,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pb)}</small></div></div>`}<div class="players"><div class="player">${esc(pa)}<div class="score">${a}</div></div><div class="vs">VS</div><div class="player">${esc(pb)}<div class="score">${o}</div></div></div><div class="bar"><i style="width:${Math.round(a/Math.max(1,total)*100)}%"></i></div><div class="meta"><span>${total} votos · diferencia ${diff}</span>${timer}</div><div class="vote-grid" style="margin-top:14px"><button class="vote a" onclick="vote('${b.id}','${esc(local?b.local_participant_a:b.creator_id)}')">Votar ${esc(pa)}</button><button class="vote b" onclick="vote('${b.id}','${esc(local?b.local_participant_b:b.opponent_id||'')}')" ${pb==='Esperando…'?'disabled':''}>Votar ${esc(pb)}</button></div>${action}<p class="hint">Resolución: mínimo ${CONFIG.MIN_VOTES} votos y diferencia ${CONFIG.MIN_DIFF}. En local, el árbitro neutral puede cerrar desde ${CONFIG.ARBITER_CLOSE_VOTES} votos. A las 2 horas se resuelve automáticamente si se cumplen los mínimos; si no, se cancela sin repartir Aura.</p><button class="linkbtn" style="width:100%;margin-top:8px" onclick="reportBattle('${b.id}')">⚠️ Reportar contenido</button></div>`}
+function renderBattle(b){
+  const local=b.mode==='local';
+  const [pa,pb]=local?[b.local_a_name||b.local_participant_a,b.local_b_name||b.local_participant_b]:[b.creator_name||b.creator_id,b.opponent_name||b.opponent_id||'Esperando…'];
+  const a=+b.votes_creator||0,o=+b.votes_opponent||0,total=a+o,diff=Math.abs(a-o);
+  let action='';
+  if(local&&b.local_neutral&&b.creator_id===getUserId()&&total>=CONFIG.ARBITER_CLOSE_VOTES&&diff>=CONFIG.MIN_DIFF)
+    action='<button class="primary" onclick="arbiterClose(\''+b.id+'\')">⚖️ Cerrar batalla como árbitro</button>';
+  if(!local&&!b.opponent_id)
+    action='<button class="primary" onclick="joinMediaBattle(\''+b.id+'\')">⚔️ Unirme y presentar mi '+modeLabel(b.mode).replace(/^\S+ /,'').toLowerCase()+'</button>';
+  const timer=local?`<div class="timer">⏱️ ${timeLeft(b.local_closes_at)} restantes</div>`:'';
+  
+  const adminDeleteBtn = IS_ADMIN ? `<button class="danger" style="margin-top:10px" onclick="adminDeleteBattle('${b.id}')">🗑️ Eliminar batalla (Admin)</button>` : '';
+
+  document.getElementById('battleDetail').innerHTML=`<button class="backbtn" onclick="backToFeed()"><span>←</span> Volver al feed</button><div class="hero"><span class="badge">${local?'🏟️ Batalla local':modeLabel(b.mode)}</span><h1>${esc(b.title)}</h1><p>La comunidad decide.</p></div><div class="card">${local?'':`<div class="media-grid"><div>${mediaHtml(b.media_url_creator,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pa)}</small></div><div>${mediaHtml(b.media_url_opponent,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pb)}</small></div></div>`}<div class="players"><div class="player">${esc(pa)}<div class="score">${a}</div></div><div class="vs">VS</div><div class="player">${esc(pb)}<div class="score">${o}</div></div></div><div class="bar"><i style="width:${Math.round(a/Math.max(1,total)*100)}%"></i></div><div class="meta"><span>${total} votos · diferencia ${diff}</span>${timer}</div><div class="vote-grid" style="margin-top:14px"><button class="vote a" onclick="vote('${b.id}','${esc(local?b.local_participant_a:b.creator_id)}')">Votar ${esc(pa)}</button><button class="vote b" onclick="vote('${b.id}','${esc(local?b.local_participant_b:b.opponent_id||'')}')" ${pb==='Esperando…'?'disabled':''}>Votar ${esc(pb)}</button></div>${action}<p class="hint">Resolución: mínimo ${CONFIG.MIN_VOTES} votos y diferencia ${CONFIG.MIN_DIFF}. En local, el árbitro neutral puede cerrar desde ${CONFIG.ARBITER_CLOSE_VOTES} votos. A las 2 horas se resuelve automáticamente si se cumplen los mínimos; si no, se cancela sin repartir Aura.</p><button class="linkbtn" style="width:100%;margin-top:8px" onclick="reportBattle('${b.id}')">⚠️ Reportar contenido</button>${adminDeleteBtn}</div>`;
+}
+
 async function joinMediaBattle(id){try{const b=await api('/battles/'+id);if(!b||b.status!=='active')throw Error('La batalla no está activa.');const input=document.createElement('input');input.type='file';input.accept=b.mode==='video'?'video/*':b.mode==='audio'?'audio/*':'image/*';input.onchange=async()=>{const f=input.files[0];if(!f)return;try{if(f.size>50*1024*1024)throw Error('Máximo 50 MB.');toast('Subiendo respuesta…');const url=await uploadFile(f);await api('/battles/'+id+'/join',{method:'POST',body:JSON.stringify({media_url:url})});toast('¡Te uniste a la batalla!');openBattle(id)}catch(e){toast(e.message)}};input.click()}catch(e){toast(e.message)}}
 let currentBattleMode='video';
 async function vote(id,user){if(!user)return;try{const r=await api('/battles/'+id+'/vote',{method:'POST',body:JSON.stringify({voted_user_id:user})});toast(r.completed?'🏆 ¡Batalla finalizada!':'¡Voto registrado!');openBattle(id)}catch(e){toast(e.message)}}
@@ -547,6 +563,17 @@ async function adminDeleteTest(userId){
     toast('🗑️ Cuenta de prueba eliminada');
     searchAdminUsers();
   }catch(e){toast(e.message)}
+}
+async function adminDeleteBattle(battleId) {
+  if (!confirm('¿Seguro que querés eliminar definitivamente esta batalla de prueba?')) return;
+  try {
+    const r = await api('/admin/battles/' + battleId, { method: 'DELETE' });
+    toast(r.message || 'Batalla borrada');
+    show('home');
+    loadBattles();
+  } catch (e) {
+    toast(e.message || 'No se pudo borrar la batalla');
+  }
 }
 
 /* =========================
