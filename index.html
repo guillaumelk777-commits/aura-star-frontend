@@ -114,7 +114,7 @@ input:focus,select:focus{border-color:rgba(246,196,83,.6)!important;box-shadow:0
 <section id="events" class="view"><div class="hero"><h1>🎪 Eventos</h1><p>Torneos locales de 4 u 8 participantes, con bracket automático y QR para el público.</p></div><div class="grid"><button class="action" onclick="openTournamentCreate()"><strong>🏆 Crear torneo</strong><span>Organizá un evento presencial</span></button><button class="action" onclick="loadEvents()"><strong>📍 Eventos cercanos</strong><span>Descubrí eventos sin mostrar ubicaciones exactas</span></button><button class="action" onclick="startEventScanner()"><strong>📷 Escanear QR</strong><span>Entrá directamente al evento</span></button></div><div class="mode-info" style="margin-top:12px"><b>🛡️ Seguridad</b><br>Los torneos están separados por rango de edad. AURA STAR no publica coordenadas exactas ni organiza físicamente el evento.</div><div id="eventCreate" class="card" style="display:none;margin-top:12px"></div><div id="eventsList"></div><div id="tournamentDetail"></div></section>
 <section id="rank" class="view"><div class="hero"><h1>🏆 Ranking</h1><p>Las estrellas con más Aura.</p></div><div id="ranking"></div></section>
 <section id="profile" class="view"><div class="hero"><h1>Mi perfil</h1><p id="profileSubtitle">Tu identidad dentro de AURA STAR.</p></div><div class="card" id="profileCard"></div><div class="card share-card"><h3 style="margin:0 0 6px">🚀 Recompensas por compartir</h3><div id="shareProfileData" class="hint" style="margin-bottom:12px">Cargando…</div><button class="primary share-btn" onclick="shareApp()">📤 Compartir mi enlace</button></div><div id="profileData"></div>
-<div id="adminSection" class="card admin-card" style="display:none"><h3 style="margin:0 0 6px">🛡️ Modo Moderador / Admin</h3><p class="hint" style="margin-top:0">Herramientas internas. Las acciones sensibles quedan registrada.</p><div id="adminSummary" class="mode-info" style="margin-bottom:10px">Cargando resumen…</div><input id="adminSearchUser" class="search" placeholder="Buscar usuario por nombre o ID…" oninput="searchAdminUsers()"><div id="adminUserResults"><div class="empty">Escribí al menos 2 caracteres.</div></div></div>
+<div id="adminSection" class="card admin-card" style="display:none"><h3 style="margin:0 0 6px">🛡️ Modo Moderador / Admin</h3><p class="hint" style="margin-top:0">Herramientas internas. Las acciones sensibles quedan registradas.</p><div id="adminSummary" class="mode-info" style="margin-bottom:10px">Cargando resumen…</div><input id="adminSearchUser" class="search" placeholder="Buscar usuario por nombre o ID…" oninput="searchAdminUsers()"><div id="adminUserResults"><div class="empty">Escribí al menos 2 caracteres.</div></div></div>
 </section>
 <section id="store" class="view"><div class="hero"><h1>⭐ Tienda Aura</h1><p>Comprá puntos regalables para enviar a otros usuarios o habilitar batallas locales.</p></div><div class="card"><div class="mode-info"><b>💳 Compras seguras</b><br>La compra se procesará mediante la plataforma de pagos configurada para AURA STAR. Los puntos comprados no aumentan tu Aura: sirven para regalar o crear batallas locales.</div><div id="storePackages" class="store-grid"></div><p class="hint" style="margin-top:12px">El proveedor de pagos todavía debe configurarse en el backend antes de habilitar cobros reales.</p></div></section>
 </main>
@@ -272,9 +272,80 @@ sb.auth.onAuthStateChange((event,session)=>{
 
 function show(v){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(v).classList.add('active');document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.view===v));if(v==='home')loadBattles();if(v==='rank')loadRanking();if(v==='profile'){loadProfile();loadShareStatus();loadAdminSection();}if(v==='store')loadStore();if(v==='local')document.getElementById('localSearch').focus();if(v==='events')loadEvents()}
 function battlePeople(b){return b.mode==='local'?[b.local_a_name||b.local_participant_a,b.local_b_name||b.local_participant_b]:[b.creator_name||b.creator_id,b.opponent_name||b.opponent_id||'Esperando…']}
-function feedMedia(url,mode,name,side){if(!url)return `<div class="feed-media"><div style="aspect-ratio:9/14;border-radius:16px;background:#090c14;display:grid;place-items:center;color:var(--muted);border:1px solid var(--border)">Esperando…</div><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='photo')return `<div class="feed-media"><img src="${esc(url)}" alt="Participación de ${esc(name)}" loading="lazy"><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='audio')return `<div class="feed-media"><div class="feed-audio"><div style="font-size:1.6rem;text-align:center;margin-bottom:6px">🎙️</div><audio controls preload="metadata" src="${esc(url)}"></audio></div><small class="feed-media-name">${esc(name)}</small></div>`;return `<div class="feed-media" data-feed-video><video playsinline preload="metadata" src="${esc(url)}" onclick="toggleFeedVideo(this)"></video><div class="feed-play">▶</div><small class="feed-media-name">${esc(name)}</small></div>`}
+function feedMedia(url,mode,name){if(!url)return `<div class="feed-media"><div style="aspect-ratio:9/14;border-radius:16px;background:#090c14;display:grid;place-items:center;color:var(--muted);border:1px solid var(--border)">Esperando…</div><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='photo')return `<div class="feed-media"><img src="${esc(url)}" alt="Participación de ${esc(name)}" loading="lazy"><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='audio')return `<div class="feed-media"><div class="feed-audio"><div style="font-size:1.6rem;text-align:center;margin-bottom:6px">🎙️</div><audio controls preload="metadata" src="${esc(url)}"></audio></div><small class="feed-media-name">${esc(name)}</small></div>`;return `<div class="feed-media" data-feed-video><video playsinline preload="metadata" src="${esc(url)}" onclick="toggleFeedVideo(this)"></video><div class="feed-play">▶</div><small class="feed-media-name">${esc(name)}</small></div>`}
 function toggleFeedVideo(video){event?.stopPropagation?.();const wrap=video.closest('.feed-media');if(!wrap)return;if(video.paused){document.querySelectorAll('.feed-media[data-feed-video] video').forEach(v=>{if(v!==video){v.pause();v.closest('.feed-media')?.classList.remove('playing')}});video.play().then(()=>wrap.classList.add('playing')).catch(()=>{});}else{video.pause();wrap.classList.remove('playing');}} 
-function battleCard(b){const[aName,oName]=battlePeople(b),a=+b.votes_creator||0,o=+b.votes_opponent||0,p=Math.round(a/Math.max(1,a+o)*100);const local=b.mode==='local';const media=!local?`<div class="feed-media-grid">${feedMedia(b.media_url_creator,b.mode,aName,'a')}${feedMedia(b.media_url_opponent,b.mode,oName,'b')}</div>`:'';return `<div class="card battle-card"><span class="badge">${local?'🏟️ Local':modeLabel(b.mode)}</span><div class="battle-title">${esc(b.title)}</div>${media}<div class="players"><div class="player">${esc(aName)}<div class="score">${a}</div></div><div class="vs">VS</div><div class="player">${esc(oName)}<div class="score">${o}</div></div></div><div class="bar"><i style="width:${p}%"></i></div><div class="meta"><span>${a+o} votos${local?' · '+timeLeft(b.local_closes_at):''}</span><button class="linkbtn" onclick="openBattle('${b.id}')">⚡ Votar</button></div></div>`}
+
+function battleCard(b){
+  const [aName, oName] = battlePeople(b);
+  const a = +b.votes_creator || 0;
+  const o = +b.votes_opponent || 0;
+  const total = a + o;
+  const p = Math.round(a / Math.max(1, total) * 100);
+  const local = b.mode === 'local';
+  const targetA = local ? b.local_participant_a : b.creator_id;
+  const targetB = local ? b.local_participant_b : b.opponent_id;
+  const disableB = !targetB || oName === 'Esperando…';
+
+  const media = !local ? `<div class="feed-media-grid">${feedMedia(b.media_url_creator, b.mode, aName)}${feedMedia(b.media_url_opponent, b.mode, oName)}</div>` : '';
+
+  return `
+    <div class="card battle-card">
+      <div style="display:flex;justify-content:space-between;align-items:center" onclick="openBattle('${b.id}')">
+        <span class="badge">${local ? '🏟️ Local' : modeLabel(b.mode)}</span>
+        <span class="muted" style="font-size:.72rem">Ver detalle →</span>
+      </div>
+      
+      <div class="battle-title" onclick="openBattle('${b.id}')" style="cursor:pointer">${esc(b.title)}</div>
+      
+      ${media}
+
+      <div class="players">
+        <div class="player" onclick="openBattle('${b.id}')" style="cursor:pointer">
+          <div style="font-size:.85rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(aName)}</div>
+          <div class="score">${a}</div>
+        </div>
+
+        <div class="vs">VS</div>
+
+        <div class="player" onclick="openBattle('${b.id}')" style="cursor:pointer">
+          <div style="font-size:.85rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(oName)}</div>
+          <div class="score">${o}</div>
+        </div>
+      </div>
+
+      <div class="bar"><i style="width:${p}%"></i></div>
+
+      <div class="vote-grid" style="margin-top:12px">
+        <button class="vote a" style="padding:10px;font-size:.8rem" onclick="voteDirect(event, '${b.id}', '${esc(targetA)}')">
+          ⚡ Votar ${esc(aName.split(' ')[0])}
+        </button>
+        <button class="vote b" style="padding:10px;font-size:.8rem" onclick="voteDirect(event, '${b.id}', '${esc(targetB || '')}')" ${disableB ? 'disabled' : ''}>
+          ⚡ Votar ${esc(oName.split(' ')[0])}
+        </button>
+      </div>
+
+      <div class="meta" style="margin-top:8px">
+        <span>${total} votos${local ? ' · ' + timeLeft(b.local_closes_at) : ''}</span>
+      </div>
+    </div>
+  `;
+}
+
+async function voteDirect(event, battleId, targetUser) {
+  if (event) event.stopPropagation();
+  if (!targetUser) return;
+  try {
+    const r = await api('/battles/' + battleId + '/vote', {
+      method: 'POST',
+      body: JSON.stringify({ voted_user_id: targetUser })
+    });
+    toast(r.completed ? '🏆 ¡Batalla finalizada!' : '¡Voto registrado!');
+    loadBattles();
+  } catch (e) {
+    toast(e.message || 'No se pudo registrar el voto');
+  }
+}
+
 function modeLabel(m){return m==='audio'?'🎙️ Audio':m==='photo'?'📸 Foto':'🎥 Video'} function timeLeft(d){if(!d)return'';const ms=new Date(d)-Date.now();if(ms<=0)return'finalizando';const h=Math.floor(ms/3600000),m=Math.floor(ms%3600000/60000);return h?`${h}h ${m}m`: `${m}m`}
 
 async function loadBattles(){
