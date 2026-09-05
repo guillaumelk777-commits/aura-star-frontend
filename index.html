@@ -296,13 +296,15 @@ function battleCard(b){
   const o = +b.votes_opponent || 0;
   const total = a + o;
   
-  // Porcentaje exacto del creador (0 a 100%)
   const p = total > 0 ? Math.round((a / total) * 100) : 50;
 
   const local = b.mode === 'local';
   const targetA = local ? b.local_participant_a : b.creator_id;
   const targetB = local ? b.local_participant_b : b.opponent_id;
-  const disableB = !targetB || oName === 'Esperando…';
+  
+  // JUEGO LIMPIO: Si no hay oponente o no tiene contenido, la votación se bloquea
+  const hasOpponent = local ? Boolean(targetB) : Boolean(b.opponent_id && b.media_url_opponent);
+  const disableVoting = !hasOpponent || b.status !== 'active';
 
   const media = !local ? `<div class="feed-media-grid">${feedMedia(b.media_url_creator, b.mode, aName)}${feedMedia(b.media_url_opponent, b.mode, oName)}</div>` : '';
 
@@ -334,13 +336,15 @@ function battleCard(b){
       <div class="bar"><i id="bar-${b.id}" style="width:${p}%"></i></div>
 
       <div class="vote-grid" style="margin-top:12px">
-        <button class="vote a" style="padding:10px;font-size:.8rem" onclick="voteDirect(event, '${b.id}', '${esc(targetA)}')">
+        <button class="vote a" style="padding:10px;font-size:.8rem" onclick="voteDirect(event, '${b.id}', '${esc(targetA)}')" ${disableVoting ? 'disabled' : ''}>
           ⚡ Votar
         </button>
-        <button class="vote b" style="padding:10px;font-size:.8rem" onclick="voteDirect(event, '${b.id}', '${esc(targetB || '')}')" ${disableB ? 'disabled' : ''}>
+        <button class="vote b" style="padding:10px;font-size:.8rem" onclick="voteDirect(event, '${b.id}', '${esc(targetB || '')}')" ${disableVoting ? 'disabled' : ''}>
           ⚡ Votar
         </button>
       </div>
+
+      ${!hasOpponent ? '<div class="hint" style="text-align:center;margin-top:6px;color:var(--gold)">⏳ Esperando que se una un oponente para abrir la votación.</div>' : ''}
 
       <div class="meta" style="margin-top:8px">
         <span id="total-${b.id}">${total} votos${local ? ' · ' + timeLeft(b.local_closes_at) : ''}</span>
