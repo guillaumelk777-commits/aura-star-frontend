@@ -128,7 +128,7 @@ input:focus,select:focus{border-color:rgba(246,196,83,.6)!important;box-shadow:0
 <section id="profile" class="view"><div class="hero"><h1>Mi perfil</h1><p id="profileSubtitle">Tu identidad dentro de AURA STAR.</p></div><div class="card" id="profileCard"></div><div class="card share-card"><h3 style="margin:0 0 6px">🚀 Recompensas por compartir</h3><div id="shareProfileData" class="hint" style="margin-bottom:12px">Cargando…</div><button class="primary share-btn" onclick="shareApp()">📤 Compartir mi enlace</button></div><div id="profileData"></div>
 <div id="adminSection" class="card admin-card" style="display:none"><h3 style="margin:0 0 6px">🛡️ Modo Moderador / Admin</h3><p class="hint" style="margin-top:0">Herramientas internas. Las acciones sensibles quedan registradas.</p><div id="adminSummary" class="mode-info" style="margin-bottom:10px">Cargando resumen…</div><input id="adminSearchUser" class="search" placeholder="Buscar usuario por nombre o ID…" oninput="searchAdminUsers()"><div id="adminUserResults"><div class="empty">Escribí al menos 2 caracteres.</div></div></div>
 </section>
-<section id="store" class="view"><div class="hero"><h1>⭐ Tienda Aura</h1><p>Comprá puntos regalables para enviar a otros usuarios o habilitar batallas locales.</p></div><div class="card"><div class="mode-info"><b>💳 Compras seguras con Mercado Pago</b><br>Elegí tu paquete para obtener puntos regalables de forma instantánea.</div><div id="storePackages" class="store-grid"></div></div></section>
+<section id="store" class="view"><div class="hero"><h1>⭐ Tienda Aura</h1><p>Comprá Estrellas Aura para regalar a creadores o habilitar batallas locales.</p></div><div class="card"><div class="mode-info"><b>💳 Compras seguras con Mercado Pago</b><br>Elegí tu paquete para obtener Estrellas Aura de forma instantánea.</div><div id="storePackages" class="store-grid"></div></div></section>
 </main>
 <nav class="bottom"><button class="nav active" data-view="home" onclick="show('home')"><b>⌂</b>Inicio</button><button class="nav" data-view="create" onclick="show('create')"><b>＋</b>Crear</button><button class="nav" data-view="events" onclick="show('events');loadEvents()"><b>♜</b>Eventos</button><button class="nav" data-view="rank" onclick="show('rank')"><b>♛</b>Ranking</button><button class="nav" data-view="profile" onclick="show('profile')"><b>●</b>Perfil</button></nav><div class="toast" id="toast"></div></div>
 <div class="scan" id="scanner"><div id="scannerTitle" style="font-weight:900;font-size:1.1rem;margin-bottom:12px">Escanear QR de usuario</div><video id="scanVideo" autoplay playsinline></video><canvas id="scanCanvas"></canvas><div class="hint" style="margin-top:10px;text-align:center">Apuntá al QR de AURA STAR. Si tu navegador no permite cámara, podés ingresar el ID manualmente.</div><button class="secondary close" onclick="stopScanner()">Cerrar</button></div>
@@ -234,7 +234,7 @@ async function initUser(){
   try{
     const u=await api('/users/'+encodeURIComponent(CURRENT_USER.id));
     IS_ADMIN=!!(u.is_admin||u.moderation_role==='admin');
-    document.getElementById('avatar').textContent=(u.username||'★')[0].toUpperCase();
+    document.getElementById('avatar').textContent=(u.username||'✦')[0].toUpperCase();
     document.getElementById('login').classList.remove('active');
     document.getElementById('onboard').classList.remove('active');
     await claimPendingReferral();
@@ -263,7 +263,7 @@ async function initUser(){
 function checkPaymentReturn(){
   const params = new URLSearchParams(location.search);
   if(params.get('payment')==='success'){
-    toast('💳 ¡Pago acreditado correctamente! Tus puntos regalables fueron sumados.');
+    toast('💳 ¡Pago acreditado correctamente! Tus Estrellas Aura fueron sumadas.');
     history.replaceState({}, document.title, location.pathname);
   } else if(params.get('payment')==='failure'){
     toast('❌ El pago no pudo procesarse.');
@@ -449,7 +449,7 @@ function showNewBattlesBanner(count){
   const banner = document.getElementById('newBattlesBanner');
   if(banner){
     banner.style.display = 'block';
-    banner.querySelector('button').textContent = `✨ Nuevas batallas en el feed (${count}) · Tocar para actualizar`;
+    banner.querySelector('button').textContent = `✨ Nuevas batallas en el feed (${count}) · Tocar para ver`;
   }
 }
 
@@ -668,7 +668,7 @@ function loadStore(){
   if(!box)return;
   box.innerHTML=STORE_PACKAGES.map(x=>`
     <div class="store-item">
-      <b>🎁 ${x.points} puntos</b>
+      <b>✦ ${x.points} Estrellas Aura</b>
       <div class="price">${x.price}</div>
       <button class="primary" style="margin-top:0" onclick="startPurchase('${x.id}')">Comprar</button>
     </div>
@@ -692,7 +692,7 @@ async function startPurchase(packageId){
   }
 }
 
-async function loadProfile(){const box=document.getElementById('profileCard'),data=document.getElementById('profileData');try{const u=await api('/users/'+encodeURIComponent(getUserId()));box.innerHTML=`<div style="text-align:center"><div class="avatar" style="margin:auto;width:68px;height:68px;font-size:1.4rem">${esc((u.username||'?')[0]).toUpperCase()}</div><h2 style="margin:10px 0 3px">@${esc(u.username)}</h2><div class="aura" style="font-size:2rem">★ ${u.aura_points||0} Aura</div><div class="muted">🎁 ${u.giftable_points||0} puntos regalables</div></div><div id="myQr" class="qr"></div><button class="secondary" onclick="showQr()">Actualizar mi QR</button><button class="primary" onclick="show('store')">⭐ Comprar puntos regalables</button>`;data.innerHTML=`<div class="card"><div class="stats"><div class="stat"><b>${u.battles_won||0}</b><span>Victorias</span></div><div class="stat"><b>${u.battles_played||0}</b><span>Batallas</span></div></div><p class="hint">Tu QR identifica tu cuenta autenticada para batallas locales y regalos.</p><button class="secondary" onclick="signOut()">Cerrar sesión</button><button class="danger" onclick="deleteAccount()">Eliminar mi cuenta</button></div>`;setTimeout(showQr,50);loadAdminSection();}catch(e){box.innerHTML='<div class="empty">No se pudo cargar tu perfil.</div>'}}
+async function loadProfile(){const box=document.getElementById('profileCard'),data=document.getElementById('profileData');try{const u=await api('/users/'+encodeURIComponent(getUserId()));box.innerHTML=`<div style="text-align:center"><div class="avatar" style="margin:auto;width:68px;height:68px;font-size:1.4rem">${esc((u.username||'?')[0]).toUpperCase()}</div><h2 style="margin:10px 0 3px">@${esc(u.username)}</h2><div class="aura" style="font-size:2rem">★ ${u.aura_points||0} Aura</div><div class="muted">✦ ${u.giftable_points||0} Estrellas Aura</div></div><div id="myQr" class="qr"></div><button class="secondary" onclick="showQr()">Actualizar mi QR</button><button class="primary" onclick="show('store')">✦ Comprar Estrellas Aura</button>`;data.innerHTML=`<div class="card"><div class="stats"><div class="stat"><b>${u.battles_won||0}</b><span>Victorias</span></div><div class="stat"><b>${u.battles_played||0}</b><span>Batallas</span></div></div><p class="hint">Tu QR identifica tu cuenta autenticada para batallas locales y regalos.</p><button class="secondary" onclick="signOut()">Cerrar sesión</button><button class="danger" onclick="deleteAccount()">Eliminar mi cuenta</button></div>`;setTimeout(showQr,50);loadAdminSection();}catch(e){box.innerHTML='<div class="empty">No se pudo cargar tu perfil.</div>'}}
 function showQr(){const q=document.getElementById('myQr');if(!q)return;q.innerHTML='';if(window.QRCode)new QRCode(q,{text:'aura:user:'+getUserId(),width:180,height:180,colorDark:'#000',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.M})}
 async function signOut(){await sb.auth.signOut();location.reload()}
 async function deleteAccount(){if(!confirm('¿Eliminar definitivamente tu cuenta?'))return;try{await api('/users/'+encodeURIComponent(CURRENT_USER.id),{method:'DELETE'});await sb.auth.signOut();localStorage.clear();location.reload()}catch(e){toast(e.message)}}
@@ -724,7 +724,7 @@ async function searchAdminUsers(){
   adminSearchTimer=setTimeout(async()=>{
     try{
       const users=await api('/admin/users/search?q='+encodeURIComponent(q));
-      box.innerHTML=users.length?users.map(u=>`<div class="admin-result"><b>@${esc(u.username||'sin_nombre')}</b><div class="admin-meta">Aura: ${u.aura_points||0} · Regalables: ${u.giftable_points||0} · ${u.is_organizer?'🎪 Organizador · ':''}${u.is_test_account?'🧪 Cuenta de prueba':'👤 Cuenta real'} · ${u.is_banned?'🔴 Suspendida':'🟢 Activa'}</div><div class="admin-actions"><button class="secondary" onclick="adminGrant('${esc(u.id)}','aura',10)">+10 Aura</button><button class="secondary" onclick="adminGrant('${esc(u.id)}','aura',50)">+50 Aura</button><button class="secondary" onclick="adminGrant('${esc(u.id)}','giftable',10)">+10 Regalables</button><button class="${u.is_organizer?'danger':'secondary'}" onclick="adminSetOrganizer('${esc(u.id)}',${u.is_organizer?'false':'true'})">${u.is_organizer?'🚫 Quitar organizador':'🎪 Hacer organizador'}</button>${u.is_test_account?`<button class="danger" onclick="adminDeleteTest('${esc(u.id)}')">🗑️ Eliminar prueba</button>`:`<button class="secondary" onclick="adminMarkTest('${esc(u.id)}')">🧪 Marcar prueba</button><button class="danger" onclick="adminSuspend('${esc(u.id)}')">⚠️ Suspender</button>`}</div></div>`).join(''):'<div class="empty">No encontramos usuarios.</div>';
+      box.innerHTML=users.length?users.map(u=>`<div class="admin-result"><b>@${esc(u.username||'sin_nombre')}</b><div class="admin-meta">Aura: ${u.aura_points||0} · Estrellas Aura: ${u.giftable_points||0} · ${u.is_organizer?'🎪 Organizador · ':''}${u.is_test_account?'🧪 Cuenta de prueba':'👤 Cuenta real'} · ${u.is_banned?'🔴 Suspendida':'🟢 Activa'}</div><div class="admin-actions"><button class="secondary" onclick="adminGrant('${esc(u.id)}','aura',10)">+10 Aura</button><button class="secondary" onclick="adminGrant('${esc(u.id)}','aura',50)">+50 Aura</button><button class="secondary" onclick="adminGrant('${esc(u.id)}','giftable',10)">+10 Estrellas</button><button class="${u.is_organizer?'danger':'secondary'}" onclick="adminSetOrganizer('${esc(u.id)}',${u.is_organizer?'false':'true'})">${u.is_organizer?'🚫 Quitar organizador':'🎪 Hacer organizador'}</button>${u.is_test_account?`<button class="danger" onclick="adminDeleteTest('${esc(u.id)}')">🗑️ Eliminar prueba</button>`:`<button class="secondary" onclick="adminMarkTest('${esc(u.id)}')">🧪 Marcar prueba</button><button class="danger" onclick="adminSuspend('${esc(u.id)}')">⚠️ Suspender</button>`}</div></div>`).join(''):'<div class="empty">No encontramos usuarios.</div>';
     }catch(e){box.innerHTML='<div class="empty">'+esc(e.message)+'</div>'}
   },300);
 }
@@ -738,11 +738,11 @@ async function adminSetOrganizer(userId,enabled){
   }catch(e){toast(e.message)}
 }
 async function adminGrant(userId,type,amount){
-  const reason=prompt(`Motivo para otorgar ${amount} ${type==='aura'?'Aura':'puntos regalables'}:`);
+  const reason=prompt(`Motivo para otorgar ${amount} ${type==='aura'?'Aura':'Estrellas Aura'}:`);
   if(reason===null)return;
   try{
     await api('/admin/grant-points',{method:'POST',body:JSON.stringify({target_user_id:userId,type,points:amount,reason:reason.trim()||'Premio / promoción'})});
-    toast(`🎁 +${amount} ${type==='aura'?'Aura':'regalables'}`);
+    toast(`✦ +${amount} ${type==='aura'?'Aura':'Estrellas Aura'}`);
     searchAdminUsers();
   }catch(e){toast(e.message)}
 }
