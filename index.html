@@ -115,7 +115,6 @@ input:focus,select:focus{border-color:rgba(246,196,83,.6)!important;box-shadow:0
   <div class="grid"><button class="action" onclick="show('create')"><strong>⚔️ Crear batalla</strong><span>Elegí cómo competir</span></button><button class="action" onclick="show('local')"><strong>🏟️ Batallas locales</strong><span>Encontrá una en tu zona</span></button></div>
   <div class="section-title"><h2>🔥 Batallas activas</h2><span class="muted" id="battleCount"></span></div>
   
-  <!-- Banner interactivo de nuevas batallas -->
   <div id="newBattlesBanner" class="new-battles-banner">
     <button onclick="applyNewBattles()">✨ Nuevas batallas en el feed · Tocar para ver</button>
   </div>
@@ -296,7 +295,14 @@ function battleCard(b){
   const a = +b.votes_creator || 0;
   const o = +b.votes_opponent || 0;
   const total = a + o;
-  const p = Math.round(a / Math.max(1, total) * 100);
+  
+  let p = 50;
+  if (total > 0) {
+    p = Math.round((a / total) * 100);
+    if (a === 0 && o > 0) p = 5;
+    if (o === 0 && a > 0) p = 95;
+  }
+
   const local = b.mode === 'local';
   const targetA = local ? b.local_participant_a : b.creator_id;
   const targetB = local ? b.local_participant_b : b.opponent_id;
@@ -347,7 +353,6 @@ function battleCard(b){
   `;
 }
 
-// Votación suave y sin parpadeos en el lugar exacto del scroll
 async function voteDirect(event, battleId, targetUser) {
   if (event) event.stopPropagation();
   if (!targetUser) return;
@@ -369,7 +374,13 @@ async function voteDirect(event, battleId, targetUser) {
       const va = Number(r.votes_creator);
       const vb = Number(r.votes_opponent);
       const total = va + vb;
-      const pct = Math.round(va / Math.max(1, total) * 100);
+      
+      let pct = 50;
+      if (total > 0) {
+        pct = Math.round((va / total) * 100);
+        if (va === 0 && vb > 0) pct = 5;
+        if (vb === 0 && va > 0) pct = 95;
+      }
 
       scoreA.textContent = va;
       scoreB.textContent = vb;
@@ -384,7 +395,6 @@ async function voteDirect(event, battleId, targetUser) {
 
 function modeLabel(m){return m==='audio'?'🎙️ Audio':m==='photo'?'📸 Foto':'🎥 Video'} function timeLeft(d){if(!d)return'';const ms=new Date(d)-Date.now();if(ms<=0)return'finalizando';const h=Math.floor(ms/3600000),m=Math.floor(ms%3600000/60000);return h?`${h}h ${m}m`: `${m}m`}
 
-// Carga de batallas e identificación de nuevas publicaciones
 async function loadBattles(isSilent = false){
   const box = document.getElementById('battles');
   if(!box) return;
