@@ -10,12 +10,10 @@
 *{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:radial-gradient(circle at 50% 0,rgba(139,92,246,.22),transparent 42%),radial-gradient(circle at 100% 50%,rgba(139,92,246,.08),transparent 35%),var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}button,input,select{font:inherit}button{border:0;cursor:pointer}.app{max-width:480px;margin:auto;min-height:100vh;padding-bottom:92px}header{padding:15px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:rgba(6,7,13,.82);backdrop-filter:blur(18px);z-index:20;border-bottom:1px solid var(--border)}.brand{display:flex;align-items:center;gap:10px}.brand-icon{width:32px;height:32px;background:linear-gradient(135deg,#fff,var(--purple));clip-path:polygon(50% 0,65% 35%,100% 50%,65% 65%,50% 100%,35% 65%,0 50%,35% 35%);filter:drop-shadow(0 0 9px var(--glow))}.logo{font-weight:900;font-size:1.38rem;letter-spacing:.6px;background:linear-gradient(135deg,#fff,var(--purple2));-webkit-background-clip:text;color:transparent}.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--surface2),#24164a);border:1px solid rgba(167,139,250,.6);font-weight:900;color:#fff}.view{display:none;animation:in .25s ease}.view.active{display:block}@keyframes in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}main{padding:10px 16px}.hero{padding:22px 3px 16px}.hero h1{font-size:2rem;line-height:1.06;margin:0 0 8px;font-weight:900;letter-spacing:-.8px}.hero p{margin:0;color:var(--muted);font-size:.9rem}.section-title{display:flex;justify-content:space-between;align-items:center;margin:23px 2px 12px}.section-title h2{font-size:1rem;margin:0;font-weight:800}.muted{color:var(--muted);font-size:.78rem}.card{background:linear-gradient(145deg,rgba(20,25,39,.9),rgba(10,13,22,.94));border:1px solid var(--border);border-radius:22px;padding:17px;margin:12px 0;box-shadow:0 18px 38px rgba(0,0,0,.28);position:relative;overflow:hidden}.card:before{content:"";position:absolute;left:10%;right:10%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent)}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.action{padding:17px 15px;border-radius:18px;background:var(--surface);border:1px solid var(--border);color:var(--text);text-align:left}.action:active,.battle-card:active{transform:scale(.98)}.action strong{display:block;margin-bottom:5px}.action span{color:var(--muted);font-size:.72rem}.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(139,92,246,.13);color:#c4b5fd;border:1px solid rgba(139,92,246,.2);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.4px}.battle-title{font-size:1.08rem;font-weight:850;margin:10px 0}.feed-media-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.feed-media{position:relative;min-width:0}.feed-media video,.feed-media img{width:100%;aspect-ratio:9/14;object-fit:cover;border-radius:16px;background:#000;border:1px solid var(--border);display:block}.feed-media video{cursor:pointer}.feed-media-name{display:block;text-align:center;font-size:.72rem;font-weight:850;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.feed-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.94);border:1px solid rgba(255,255,255,.98);color:#4c1d95;font-size:1.25rem;font-weight:900;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.35);transition:opacity .18s ease,transform .18s ease}.feed-media.playing .feed-play{opacity:0;transform:translate(-50%,-50%) scale(.9)}.feed-audio{background:#090c14;border:1px solid var(--border);border-radius:16px;padding:12px}.feed-audio audio{width:100%}.battle-card .feed-vote{margin-top:11px}.backbtn{display:flex;align-items:center;gap:7px;background:none;color:#c4b5fd;font-weight:850;padding:4px 0;margin:2px 0 4px}.backbtn span{font-size:1.35rem;line-height:1}.players{display:grid;grid-template-columns:1fr 40px 1fr;gap:8px;align-items:center;text-align:center;margin:17px 0}.player{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);border-radius:15px;padding:10px 5px;font-weight:750}.score{font-size:1.55rem;font-weight:900;margin-top:2px}.vs{width:34px;height:34px;margin:auto;border-radius:50%;display:grid;place-items:center;color:var(--gold);background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.18);font-size:.7rem;font-weight:900}.bar{height:8px;background:linear-gradient(90deg, #ef4444, #b98218);border-radius:99px;overflow:hidden;border:1px solid var(--border)}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--purple),#22c55e);border-radius:99px;transition:width .3s ease}.meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.72rem;margin-top:10px}.linkbtn{background:none;color:#c4b5fd;font-weight:800}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:#090c14;padding:5px;border-radius:16px;margin-bottom:12px}.tab{background:none;color:var(--muted);padding:10px 4px;border-radius:12px;font-size:.7rem;font-weight:800}.tab.active{background:var(--surface2);color:#fff;box-shadow:0 5px 15px rgba(0,0,0,.25)}form input,form select,.search{width:100%;padding:13px 14px;margin:7px 0;border-radius:13px;background:#090c14;color:#fff;border:1px solid var(--border);outline:none}form input:focus,form select:focus,.search:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(139,92,246,.1)}select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#94a3b8 50%),linear-gradient(135deg,#94a3b8 50%,transparent 50%);background-position:calc(100% - 17px) 55%,calc(100% - 12px) 55%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:34px}.primary{width:100%;padding:14px;border-radius:15px;background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;font-weight:850;box-shadow:0 9px 22px var(--glow);margin-top:8px}.primary:disabled{opacity:.45;box-shadow:none;cursor:not-allowed}.secondary{width:100%;padding:13px;border-radius:14px;background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--border);font-weight:800;margin-top:8px}.danger{width:100%;padding:13px;border-radius:14px;background:rgba(239,68,68,.1);color:#fca5a5;border:1px solid rgba(239,68,68,.25);font-weight:800}.vote-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.vote{padding:15px;border-radius:15px;color:#fff;font-weight:850}.vote.a{background:linear-gradient(135deg,#166534,#22c55e)}.vote.b{background:linear-gradient(135deg,#991b1b,#ef4444)}.vote:disabled{opacity:.3;filter:grayscale(1)}.media-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.media-grid video,.media-grid img{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:15px;background:#000;border:1px solid var(--border)}.audio-box{background:#090c14;border:1px solid var(--border);border-radius:15px;padding:14px}.audio-box audio{width:100%}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:15px 8px;text-align:center;background:#090c14;border:1px solid var(--border);border-radius:16px}.stat b{display:block;color:var(--gold);font-size:1.35rem}.stat span{color:var(--muted);font-size:.67rem;text-transform:uppercase}.rank{display:flex;align-items:center;gap:12px}.ranknum{width:28px;color:var(--gold);font-weight:900}.rankavatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#21173e;border:1px solid rgba(139,92,246,.3);font-weight:900}.rankname{flex:1;font-weight:800}.rankname small{display:block;color:var(--muted);font-weight:500}.aura{color:var(--gold);font-weight:900}.local-search{position:relative}.local-result{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--border);border-radius:15px;background:rgba(255,255,255,.025);margin:8px 0}.local-result .grow{flex:1}.event-bracket{display:grid;gap:8px}.event-round{border:1px solid rgba(246,196,83,.14);border-radius:18px;padding:12px;background:rgba(246,196,83,.025)}.event-round h3{margin:0 0 8px;color:#ffe7a0}.event-note{border-left:2px solid var(--gold);padding-left:10px}.timer{color:var(--gold);font-weight:850;font-size:.8rem}.mode-info{padding:12px 13px;border-radius:15px;background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.15);color:#cbd5e1;font-size:.76rem;line-height:1.45}.qr{display:grid;place-items:center;background:#fff;border-radius:14px;padding:12px;margin:12px auto;width:max-content}.scan{position:fixed;inset:0;background:rgba(3,5,10,.96);z-index:50;display:none;flex-direction:column;align-items:center;justify-content:center;padding:18px}.scan.active{display:flex}.scan video{width:min(92vw,380px);aspect-ratio:1;border-radius:20px;object-fit:cover;background:#000}.scan canvas{display:none}.scan .close{margin-top:14px;width:min(92vw,380px)}.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(480px,100%);display:grid;grid-template-columns:repeat(5,1fr);padding:10px 8px calc(10px + env(safe-area-inset-bottom));background:rgba(6,7,13,.91);backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:20}.nav{background:none;color:var(--muted);font-size:.67rem;padding:6px;font-weight:700}.nav.active{color:#fff}.nav b{display:block;font-size:1.2rem;margin-bottom:3px}.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:#111827;color:#fff;border:1px solid var(--border);padding:12px 18px;border-radius:25px;display:none;z-index:60;font-size:.8rem;box-shadow:0 10px 30px rgba(0,0,0,.45);max-width:90%;text-align:center}.empty{text-align:center;padding:30px 15px;color:var(--muted);font-size:.82rem}.hint{font-size:.73rem;color:var(--muted);line-height:1.45}.store-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.store-item{padding:15px;border:1px solid var(--border);border-radius:17px;background:rgba(255,255,255,.025)}.store-item b{display:block;font-size:1.1rem}.store-item .price{color:var(--gold);font-weight:900;margin:5px 0 10px}.store-item button{margin-top:0}.hidden{display:none!important}@media(min-width:700px){body{padding:20px}.app{border:1px solid var(--border);border-radius:30px;overflow:hidden}.bottom{position:fixed}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 
-/* Banner flotante de nuevas batallas */
 .new-battles-banner{position:sticky;top:66px;z-index:19;margin:-10px 0 14px;text-align:center;display:none}
 .new-battles-banner button{background:linear-gradient(135deg,var(--gold),#b98218);color:#15110a;font-weight:900;font-size:.78rem;padding:8px 16px;border-radius:999px;box-shadow:0 8px 20px var(--goldglow);border:1px solid rgba(255,255,255,.3);animation:floatBanner .3s ease}
 @keyframes floatBanner{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 
-/* AURA STAR GOLD SIGNATURE — visual refinement */
 :root{--gold:#f6c453;--gold2:#ffe7a0;--gold3:#b98218;--goldglow:rgba(246,196,83,.28);--purple:#8b5cf6;--purple2:#b99cff}
 body{background:radial-gradient(circle at 50% -8%,rgba(246,196,83,.13),transparent 28%),radial-gradient(circle at 10% 35%,rgba(139,92,246,.16),transparent 30%),radial-gradient(circle at 100% 70%,rgba(246,196,83,.07),transparent 28%),#06070d}
 .app{position:relative}
@@ -62,7 +60,6 @@ input:focus,select:focus{border-color:rgba(246,196,83,.6)!important;box-shadow:0
 .admin-actions button{width:auto;padding:8px 10px}
 .admin-meta{font-size:.72rem;color:var(--muted);margin-top:3px}
 
-/* AURA INITIAL TEST */
 .aura-test{position:fixed;inset:0;background:radial-gradient(circle at 50% 15%,rgba(246,196,83,.12),transparent 28%),rgba(3,5,10,.985);z-index:70;display:none;overflow:auto}
 .aura-test.active{display:block}
 .aura-test-inner{width:min(100%,480px);min-height:100%;margin:auto;padding:22px 16px 34px;display:flex;flex-direction:column}
@@ -131,7 +128,7 @@ input:focus,select:focus{border-color:rgba(246,196,83,.6)!important;box-shadow:0
 <section id="profile" class="view"><div class="hero"><h1>Mi perfil</h1><p id="profileSubtitle">Tu identidad dentro de AURA STAR.</p></div><div class="card" id="profileCard"></div><div class="card share-card"><h3 style="margin:0 0 6px">🚀 Recompensas por compartir</h3><div id="shareProfileData" class="hint" style="margin-bottom:12px">Cargando…</div><button class="primary share-btn" onclick="shareApp()">📤 Compartir mi enlace</button></div><div id="profileData"></div>
 <div id="adminSection" class="card admin-card" style="display:none"><h3 style="margin:0 0 6px">🛡️ Modo Moderador / Admin</h3><p class="hint" style="margin-top:0">Herramientas internas. Las acciones sensibles quedan registradas.</p><div id="adminSummary" class="mode-info" style="margin-bottom:10px">Cargando resumen…</div><input id="adminSearchUser" class="search" placeholder="Buscar usuario por nombre o ID…" oninput="searchAdminUsers()"><div id="adminUserResults"><div class="empty">Escribí al menos 2 caracteres.</div></div></div>
 </section>
-<section id="store" class="view"><div class="hero"><h1>⭐ Tienda Aura</h1><p>Comprá puntos regalables para enviar a otros usuarios o habilitar batallas locales.</p></div><div class="card"><div class="mode-info"><b>💳 Compras seguras</b><br>La compra se procesará mediante la plataforma de pagos configurada para AURA STAR. Los puntos comprados no aumentan tu Aura: sirven para regalar o crear batallas locales.</div><div id="storePackages" class="store-grid"></div><p class="hint" style="margin-top:12px">El proveedor de pagos todavía debe configurarse en el backend antes de habilitar cobros reales.</p></div></section>
+<section id="store" class="view"><div class="hero"><h1>⭐ Tienda Aura</h1><p>Comprá puntos regalables para enviar a otros usuarios o habilitar batallas locales.</p></div><div class="card"><div class="mode-info"><b>💳 Compras seguras con Mercado Pago</b><br>Elegí tu paquete para obtener puntos regalables de forma instantánea.</div><div id="storePackages" class="store-grid"></div></div></section>
 </main>
 <nav class="bottom"><button class="nav active" data-view="home" onclick="show('home')"><b>⌂</b>Inicio</button><button class="nav" data-view="create" onclick="show('create')"><b>＋</b>Crear</button><button class="nav" data-view="events" onclick="show('events');loadEvents()"><b>♜</b>Eventos</button><button class="nav" data-view="rank" onclick="show('rank')"><b>♛</b>Ranking</button><button class="nav" data-view="profile" onclick="show('profile')"><b>●</b>Perfil</button></nav><div class="toast" id="toast"></div></div>
 <div class="scan" id="scanner"><div id="scannerTitle" style="font-weight:900;font-size:1.1rem;margin-bottom:12px">Escanear QR de usuario</div><video id="scanVideo" autoplay playsinline></video><canvas id="scanCanvas"></canvas><div class="hint" style="margin-top:10px;text-align:center">Apuntá al QR de AURA STAR. Si tu navegador no permite cámara, podés ingresar el ID manualmente.</div><button class="secondary close" onclick="stopScanner()">Cerrar</button></div>
@@ -241,6 +238,7 @@ async function initUser(){
     document.getElementById('login').classList.remove('active');
     document.getElementById('onboard').classList.remove('active');
     await claimPendingReferral();
+    checkPaymentReturn();
     loadBattles();
     await maybeShowAuraTest(u);
   }catch(e){
@@ -259,6 +257,17 @@ async function initUser(){
       document.getElementById('onboard').classList.remove('active');
       document.getElementById('loginHint').textContent='No pudimos conectar con AURA STAR. '+(e.message||'Intentá nuevamente.');
     }
+  }
+}
+
+function checkPaymentReturn(){
+  const params = new URLSearchParams(location.search);
+  if(params.get('payment')==='success'){
+    toast('💳 ¡Pago acreditado correctamente! Tus puntos regalables fueron sumados.');
+    history.replaceState({}, document.title, location.pathname);
+  } else if(params.get('payment')==='failure'){
+    toast('❌ El pago no pudo procesarse.');
+    history.replaceState({}, document.title, location.pathname);
   }
 }
 
@@ -302,7 +311,6 @@ function battleCard(b){
   const targetA = local ? b.local_participant_a : b.creator_id;
   const targetB = local ? b.local_participant_b : b.opponent_id;
   
-  // JUEGO LIMPIO: Si no hay oponente o no tiene contenido, la votación se bloquea
   const hasOpponent = local ? Boolean(targetB) : Boolean(b.opponent_id && b.media_url_opponent);
   const disableVoting = !hasOpponent || b.status !== 'active';
 
@@ -648,9 +656,42 @@ async function loadRanking(){
   box.innerHTML=`<div class="empty">No se pudo cargar el ranking.<br><small>${esc(lastError?.message||'Error de conexión con el servidor')}</small><br><button class="secondary" style="margin-top:10px" onclick="loadRanking()">Reintentar</button></div>`;
 }
 
-const STORE_PACKAGES=[{id:'starter',points:50,price:'Configurar precio'},{id:'plus',points:120,price:'Configurar precio'},{id:'pro',points:300,price:'Configurar precio'},{id:'mega',points:700,price:'Configurar precio'}];
-function loadStore(){const box=document.getElementById('storePackages');if(!box)return;box.innerHTML=STORE_PACKAGES.map(x=>`<div class="store-item"><b>🎁 ${x.points} puntos</b><div class="price">${x.price}</div><button class="secondary" onclick="startPurchase('${x.id}')">Elegir</button></div>`).join('')}
-async function startPurchase(packageId){try{await api('/payments/create-checkout',{method:'POST',body:JSON.stringify({package_id:packageId})});}catch(e){toast('La plataforma de pagos todavía no está conectada. No se realizó ningún cobro.')}}
+const STORE_PACKAGES=[
+  {id:'starter',points:50,price:'$2.000 ARS (~$1.50 USD)'},
+  {id:'plus',points:120,price:'$4.500 ARS (~$3.50 USD)'},
+  {id:'pro',points:300,price:'$10.000 ARS (~$8.00 USD)'},
+  {id:'mega',points:700,price:'$22.000 ARS (~$18.00 USD)'}
+];
+
+function loadStore(){
+  const box=document.getElementById('storePackages');
+  if(!box)return;
+  box.innerHTML=STORE_PACKAGES.map(x=>`
+    <div class="store-item">
+      <b>🎁 ${x.points} puntos</b>
+      <div class="price">${x.price}</div>
+      <button class="primary" style="margin-top:0" onclick="startPurchase('${x.id}')">Comprar</button>
+    </div>
+  `).join('');
+}
+
+async function startPurchase(packageId){
+  try{
+    toast('Generando link de pago…');
+    const r=await api('/payments/create-checkout',{
+      method:'POST',
+      body:JSON.stringify({package_id:packageId})
+    });
+    if(r?.init_point){
+      window.location.href=r.init_point;
+    }else{
+      throw Error('No se recibió la URL de pago.');
+    }
+  }catch(e){
+    toast(e.message||'No se pudo iniciar la compra.');
+  }
+}
+
 async function loadProfile(){const box=document.getElementById('profileCard'),data=document.getElementById('profileData');try{const u=await api('/users/'+encodeURIComponent(getUserId()));box.innerHTML=`<div style="text-align:center"><div class="avatar" style="margin:auto;width:68px;height:68px;font-size:1.4rem">${esc((u.username||'?')[0]).toUpperCase()}</div><h2 style="margin:10px 0 3px">@${esc(u.username)}</h2><div class="aura" style="font-size:2rem">★ ${u.aura_points||0} Aura</div><div class="muted">🎁 ${u.giftable_points||0} puntos regalables</div></div><div id="myQr" class="qr"></div><button class="secondary" onclick="showQr()">Actualizar mi QR</button><button class="primary" onclick="show('store')">⭐ Comprar puntos regalables</button>`;data.innerHTML=`<div class="card"><div class="stats"><div class="stat"><b>${u.battles_won||0}</b><span>Victorias</span></div><div class="stat"><b>${u.battles_played||0}</b><span>Batallas</span></div></div><p class="hint">Tu QR identifica tu cuenta autenticada para batallas locales y regalos.</p><button class="secondary" onclick="signOut()">Cerrar sesión</button><button class="danger" onclick="deleteAccount()">Eliminar mi cuenta</button></div>`;setTimeout(showQr,50);loadAdminSection();}catch(e){box.innerHTML='<div class="empty">No se pudo cargar tu perfil.</div>'}}
 function showQr(){const q=document.getElementById('myQr');if(!q)return;q.innerHTML='';if(window.QRCode)new QRCode(q,{text:'aura:user:'+getUserId(),width:180,height:180,colorDark:'#000',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.M})}
 async function signOut(){await sb.auth.signOut();location.reload()}
