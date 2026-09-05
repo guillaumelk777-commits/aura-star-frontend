@@ -7,7 +7,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <style>
 :root{--bg:#06070d;--surface:#0e111b;--surface2:#151a28;--purple:#8b5cf6;--purple2:#a78bfa;--gold:#fbbf24;--green:#22c55e;--red:#ef4444;--text:#f8fafc;--muted:#94a3b8;--border:rgba(255,255,255,.09);--glow:rgba(139,92,246,.3);--goldglow:rgba(251,191,36,.24)}
-*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:radial-gradient(circle at 50% 0,rgba(139,92,246,.22),transparent 42%),radial-gradient(circle at 100% 50%,rgba(139,92,246,.08),transparent 35%),var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}button,input,select{font:inherit}button{border:0;cursor:pointer}.app{max-width:480px;margin:auto;min-height:100vh;padding-bottom:92px}header{padding:15px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:rgba(6,7,13,.82);backdrop-filter:blur(18px);z-index:20;border-bottom:1px solid var(--border)}.brand{display:flex;align-items:center;gap:10px}.brand-icon{width:32px;height:32px;background:linear-gradient(135deg,#fff,var(--purple));clip-path:polygon(50% 0,65% 35%,100% 50%,65% 65%,50% 100%,35% 65%,0 50%,35% 35%);filter:drop-shadow(0 0 9px var(--glow))}.logo{font-weight:900;font-size:1.38rem;letter-spacing:.6px;background:linear-gradient(135deg,#fff,var(--purple2));-webkit-background-clip:text;color:transparent}.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--surface2),#24164a);border:1px solid rgba(167,139,250,.6);font-weight:900;color:#fff}.view{display:none;animation:in .25s ease}.view.active{display:block}@keyframes in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}main{padding:10px 16px}.hero{padding:22px 3px 16px}.hero h1{font-size:2rem;line-height:1.06;margin:0 0 8px;font-weight:900;letter-spacing:-.8px}.hero p{margin:0;color:var(--muted);font-size:.9rem}.section-title{display:flex;justify-content:space-between;align-items:center;margin:23px 2px 12px}.section-title h2{font-size:1rem;margin:0;font-weight:800}.muted{color:var(--muted);font-size:.78rem}.card{background:linear-gradient(145deg,rgba(20,25,39,.9),rgba(10,13,22,.94));border:1px solid var(--border);border-radius:22px;padding:17px;margin:12px 0;box-shadow:0 18px 38px rgba(0,0,0,.28);position:relative;overflow:hidden}.card:before{content:"";position:absolute;left:10%;right:10%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent)}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.action{padding:17px 15px;border-radius:18px;background:var(--surface);border:1px solid var(--border);color:var(--text);text-align:left}.action:active,.battle-card:active{transform:scale(.98)}.action strong{display:block;margin-bottom:5px}.action span{color:var(--muted);font-size:.72rem}.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(139,92,246,.13);color:#c4b5fd;border:1px solid rgba(139,92,246,.2);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.4px}.battle-title{font-size:1.08rem;font-weight:850;margin:10px 0}.feed-media-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.feed-media{position:relative;min-width:0}.feed-media video,.feed-media img{width:100%;aspect-ratio:9/14;object-fit:cover;border-radius:16px;background:#000;border:1px solid var(--border);display:block}.feed-media video{cursor:pointer}.feed-media-name{display:block;text-align:center;font-size:.72rem;font-weight:850;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.feed-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.94);border:1px solid rgba(255,255,255,.98);color:#4c1d95;font-size:1.25rem;font-weight:900;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.35);transition:opacity .18s ease,transform .18s ease}.feed-media.playing .feed-play{opacity:0;transform:translate(-50%,-50%) scale(.9)}.feed-audio{background:#090c14;border:1px solid var(--border);border-radius:16px;padding:12px}.feed-audio audio{width:100%}.battle-card .feed-vote{margin-top:11px}.backbtn{display:flex;align-items:center;gap:7px;background:none;color:#c4b5fd;font-weight:850;padding:4px 0;margin:2px 0 4px}.backbtn span{font-size:1.35rem;line-height:1}.players{display:grid;grid-template-columns:1fr 40px 1fr;gap:8px;align-items:center;text-align:center;margin:17px 0}.player{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);border-radius:15px;padding:10px 5px;font-weight:750}.score{font-size:1.55rem;font-weight:900;margin-top:2px}.vs{width:34px;height:34px;margin:auto;border-radius:50%;display:grid;place-items:center;color:var(--gold);background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.18);font-size:.7rem;font-weight:900}.bar{height:8px;background:linear-gradient(90deg, #ef4444, #b98218);border-radius:99px;overflow:hidden;border:1px solid var(--border)}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--purple),#22c55e);border-radius:99px;transition:width .3s ease}.meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.72rem;margin-top:10px}.linkbtn{background:none;color:#c4b5fd;font-weight:800}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:#090c14;padding:5px;border-radius:16px;margin-bottom:12px}.tab{background:none;color:var(--muted);padding:10px 4px;border-radius:12px;font-size:.7rem;font-weight:800}.tab.active{background:var(--surface2);color:#fff;box-shadow:0 5px 15px rgba(0,0,0,.25)}form input,form select,.search{width:100%;padding:13px 14px;margin:7px 0;border-radius:13px;background:#090c14;color:#fff;border:1px solid var(--border);outline:none}form input:focus,form select:focus,.search:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(139,92,246,.1)}select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#94a3b8 50%),linear-gradient(135deg,#94a3b8 50%,transparent 50%);background-position:calc(100% - 17px) 55%,calc(100% - 12px) 55%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:34px}.primary{width:100%;padding:14px;border-radius:15px;background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;font-weight:850;box-shadow:0 9px 22px var(--glow);margin-top:8px}.primary:disabled{opacity:.45;box-shadow:none;cursor:not-allowed}.secondary{width:100%;padding:13px;border-radius:14px;background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--border);font-weight:800;margin-top:8px}.danger{width:100%;padding:13px;border-radius:14px;background:rgba(239,68,68,.1);color:#fca5a5;border:1px solid rgba(239,68,68,.25);font-weight:800}.vote-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.vote{padding:15px;border-radius:15px;color:#fff;font-weight:850}.vote.a{background:linear-gradient(135deg,#166534,#22c55e)}.vote.b{background:linear-gradient(135deg,#991b1b,#ef4444)}.vote:disabled{opacity:.3;filter:grayscale(1)}.media-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.media-grid video,.media-grid img{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:15px;background:#000;border:1px solid var(--border)}.audio-box{background:#090c14;border:1px solid var(--border);border-radius:15px;padding:14px}.audio-box audio{width:100%}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:15px 8px;text-align:center;background:#090c14;border:1px solid var(--border);border-radius:16px}.stat b{display:block;color:var(--gold);font-size:1.35rem}.stat span{color:var(--muted);font-size:.67rem;text-transform:uppercase}.rank{display:flex;align-items:center;gap:12px}.ranknum{width:28px;color:var(--gold);font-weight:900}.rankavatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#21173e;border:1px solid rgba(139,92,246,.3);font-weight:900}.rankname{flex:1;font-weight:800}.rankname small{display:block;color:var(--muted);font-weight:500}.aura{color:var(--gold);font-weight:900}.local-search{position:relative}.local-result{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--border);border-radius:15px;background:rgba(255,255,255,.025);margin:8px 0}.local-result .grow{flex:1}.event-bracket{display:grid;gap:8px}.event-round{border:1px solid rgba(246,196,83,.14);border-radius:18px;padding:12px;background:rgba(246,196,83,.025)}.event-round h3{margin:0 0 8px;color:#ffe7a0}.event-note{border-left:2px solid var(--gold);padding-left:10px}.timer{color:var(--gold);font-weight:850;font-size:.8rem}.mode-info{padding:12px 13px;border-radius:15px;background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.15);color:#cbd5e1;font-size:.76rem;line-height:1.45}.qr{display:grid;place-items:center;background:#fff;border-radius:14px;padding:12px;margin:12px auto;width:max-content}.scan{position:fixed;inset:0;background:rgba(3,5,10,.96);z-index:50;display:none;flex-direction:column;align-items:center;justify-content:center;padding:18px}.scan.active{display:flex}.scan video{width:min(92vw,380px);aspect-ratio:1;border-radius:20px;object-fit:cover;background:#000}.scan canvas{display:none}.scan .close{margin-top:14px;width:min(92vw,380px)}.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(480px,100%);display:grid;grid-template-columns:repeat(5,1fr);padding:10px 8px calc(10px + env(safe-area-inset-bottom));background:rgba(6,7,13,.91);backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:20}.nav{background:none;color:var(--muted);font-size:.67rem;padding:6px;font-weight:700}.nav.active{color:#fff}.nav b{display:block;font-size:1.2rem;margin-bottom:3px}.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:#111827;color:#fff;border:1px solid var(--border);padding:12px 18px;border-radius:25px;display:none;z-index:60;font-size:.8rem;box-shadow:0 10px 30px rgba(0,0,0,.45);max-width:90%;text-align:center}.empty{text-align:center;padding:30px 15px;color:var(--muted);font-size:.82rem}.hint{font-size:.73rem;color:var(--muted);line-height:1.45}.store-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.store-item{padding:15px;border:1px solid var(--border);border-radius:17px;background:rgba(255,255,255,.025)}.store-item b{display:block;font-size:1.1rem}.store-item .price{color:var(--gold);font-weight:900;margin:5px 0 10px}.store-item button{margin-top:0}.hidden{display:none!important}@media(min-width:700px){body{padding:20px}.app{border:1px solid var(--border);border-radius:30px;overflow:hidden}.bottom{position:fixed}}
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:radial-gradient(circle at 50% 0,rgba(139,92,246,.22),transparent 42%),radial-gradient(circle at 100% 50%,rgba(139,92,246,.08),transparent 35%),var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button{border:0;cursor:pointer}.app{max-width:480px;margin:auto;min-height:100vh;padding-bottom:92px}header{padding:15px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:rgba(6,7,13,.82);backdrop-filter:blur(18px);z-index:20;border-bottom:1px solid var(--border)}.brand{display:flex;align-items:center;gap:10px}.brand-icon{width:32px;height:32px;background:linear-gradient(135deg,#fff,var(--purple));clip-path:polygon(50% 0,65% 35%,100% 50%,65% 65%,50% 100%,35% 65%,0 50%,35% 35%);filter:drop-shadow(0 0 9px var(--glow))}.logo{font-weight:900;font-size:1.38rem;letter-spacing:.6px;background:linear-gradient(135deg,#fff,var(--purple2));-webkit-background-clip:text;color:transparent}.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--surface2),#24164a);border:1px solid rgba(167,139,250,.6);font-weight:900;color:#fff}.view{display:none;animation:in .25s ease}.view.active{display:block}@keyframes in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}main{padding:10px 16px}.hero{padding:22px 3px 16px}.hero h1{font-size:2rem;line-height:1.06;margin:0 0 8px;font-weight:900;letter-spacing:-.8px}.hero p{margin:0;color:var(--muted);font-size:.9rem}.section-title{display:flex;justify-content:space-between;align-items:center;margin:23px 2px 12px}.section-title h2{font-size:1rem;margin:0;font-weight:800}.muted{color:var(--muted);font-size:.78rem}.card{background:linear-gradient(145deg,rgba(20,25,39,.9),rgba(10,13,22,.94));border:1px solid var(--border);border-radius:22px;padding:17px;margin:12px 0;box-shadow:0 18px 38px rgba(0,0,0,.28);position:relative;overflow:hidden}.card:before{content:"";position:absolute;left:10%;right:10%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent)}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.action{padding:17px 15px;border-radius:18px;background:var(--surface);border:1px solid var(--border);color:var(--text);text-align:left}.action:active,.battle-card:active{transform:scale(.98)}.action strong{display:block;margin-bottom:5px}.action span{color:var(--muted);font-size:.72rem}.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(139,92,246,.13);color:#c4b5fd;border:1px solid rgba(139,92,246,.2);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.4px}.battle-title{font-size:1.08rem;font-weight:850;margin:10px 0}.feed-media-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.feed-media{position:relative;min-width:0}.feed-media video,.feed-media img{width:100%;aspect-ratio:9/14;object-fit:cover;border-radius:16px;background:#000;border:1px solid var(--border);display:block}.feed-media video{cursor:pointer}.feed-media-name{display:block;text-align:center;font-size:.72rem;font-weight:850;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.feed-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.94);border:1px solid rgba(255,255,255,.98);color:#4c1d95;font-size:1.25rem;font-weight:900;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.35);transition:opacity .18s ease,transform .18s ease}.feed-media.playing .feed-play{opacity:0;transform:translate(-50%,-50%) scale(.9)}.feed-audio{background:#090c14;border:1px solid var(--border);border-radius:16px;padding:12px}.feed-audio audio{width:100%}.battle-card .feed-vote{margin-top:11px}.backbtn{display:flex;align-items:center;gap:7px;background:none;color:#c4b5fd;font-weight:850;padding:4px 0;margin:2px 0 4px}.backbtn span{font-size:1.35rem;line-height:1}.players{display:grid;grid-template-columns:1fr 40px 1fr;gap:8px;align-items:center;text-align:center;margin:17px 0}.player{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);border-radius:15px;padding:10px 5px;font-weight:750}.score{font-size:1.55rem;font-weight:900;margin-top:2px}.vs{width:34px;height:34px;margin:auto;border-radius:50%;display:grid;place-items:center;color:var(--gold);background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.18);font-size:.7rem;font-weight:900}.bar{height:8px;background:linear-gradient(90deg, #ef4444, #b98218);border-radius:99px;overflow:hidden;border:1px solid var(--border)}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--purple),#22c55e);border-radius:99px;transition:width .3s ease}.meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.72rem;margin-top:10px}.linkbtn{background:none;color:#c4b5fd;font-weight:800}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:#090c14;padding:5px;border-radius:16px;margin-bottom:12px}.tab{background:none;color:var(--muted);padding:10px 4px;border-radius:12px;font-size:.7rem;font-weight:800}.tab.active{background:var(--surface2);color:#fff;box-shadow:0 5px 15px rgba(0,0,0,.25)}form input,form select,form textarea,.search{width:100%;padding:13px 14px;margin:7px 0;border-radius:13px;background:#090c14;color:#fff;border:1px solid var(--border);outline:none}form input:focus,form select:focus,form textarea:focus,.search:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(139,92,246,.1)}select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#94a3b8 50%),linear-gradient(135deg,#94a3b8 50%,transparent 50%);background-position:calc(100% - 17px) 55%,calc(100% - 12px) 55%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:34px}.primary{width:100%;padding:14px;border-radius:15px;background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;font-weight:850;box-shadow:0 9px 22px var(--glow);margin-top:8px}.primary:disabled{opacity:.45;box-shadow:none;cursor:not-allowed}.secondary{width:100%;padding:13px;border-radius:14px;background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--border);font-weight:800;margin-top:8px}.danger{width:100%;padding:13px;border-radius:14px;background:rgba(239,68,68,.1);color:#fca5a5;border:1px solid rgba(239,68,68,.25);font-weight:800}.vote-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.vote{padding:15px;border-radius:15px;color:#fff;font-weight:850}.vote.a{background:linear-gradient(135deg,#166534,#22c55e)}.vote.b{background:linear-gradient(135deg,#991b1b,#ef4444)}.vote:disabled{opacity:.3;filter:grayscale(1)}.media-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.media-grid video,.media-grid img{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:15px;background:#000;border:1px solid var(--border)}.audio-box{background:#090c14;border:1px solid var(--border);border-radius:15px;padding:14px}.audio-box audio{width:100%}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:15px 8px;text-align:center;background:#090c14;border:1px solid var(--border);border-radius:16px}.stat b{display:block;color:var(--gold);font-size:1.35rem}.stat span{color:var(--muted);font-size:.67rem;text-transform:uppercase}.rank{display:flex;align-items:center;gap:12px}.ranknum{width:28px;color:var(--gold);font-weight:900}.rankavatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#21173e;border:1px solid rgba(139,92,246,.3);font-weight:900}.rankname{flex:1;font-weight:800}.rankname small{display:block;color:var(--muted);font-weight:500}.aura{color:var(--gold);font-weight:900}.local-search{position:relative}.local-result{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--border);border-radius:15px;background:rgba(255,255,255,.025);margin:8px 0}.local-result .grow{flex:1}.event-bracket{display:grid;gap:8px}.event-round{border:1px solid rgba(246,196,83,.14);border-radius:18px;padding:12px;background:rgba(246,196,83,.025)}.event-round h3{margin:0 0 8px;color:#ffe7a0}.event-note{border-left:2px solid var(--gold);padding-left:10px}.timer{color:var(--gold);font-weight:850;font-size:.8rem}.mode-info{padding:12px 13px;border-radius:15px;background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.15);color:#cbd5e1;font-size:.76rem;line-height:1.45}.qr{display:grid;place-items:center;background:#fff;border-radius:14px;padding:12px;margin:12px auto;width:max-content}.scan{position:fixed;inset:0;background:rgba(3,5,10,.96);z-index:50;display:none;flex-direction:column;align-items:center;justify-content:center;padding:18px}.scan.active{display:flex}.scan video{width:min(92vw,380px);aspect-ratio:1;border-radius:20px;object-fit:cover;background:#000}.scan canvas{display:none}.scan .close{margin-top:14px;width:min(92vw,380px)}.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(480px,100%);display:grid;grid-template-columns:repeat(5,1fr);padding:10px 8px calc(10px + env(safe-area-inset-bottom));background:rgba(6,7,13,.91);backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:20}.nav{background:none;color:var(--muted);font-size:.67rem;padding:6px;font-weight:700}.nav.active{color:#fff}.nav b{display:block;font-size:1.2rem;margin-bottom:3px}.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:#111827;color:#fff;border:1px solid var(--border);padding:12px 18px;border-radius:25px;display:none;z-index:60;font-size:.8rem;box-shadow:0 10px 30px rgba(0,0,0,.45);max-width:90%;text-align:center}.empty{text-align:center;padding:30px 15px;color:var(--muted);font-size:.82rem}.hint{font-size:.73rem;color:var(--muted);line-height:1.45}.store-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.store-item{padding:15px;border:1px solid var(--border);border-radius:17px;background:rgba(255,255,255,.025)}.store-item b{display:block;font-size:1.1rem}.store-item .price{color:var(--gold);font-weight:900;margin:5px 0 10px}.store-item button{margin-top:0}.hidden{display:none!important}@media(min-width:700px){body{padding:20px}.app{border:1px solid var(--border);border-radius:30px;overflow:hidden}.bottom{position:fixed}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 
 .new-battles-banner{position:sticky;top:66px;z-index:19;margin:-10px 0 14px;text-align:center;display:none}
@@ -49,9 +49,59 @@ header{border-bottom:1px solid rgba(246,196,83,.18);box-shadow:0 8px 30px rgba(0
 .bottom{border-top-color:rgba(246,196,83,.16);box-shadow:0 -10px 30px rgba(0,0,0,.2)}
 .nav.active{color:#ffe7a0;text-shadow:0 0 12px rgba(246,196,83,.16)}
 .linkbtn{color:#e8c96f}
-input:focus,select:focus{border-color:rgba(246,196,83,.6)!important;box-shadow:0 0 0 3px rgba(246,196,83,.08)!important}
+input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!important;box-shadow:0 0 0 3px rgba(246,196,83,.08)!important}
 .login-gold{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:#d6ad50;margin-bottom:8px;font-weight:800}
 .share-card{background:linear-gradient(145deg,rgba(246,196,83,.08),rgba(139,92,246,.08));border:1px solid rgba(246,196,83,.22)}.share-btn{background:linear-gradient(135deg,#f6c453,#b98218);color:#15110a;border:0;box-shadow:0 8px 22px rgba(246,196,83,.18)}
+
+.admin-card{border-color:rgba(251,191,36,.25)}
+.admin-result{padding:12px 0;border-top:1px solid var(--border)}
+.admin-result:first-child{border-top:0}
+.admin-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.admin-actions button{width:auto;padding:8px 10px}
+.admin-meta{font-size:.72rem;color:var(--muted);margin-top:3px}
+
+.aura-test{position:fixed;inset:0;background:radial-gradient(circle at 50% 15%,rgba(246,196,83,.12),transparent 28%),rgba(3,5,10,.985);z-index:70;display:none;overflow:auto}
+.aura-test.active{display:block}
+.aura-test-inner{width:min(100%,480px);min-height:100%;margin:auto;padding:22px 16px 34px;display:flex;flex-direction:column}
+.aura-test-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.aura-test-step{font-size:.7rem;color:#e8c96f;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.aura-test-progress{height:5px;background:#0b0e17;border-radius:99px;overflow:hidden;border:1px solid rgba(246,196,83,.12);margin-bottom:22px}
+.aura-test-progress i{display:block;height:100%;width:20%;background:linear-gradient(90deg,#8b5cf6,#f6c453,#ffe7a0);border-radius:99px;transition:width .35s ease}
+.aura-test-title{font-size:1.75rem;line-height:1.08;font-weight:900;margin:0 0 8px;letter-spacing:-.5px}
+.aura-test-subtitle{color:var(--muted);font-size:.82rem;line-height:1.5;margin:0 0 18px}
+.aura-test-card{background:linear-gradient(145deg,rgba(20,25,39,.94),rgba(8,11,19,.97));border:1px solid rgba(246,196,83,.18);border-radius:24px;padding:18px;box-shadow:0 22px 55px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.03);position:relative;overflow:hidden}
+.aura-test-card:before{content:"";position:absolute;left:8%;right:8%;top:0;height:1px;background:linear-gradient(90deg,transparent,#f6c453,transparent);opacity:.65}
+.aura-question{font-size:1.08rem;font-weight:850;line-height:1.3;margin-bottom:15px}
+.aura-options{display:grid;gap:10px}
+.aura-option{width:100%;padding:15px;text-align:left;border-radius:16px;background:rgba(255,255,255,.035);color:#fff;border:1px solid rgba(246,196,83,.12);transition:.2s}
+.aura-option:hover{border-color:rgba(246,196,83,.35);background:rgba(246,196,83,.055)}
+.aura-option.selected{border-color:#f6c453;background:linear-gradient(135deg,rgba(139,92,246,.18),rgba(246,196,83,.10));box-shadow:0 0 22px rgba(246,196,83,.08)}
+.aura-option b{display:block;font-size:.88rem;margin-bottom:3px}
+.aura-option span{display:block;color:var(--muted);font-size:.7rem;line-height:1.35}
+.aura-camera-choice{display:grid;gap:10px;margin-top:15px}
+.aura-camera-choice button{min-height:50px}
+.aura-camera-note{font-size:.68rem;color:var(--muted);line-height:1.45;text-align:center;margin-top:10px}
+.aura-camera{position:relative;border-radius:22px;overflow:hidden;background:#000;border:1px solid rgba(246,196,83,.3);aspect-ratio:3/4;box-shadow:0 0 35px rgba(246,196,83,.08)}
+.aura-camera video{width:100%;height:100%;object-fit:cover;display:block;transform:scaleX(-1)}
+.aura-camera:after{content:"";position:absolute;inset:12%;border:1px solid rgba(246,196,83,.5);border-radius:46% 46% 40% 40%;box-shadow:0 0 0 999px rgba(0,0,0,.08),inset 0 0 25px rgba(246,196,83,.06);pointer-events:none}
+.aura-scanline{position:absolute;left:10%;right:10%;height:2px;top:18%;background:linear-gradient(90deg,transparent,#ffe7a0,#f6c453,transparent);box-shadow:0 0 15px rgba(246,196,83,.8);animation:auraScan 2.4s ease-in-out infinite;z-index:2}
+@keyframes auraScan{0%,100%{top:18%;opacity:.25}50%{top:82%;opacity:1}}
+.aura-scan-label{position:absolute;left:0;right:0;bottom:13px;text-align:center;z-index:3;font-size:.68rem;font-weight:850;letter-spacing:.08em;text-transform:uppercase;color:#fff3bf;text-shadow:0 1px 8px #000}
+.aura-calculating{display:none;text-align:center;padding:12px 4px 2px}
+.aura-calculating.active{display:block}
+.aura-orbit{width:110px;height:110px;margin:4px auto 16px;border-radius:50%;border:1px solid rgba(246,196,83,.35);position:relative;animation:auraSpin 2s linear infinite;box-shadow:0 0 30px rgba(246,196,83,.1)}
+.aura-orbit:before,.aura-orbit:after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(139,92,246,.4)}
+.aura-orbit:before{inset:15px}
+.aura-orbit:after{inset:30px;border-color:rgba(246,196,83,.55)}
+@keyframes auraSpin{to{transform:rotate(360deg)}}
+.aura-result{display:none;text-align:center}
+.aura-result.active{display:block}
+.aura-result-glow{width:190px;height:190px;margin:4px auto 18px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,rgba(246,196,83,.22),rgba(139,92,246,.08) 45%,transparent 70%);animation:auraPulse 1.8s ease-in-out infinite}
+@keyframes auraPulse{50%{transform:scale(1.045);filter:brightness(1.12)}}
+.aura-result-number{font-size:4.8rem;line-height:1;font-weight:900;letter-spacing:-3px;background:linear-gradient(135deg,#fff,#ffe7a0,#f6c453);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 35px rgba(246,196,83,.18)}
+.aura-result-label{font-size:.72rem;color:#e8c96f;text-transform:uppercase;letter-spacing:.18em;font-weight:900}
+.aura-earned{font-size:1rem;font-weight:900;margin:10px 0 4px;color:#fff}
+.aura-result-copy{color:var(--muted);font-size:.78rem;line-height:1.5;max-width:310px;margin:0 auto 18px}
 </style></head>
 <body>
 <div class="app"><header><div class="brand"><span class="brand-icon"></span><div class="logo">AURA STAR</div></div><button class="avatar" id="avatar" onclick="show('profile')">★</button></header>
@@ -84,11 +134,40 @@ input:focus,select:focus{border-color:rgba(246,196,83,.6)!important;box-shadow:0
     <button class="primary share-btn" onclick="shareApp()">📤 Compartir mi enlace</button>
   </div>
   <div id="profileData"></div>
+  <div id="adminSection" class="card admin-card" style="display:none">
+    <h3 style="margin:0 0 6px">🛡️ Modo Moderador / Admin</h3>
+    <p class="hint" style="margin-top:0">Herramientas internas. Las acciones sensibles quedan registradas.</p>
+    <div id="adminSummary" class="mode-info" style="margin-bottom:10px">Cargando resumen…</div>
+    <input id="adminSearchUser" class="search" placeholder="Buscar usuario por nombre o ID…" oninput="searchAdminUsers()">
+    <div id="adminUserResults"><div class="empty">Escribí al menos 2 caracteres.</div></div>
+  </div>
 </section>
 
 <section id="store" class="view"><div class="hero"><h1>⭐ Tienda Aura</h1><p>Comprá Estrellas Aura para regalar a creadores o habilitar batallas locales.</p></div><div class="card"><div class="mode-info"><b>💳 Compras seguras con Mercado Pago</b><br>Elegí tu paquete para obtener Estrellas Aura de forma instantánea.</div><div id="storePackages" class="store-grid"></div></div></section>
 </main>
 <nav class="bottom"><button class="nav active" data-view="home" onclick="show('home')"><b>⌂</b>Inicio</button><button class="nav" data-view="create" onclick="show('create')"><b>＋</b>Crear</button><button class="nav" data-view="events" onclick="show('events');loadEvents()"><b>♜</b>Eventos</button><button class="nav" data-view="rank" onclick="show('rank')"><b>♛</b>Ranking</button><button class="nav" data-view="profile" onclick="show('profile')"><b>●</b>Perfil</button></nav><div class="toast" id="toast"></div></div>
+
+<div class="scan" id="scanner"><div id="scannerTitle" style="font-weight:900;font-size:1.1rem;margin-bottom:12px">Escanear QR de usuario</div><video id="scanVideo" autoplay playsinline></video><canvas id="scanCanvas"></canvas><div class="hint" style="margin-top:10px;text-align:center">Apuntá al QR de AURA STAR. Si tu navegador no permite cámara, podés ingresar el ID manualmente.</div><button class="secondary close" onclick="stopScanner()">Cerrar</button></div>
+
+<div id="login" class="scan" style="background:rgba(3,5,10,.97)">
+  <div class="card" style="width:min(92vw,390px);text-align:center">
+    <div class="brand" style="justify-content:center;margin-bottom:18px"><span class="brand-icon"></span><div class="logo">AURA STAR</div></div>
+    <div class="login-gold">TU IDENTIDAD · TU AURA · TU ARENA</div>
+    <h2 style="margin:0 0 8px">Entrá a AURA STAR</h2>
+    <p class="hint" style="margin:0 0 16px">Iniciá sesión con Google o ingresá tu email para recibir un enlace de acceso instantáneo.</p>
+    
+    <button class="primary" onclick="signInWith('google')" style="background:#fff;color:#111827;box-shadow:none">🌐 Continuar con Google</button>
+    
+    <div style="display:flex;align-items:center;margin:16px 0;color:var(--muted);font-size:.75rem"><hr style="flex:1;border:0;border-top:1px solid var(--border)"><span style="padding:0 8px">O INGRESÁ CON EMAIL</span><hr style="flex:1;border:0;border-top:1px solid var(--border)"></div>
+    
+    <input id="emailInput" class="search" type="email" placeholder="tu@email.com" style="margin-bottom:8px">
+    <button class="secondary" onclick="signInWithEmail()" style="margin-top:0">✉️ Enviar enlace mágico</button>
+    
+    <p id="loginHint" class="hint" style="margin:14px 0 0">Al ingresar con email te enviaremos un enlace de acceso seguro a tu casilla.</p>
+  </div>
+</div>
+
+<div id="onboard" class="scan" style="background:rgba(3,5,10,.94)"><div class="card" style="width:min(92vw,380px)"><h2 style="margin-top:0">Bienvenido a AURA STAR</h2><p class="hint">Elegí tu nombre y rango de edad. Tu perfil quedará vinculado a tu cuenta.</p><p id="onboardEmail" class="hint" style="margin-top:-6px;font-weight:700"></p><input id="onboardUsername" class="search" placeholder="Nombre de usuario" maxlength="40"><select id="onboardAge" class="search"><option value="18_plus">18 años o más</option><option value="13_17">13 a 17 años</option></select><button class="primary" onclick="createProfile()">Continuar</button><button class="linkbtn" style="width:100%;margin-top:8px" onclick="signOut()">¿No es tu cuenta? Cerrar sesión</button></div></div>
 
 <div id="giftModal" class="scan" style="background:rgba(3,5,10,.95)">
   <div class="card" style="width:min(92vw,400px)">
@@ -115,6 +194,7 @@ input:focus,select:focus{border-color:rgba(246,196,83,.6)!important;box-shadow:0
 
 <script>
 const CONFIG={API:'https://aura-backend-oflg.onrender.com/api',SUPABASE_URL:'https://saqhaofycdjlwdauzhtv.supabase.co',SUPABASE_ANON_KEY:'sb_publishable_itAVUVk2JCkBjqKXSgQYrw_WsweKG1H',LOCAL_COST:0,TOURNAMENT_COST:0,MIN_VOTES:10,MIN_DIFF:3,ARBITER_CLOSE_VOTES:30,LOCAL_HOURS:2};
+const OAUTH_REDIRECT='https://guillaumelk777-commits.github.io/aura-star-frontend/';
 const sb=supabase.createClient(CONFIG.SUPABASE_URL,CONFIG.SUPABASE_ANON_KEY);
 let CURRENT_USER=null,IS_ADMIN=false,cache=[],pendingNewBattles=[],currentMode='video',scanStream=null,scanTimer=null,currentGiftMethod='username';
 
@@ -129,13 +209,527 @@ async function api(path,opt={}){
     const refreshed=await sb.auth.refreshSession().catch(()=>null);
     sess=refreshed?.data?.session||null;
   }
-  if(!sess?.access_token)throw Object.assign(new Error('Tu sesión no está disponible.'),{code:'NO_SESSION'});
+  if(!sess?.access_token)throw Object.assign(new Error('Tu sesión no está disponible. Volvé a iniciar sesión.'),{code:'NO_SESSION'});
   const headers={...(opt.body instanceof FormData?{}:{'Content-Type':'application/json'}),...(opt.headers||{})};
   headers.Authorization='Bearer '+sess.access_token;
   let r=await fetch(CONFIG.API+path,{...opt,headers});
+  if(r.status===401){
+    const refreshed=await sb.auth.refreshSession().catch(()=>null);
+    const fresh=refreshed?.data?.session;
+    if(fresh?.access_token){
+      headers.Authorization='Bearer '+fresh.access_token;
+      r=await fetch(CONFIG.API+path,{...opt,headers});
+    }
+  }
   const d=await r.json().catch(()=>({}));
-  if(!r.ok) throw Object.assign(new Error(d.error||`Error (${r.status})`),{status:r.status});
+  if(!r.ok){
+    const err=Object.assign(new Error(d.error||`Error de API (${r.status})`),{status:r.status,code:d.code});
+    if(r.status===401){ CURRENT_USER=null; }
+    throw err;
+  }
   return d;
+}
+
+async function signInWith(provider){
+  const hint=document.getElementById('loginHint');
+  if(provider!=='google')return;
+  hint.textContent='Abriendo Google…';
+  try{
+    const {data,error}=await sb.auth.signInWithOAuth({
+      provider:'google',
+      options:{ redirectTo:OAUTH_REDIRECT, queryParams:{prompt:'select_account'} }
+    });
+    if(error)throw error;
+    if(data?.url) window.location.assign(data.url);
+  }catch(e){
+    hint.textContent='No se pudo iniciar sesión: '+(e.message||'Error de Google');
+    toast(hint.textContent);
+  }
+}
+
+async function signInWithEmail(){
+  const emailInput=document.getElementById('emailInput'), email=emailInput.value.trim();
+  const hint=document.getElementById('loginHint');
+  if(!email || !/\S+@\S+\.\S+/.test(email)) return toast('Ingresá un email válido.');
+  
+  hint.textContent='Enviando enlace mágico a '+email+'…';
+  try{
+    const {error}=await sb.auth.signInWithOtp({
+      email,
+      options:{ emailRedirectTo: OAUTH_REDIRECT }
+    });
+    if(error) throw error;
+    hint.textContent='¡Enlace enviado! Revisá tu casilla de correo para entrar.';
+    toast('✉️ Enlace enviado a tu email');
+  }catch(e){
+    hint.textContent='Error al enviar email: '+(e.message||'');
+    toast('No se pudo enviar el email');
+  }
+}
+
+async function createProfile(){const name=document.getElementById('onboardUsername').value.trim(),age=document.getElementById('onboardAge').value;if(!CURRENT_USER)return toast('Primero iniciá sesión.');if(!name)return toast('Ingresá un nombre.');const btn=document.querySelector('#onboard button.primary');btn.disabled=true;btn.textContent='Creando perfil…';try{const r=await api('/users',{method:'POST',body:JSON.stringify({username:name,age_bracket:age})});if(!r?.id)throw Error('El backend no confirmó la creación del perfil.');document.getElementById('onboard').classList.remove('active');await initUser()}catch(e){console.error('createProfile',e);toast(e.message)}finally{btn.disabled=false;btn.textContent='Continuar'}}
+
+async function initUser(){
+  if(!CURRENT_USER){ document.getElementById('login').classList.add('active'); document.getElementById('onboard').classList.remove('active'); return; }
+  try{
+    const u=await api('/users/'+encodeURIComponent(CURRENT_USER.id));
+    IS_ADMIN=!!(u.is_admin||u.moderation_role==='admin');
+    document.getElementById('avatar').textContent=(u.username||'✦')[0].toUpperCase();
+    document.getElementById('login').classList.remove('active');
+    document.getElementById('onboard').classList.remove('active');
+    await claimPendingReferral();
+    checkPaymentReturn();
+    loadBattles();
+    await maybeShowAuraTest(u);
+  }catch(e){
+    if(e.status===404){
+      document.getElementById('login').classList.remove('active');
+      document.getElementById('onboard').classList.add('active');
+      const emailEl=document.getElementById('onboardEmail');
+      if(emailEl)emailEl.textContent=CURRENT_USER?.email?('Conectado como '+CURRENT_USER.email):'';
+      setTimeout(()=>document.getElementById('onboardUsername')?.focus(),50);
+    }else if(e.status===401||e.code==='NO_SESSION'){
+      document.getElementById('login').classList.add('active');
+      document.getElementById('onboard').classList.remove('active');
+      document.getElementById('loginHint').textContent='La sesión no pudo validarse. Volvé a ingresar.';
+    }else{
+      document.getElementById('login').classList.add('active');
+      document.getElementById('onboard').classList.remove('active');
+      document.getElementById('loginHint').textContent='No pudimos conectar con AURA STAR. '+(e.message||'Intentá nuevamente.');
+    }
+  }
+}
+
+function checkPaymentReturn(){
+  const params = new URLSearchParams(location.search);
+  if(params.get('payment')==='success'){
+    toast('💳 ¡Pago acreditado correctamente! Tus Estrellas Aura fueron sumadas.');
+    history.replaceState({}, document.title, location.pathname);
+  } else if(params.get('payment')==='failure'){
+    toast('❌ El pago no pudo procesarse.');
+    history.replaceState({}, document.title, location.pathname);
+  }
+}
+
+async function handleAuth(){
+  captureShareToken();
+  const params=new URLSearchParams(location.search);
+  if(params.get('error')){
+    const desc=params.get('error_description')||params.get('error');
+    history.replaceState({},document.title,location.pathname);
+    document.getElementById('login').classList.add('active');
+    document.getElementById('loginHint').textContent='Error de acceso: '+decodeURIComponent(desc);
+    return;
+  }
+  const {data,error}=await sb.auth.getSession();
+  if(error){ console.error(error); document.getElementById('login').classList.add('active'); return; }
+  CURRENT_USER=data.session?.user||null;
+  if(CURRENT_USER) await initUser(); else document.getElementById('login').classList.add('active');
+}
+
+sb.auth.onAuthStateChange((event,session)=>{
+  CURRENT_USER=session?.user||null;
+  if(event==='SIGNED_IN'&&CURRENT_USER)setTimeout(()=>initUser(),50);
+  if(event==='TOKEN_REFRESHED'&&CURRENT_USER)setTimeout(()=>initUser(),50);
+  if(event==='SIGNED_OUT'){CURRENT_USER=null;IS_ADMIN=false;document.getElementById('login').classList.add('active');document.getElementById('onboard').classList.remove('active');}
+});
+
+function show(v){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(v).classList.add('active');document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.view===v));if(v==='home')checkOrLoadBattles();if(v==='rank')loadRanking();if(v==='profile'){loadProfile();loadShareStatus();loadAdminSection();}if(v==='store')loadStore();if(v==='local')document.getElementById('localSearch').focus();if(v==='events')loadEvents()}
+function battlePeople(b){return b.mode==='local'?[b.local_a_name||b.local_participant_a,b.local_b_name||b.local_participant_b]:[b.creator_name||b.creator_id,b.opponent_name||b.opponent_id||'Esperando…']}
+function feedMedia(url,mode,name){if(!url)return `<div class="feed-media"><div style="aspect-ratio:9/14;border-radius:16px;background:#090c14;display:grid;place-items:center;color:var(--muted);border:1px solid var(--border)">Esperando…</div><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='photo')return `<div class="feed-media"><img src="${esc(url)}" alt="Participación de ${esc(name)}" loading="lazy" oncontextmenu="return false;"><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='audio')return `<div class="feed-media"><div class="feed-audio"><div style="font-size:1.6rem;text-align:center;margin-bottom:6px">🎙️</div><audio controls controlsList="nodownload" preload="metadata" src="${esc(url)}"></audio></div><small class="feed-media-name">${esc(name)}</small></div>`;return `<div class="feed-media" data-feed-video><video playsinline controlsList="nodownload" disablePictureInPicture preload="metadata" src="${esc(url)}" onclick="toggleFeedVideo(this)" oncontextmenu="return false;"></video><div class="feed-play">▶</div><small class="feed-media-name">${esc(name)}</small></div>`}
+function toggleFeedVideo(video){event?.stopPropagation?.();const wrap=video.closest('.feed-media');if(!wrap)return;if(video.paused){document.querySelectorAll('.feed-media[data-feed-video] video').forEach(v=>{if(v!==video){v.pause();v.closest('.feed-media')?.classList.remove('playing')}});video.play().then(()=>wrap.classList.add('playing')).catch(()=>{});}else{video.pause();wrap.classList.remove('playing');}} 
+
+function battleCard(b){
+  const [aName, oName] = battlePeople(b);
+  const a = +b.votes_creator || 0;
+  const o = +b.votes_opponent || 0;
+  const total = a + o;
+  
+  const p = total > 0 ? Math.round((a / total) * 100) : 50;
+
+  const local = b.mode === 'local';
+  const targetA = local ? b.local_participant_a : b.creator_id;
+  const targetB = local ? b.local_participant_b : b.opponent_id;
+  
+  const hasOpponent = local ? Boolean(targetB) : Boolean(b.opponent_id && b.media_url_opponent);
+  const disableVoting = !hasOpponent || b.status !== 'active';
+
+  const media = !local ? `<div class="feed-media-grid">${feedMedia(b.media_url_creator, b.mode, aName)}${feedMedia(b.media_url_opponent, b.mode, oName)}</div>` : '';
+
+  return `
+    <div class="card battle-card" id="card-${b.id}">
+      <div style="display:flex;justify-content:space-between;align-items:center" onclick="openBattle('${b.id}')">
+        <span class="badge">${local ? '🏟️ Local' : modeLabel(b.mode)}</span>
+        <span class="muted" style="font-size:.72rem">Ver detalle →</span>
+      </div>
+      
+      <div class="battle-title" onclick="openBattle('${b.id}')" style="cursor:pointer">${esc(b.title)}</div>
+      
+      ${media}
+
+      <div class="players">
+        <div class="player" onclick="openBattle('${b.id}')" style="cursor:pointer">
+          <div style="font-size:.85rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(aName)}</div>
+          <div class="score" id="score-a-${b.id}">${a}</div>
+        </div>
+
+        <div class="vs">VS</div>
+
+        <div class="player" onclick="openBattle('${b.id}')" style="cursor:pointer">
+          <div style="font-size:.85rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(oName)}</div>
+          <div class="score" id="score-b-${b.id}">${o}</div>
+        </div>
+      </div>
+
+      <div class="bar"><i id="bar-${b.id}" style="width:${p}%"></i></div>
+
+      <div class="vote-grid" style="margin-top:12px">
+        <button class="vote a" style="padding:10px;font-size:.8rem" onclick="voteDirect(event, '${b.id}', '${esc(targetA)}')" ${disableVoting ? 'disabled' : ''}>
+          ⚡ Votar
+        </button>
+        <button class="vote b" style="padding:10px;font-size:.8rem" onclick="voteDirect(event, '${b.id}', '${esc(targetB || '')}')" ${disableVoting ? 'disabled' : ''}>
+          ⚡ Votar
+        </button>
+      </div>
+
+      ${!hasOpponent ? '<div class="hint" style="text-align:center;margin-top:6px;color:var(--gold)">⏳ Esperando que se una un oponente para abrir la votación.</div>' : ''}
+
+      <div class="meta" style="margin-top:8px">
+        <span id="total-${b.id}">${total} votos${local ? ' · ' + timeLeft(b.local_closes_at) : ''}</span>
+      </div>
+    </div>
+  `;
+}
+
+async function voteDirect(event, battleId, targetUser) {
+  if (event) event.stopPropagation();
+  if (!targetUser) return;
+  
+  try {
+    const r = await api('/battles/' + battleId + '/vote', {
+      method: 'POST',
+      body: JSON.stringify({ voted_user_id: targetUser })
+    });
+
+    toast(r.completed ? '🏆 ¡Batalla finalizada!' : '¡Voto registrado!');
+
+    const scoreA = document.getElementById(`score-a-${battleId}`);
+    const scoreB = document.getElementById(`score-b-${battleId}`);
+    const bar = document.getElementById(`bar-${battleId}`);
+    const totalEl = document.getElementById(`total-${battleId}`);
+
+    if (scoreA && scoreB && bar && r.votes_creator !== undefined) {
+      const va = Number(r.votes_creator);
+      const vb = Number(r.votes_opponent);
+      const total = va + vb;
+      const pct = total > 0 ? Math.round((va / total) * 100) : 50;
+
+      scoreA.textContent = va;
+      scoreB.textContent = vb;
+      bar.style.width = `${pct}%`;
+      if (totalEl) totalEl.textContent = `${total} votos`;
+    }
+
+  } catch (e) {
+    toast(e.message || 'No se pudo registrar el voto');
+  }
+}
+
+function modeLabel(m){return m==='audio'?'🎙️ Audio':m==='photo'?'📸 Foto':'🎥 Video'} function timeLeft(d){if(!d)return'';const ms=new Date(d)-Date.now();if(ms<=0)return'finalizando';const h=Math.floor(ms/3600000),m=Math.floor(ms%3600000/60000);return h?`${h}h ${m}m`: `${m}m`}
+
+async function loadBattles(isSilent = false){
+  const box = document.getElementById('battles');
+  if(!box) return;
+
+  if(!isSilent && !cache.length){
+    box.innerHTML = '<div class="empty">Cargando…</div>';
+  }
+
+  try {
+    const r = await fetch(CONFIG.API + '/battles?limit=30', { method: 'GET', headers: { Accept: 'application/json' }, cache: 'no-store' });
+    const d = await r.json().catch(() => null);
+    if (!r.ok) throw Error(d?.error || `No se pudieron cargar las batallas (${r.status}).`);
+
+    const newRows = Array.isArray(d) ? d : (Array.isArray(d?.battles) ? d.battles : Array.isArray(d?.data) ? d.data : []);
+
+    if (isSilent && cache.length > 0) {
+      const existingIds = new Set(cache.map(b => b.id));
+      const freshlyAdded = newRows.filter(b => !existingIds.has(b.id));
+
+      if (freshlyAdded.length > 0) {
+        pendingNewBattles = newRows;
+        showNewBattlesBanner(freshlyAdded.length);
+        return;
+      }
+    } else {
+      cache = newRows;
+      pendingNewBattles = [];
+      hideNewBattlesBanner();
+      document.getElementById('battleCount').textContent = cache.length + ' activas';
+      box.innerHTML = cache.length ? cache.map(battleCard).join('') : '<div class="empty">Todavía no hay batallas activas.</div>';
+    }
+  } catch (e) {
+    console.error('loadBattles', e);
+    if (!isSilent && !cache.length) {
+      document.getElementById('battleCount').textContent = '';
+      box.innerHTML = `<div class="empty">No se pudieron cargar las batallas.<br><small>${esc(e.message || 'Error de conexión')}</small><br><button class="secondary" style="margin-top:10px" onclick="loadBattles()">Reintentar</button></div>`;
+    }
+  }
+}
+
+function checkOrLoadBattles(){
+  if(!cache.length){
+    loadBattles(false);
+  } else {
+    loadBattles(true);
+  }
+}
+
+function showNewBattlesBanner(count){
+  const banner = document.getElementById('newBattlesBanner');
+  if(banner){
+    banner.style.display = 'block';
+    banner.querySelector('button').textContent = `✨ Nuevas batallas en el feed (${count}) · Tocar para ver`;
+  }
+}
+
+function hideNewBattlesBanner(){
+  const banner = document.getElementById('newBattlesBanner');
+  if(banner) banner.style.display = 'none';
+}
+
+function applyNewBattles(){
+  if(pendingNewBattles.length > 0){
+    cache = pendingNewBattles;
+    pendingNewBattles = [];
+    hideNewBattlesBanner();
+    document.getElementById('battleCount').textContent = cache.length + ' activas';
+    document.getElementById('battles').innerHTML = cache.map(battleCard).join('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function renderCreate(){const c=document.getElementById('createCard');if(currentMode==='local'){c.innerHTML=`<div class="mode-info"><b>🏟️ Sin videos.</b><br>Esta batalla sirve para registrar una competencia que está ocurriendo físicamente en una plaza, parque o evento. La creación es <b>gratuita</b> durante esta fase. Dura hasta 2 horas y necesita 10 votos con diferencia de 3 para entregar Aura.</div><form id="localForm"><input id="battleTitle" maxlength="80" placeholder="Nombre de la batalla" required><select id="battleCategory"><option value="freestyle">🎤 Freestyle</option><option value="dance">💃 Dance</option><option value="singing">🎤 Canto</option><option value="music">🎸 Música</option><option value="sports">⚽ Deporte</option><option value="other">✨ Otro</option></select><div class="tabs" style="margin-top:10px"><button type="button" class="tab active" id="partMode" onclick="toggleLocalNeutral(false)">👤 Participo</button><button type="button" class="tab" id="neutralMode" onclick="toggleLocalNeutral(true)">⚖️ Soy neutral</button></div><div id="localParticipants"></div><button class="primary" type="submit">🏟️ Crear batalla gratis</button></form>`;toggleLocalNeutral(false);document.getElementById('localForm').onsubmit=createLocalBattle}else{const type=currentMode; c.innerHTML=`<div class="mode-info">${type==='video'?'🎥 Subí un video vertical.':type==='audio'?'🎙️ Subí un audio.':'📸 Subí una foto.'} El segundo participante podrá unirse y cargar su propia participación.</div><form id="mediaForm"><input id="battleTitle" maxlength="80" placeholder="Título del desafío" required><select id="battleCategory"><option value="gaming">🎮 Gaming</option><option value="freestyle">🎤 Freestyle</option><option value="dance">💃 Dance</option><option value="singing">🎤 Canto</option><option value="music">🎸 Música</option><option value="art">🎨 Arte</option><option value="photography">📷 Fotografía</option><option value="cosplay">🧙 Cosplay</option><option value="other">✨ Otro</option></select><label class="muted">Tu archivo</label><input id="mediaFile" type="file" accept="${type==='video'?'video/mp4,video/webm':type==='audio'?'audio/mpeg,audio/mp4,audio/wav,audio/ogg':'image/jpeg,image/png,image/webp'}" required><button class="primary" id="createBtn" type="submit">Lanzar ${modeLabel(type)}</button></form>`;document.getElementById('mediaForm').onsubmit=createMediaBattle}}
+function setMode(m){currentMode=m;document.querySelectorAll('.tab[data-mode]').forEach(x=>x.classList.toggle('active',x.dataset.mode===m));renderCreate()}
+let localNeutral=false;function toggleLocalNeutral(v){localNeutral=v;document.getElementById('partMode').classList.toggle('active',!v);document.getElementById('neutralMode').classList.toggle('active',v);document.getElementById('localParticipants').innerHTML=v?`<div class="mode-info">Vos serás el árbitro. Escaneá o ingresá los QR de <b>los dos competidores</b>. El árbitro puede cerrar desde 30 votos y diferencia 3, pero no puede votar.</div><div class="grid"><button type="button" class="secondary" onclick="scanFor('localA')">📷 QR Competidor A</button><button type="button" class="secondary" onclick="scanFor('localB')">📷 QR Competidor B</button></div><input id="localA" placeholder="ID competidor A" required><input id="localB" placeholder="ID competidor B" required>`:`<div class="mode-info">Vos sos el competidor A. Escaneá el QR del rival.</div><button type="button" class="secondary" onclick="scanFor('localB')">📷 Escanear QR del rival</button><input id="localA" value="${esc(getUserId())}" readonly><input id="localB" placeholder="ID del rival" required>`}
+async function createLocalBattle(e){e.preventDefault();const a=document.getElementById('localA').value.trim(),b=document.getElementById('localB').value.trim();try{if(!a||!b)throw Error('Completá los dos participantes.');const x=await api('/battles',{method:'POST',body:JSON.stringify({mode:'local',category:document.getElementById('battleCategory').value,title:document.getElementById('battleTitle').value,local_participant_a:a,local_participant_b:b,local_neutral:localNeutral})});toast('Batalla local creada');openBattle(x.id)}catch(err){toast(err.message)}}
+async function createMediaBattle(e){e.preventDefault();const btn=document.getElementById('createBtn'),file=document.getElementById('mediaFile').files[0];if(!file)return;btn.disabled=true;btn.textContent='Preparando…';try{if(file.size>50*1024*1024)throw Error('El archivo supera 50 MB.');const mediaUrl=await uploadFile(file);const x=await api('/battles',{method:'POST',body:JSON.stringify({mode:currentMode,category:document.getElementById('battleCategory').value,title:document.getElementById('battleTitle').value,media_url_creator:mediaUrl})});toast('Batalla creada');openBattle(x.id)}catch(err){toast(err.message)}finally{btn.disabled=false;btn.textContent='Lanzar '+modeLabel(currentMode)}}
+const STORAGE_BUCKET='aura-media';
+async function uploadFile(file){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session)throw Error('Tu sesión no está disponible. Volvé a iniciar sesión.');
+  const ext=(file.name.match(/\.[a-zA-Z0-9]+$/)||[''])[0].toLowerCase();
+  const path=session.user.id+'/'+Date.now()+'_'+Math.random().toString(36).slice(2)+ext;
+  const {error}=await sb.storage.from(STORAGE_BUCKET).upload(path,file,{contentType:file.type||'application/octet-stream',upsert:false});
+  if(error){
+    console.error('Supabase Storage upload error:',error);
+    const raw=error.message||error.error||'error desconocido';
+    let hint='';
+    if(/bucket not found/i.test(raw))hint=' Revisá que el bucket se llame exactamente "aura-media" (sin mayúsculas, sin espacios) en Storage.';
+    else if(/row-level security|permission denied|not authorized|policy/i.test(raw))hint=' Revisá la policy de INSERT del bucket: debe incluir el rol "authenticated" y la condición bucket_id = \'aura-media\'.';
+    else if(/exceeded the maximum|payload too large|size/i.test(raw))hint=' El archivo puede superar el límite de tamaño configurado en el bucket (revisá "File size limit" en la configuración del bucket).';
+    else if(/mime type|content.type/i.test(raw))hint=' El bucket puede tener restringidos los tipos de archivo permitidos (revisá "Allowed MIME types" en la configuración del bucket).';
+    throw Error('No se pudo subir el archivo a Supabase Storage: '+raw+'.'+hint);
+  }
+  const {data:pub}=sb.storage.from(STORAGE_BUCKET).getPublicUrl(path);
+  if(!pub?.publicUrl)throw Error('No se pudo obtener la URL del archivo subido.');
+  return pub.publicUrl;
+}
+async function openBattle(id){show('battle');const box=document.getElementById('battleDetail');box.innerHTML='<button class="backbtn" onclick="backToFeed()"><span>←</span> Volver al feed</button><div class="empty">Cargando batalla…</div>';try{const b=await api('/battles/'+id);renderBattle(b)}catch(e){box.innerHTML='<button class="backbtn" onclick="backToFeed()"><span>←</span> Volver al feed</button><div class="card empty">'+esc(e.message)+'</div>'}}
+function backToFeed(){show('home')}
+function mediaHtml(url,mode){if(!url)return'<div style="aspect-ratio:9/16;border-radius:15px;background:#090c14;display:grid;place-items:center;color:var(--muted)">Sin participación</div>';if(mode==='photo')return`<img src="${esc(url)}" alt="Participación" oncontextmenu="return false;">`;if(mode==='audio')return`<div class="audio-box"><div style="font-size:2rem;margin-bottom:10px">🎙️</div><audio controls controlsList="nodownload" src="${esc(url)}"></audio></div>`;return`<video controls controlsList="nodownload" disablePictureInPicture playsinline preload="metadata" src="${esc(url)}" oncontextmenu="return false;"></video>`}
+function renderBattle(b){
+  const local=b.mode==='local';
+  const [pa,pb]=local?[b.local_a_name||b.local_participant_a,b.local_b_name||b.local_participant_b]:[b.creator_name||b.creator_id,b.opponent_name||b.opponent_id||'Esperando…'];
+  const a=+b.votes_creator||0,o=+b.votes_opponent||0,total=a+o,diff=Math.abs(a-o);
+  let action='';
+  if(local&&b.local_neutral&&b.creator_id===getUserId()&&total>=CONFIG.ARBITER_CLOSE_VOTES&&diff>=CONFIG.MIN_DIFF)
+    action='<button class="primary" onclick="arbiterClose(\''+b.id+'\')">⚖️ Cerrar batalla como árbitro</button>';
+  if(!local&&!b.opponent_id)
+    action='<button class="primary" onclick="joinMediaBattle(\''+b.id+'\')">⚔️ Unirme y presentar mi '+modeLabel(b.mode).replace(/^\S+ /,'').toLowerCase()+'</button>';
+  const timer=local?`<div class="timer">⏱️ ${timeLeft(b.local_closes_at)} restantes</div>`:'';
+  
+  const adminDeleteBtn = IS_ADMIN ? `<button class="danger" style="margin-top:10px" onclick="adminDeleteBattle('${b.id}')">🗑️ Eliminar batalla (Admin)</button>` : '';
+
+  document.getElementById('battleDetail').innerHTML=`<button class="backbtn" onclick="backToFeed()"><span>←</span> Volver al feed</button><div class="hero"><span class="badge">${local?'🏟️ Batalla local':modeLabel(b.mode)}</span><h1>${esc(b.title)}</h1><p>La comunidad decide.</p></div><div class="card">${local?'':`<div class="media-grid"><div>${mediaHtml(b.media_url_creator,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pa)}</small></div><div>${mediaHtml(b.media_url_opponent,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pb)}</small></div></div>`}<div class="players"><div class="player">${esc(pa)}<div class="score">${a}</div></div><div class="vs">VS</div><div class="player">${esc(pb)}<div class="score">${o}</div></div></div><div class="bar"><i style="width:${Math.round(a/Math.max(1,total)*100)}%"></i></div><div class="meta"><span>${total} votos · diferencia ${diff}</span>${timer}</div><div class="vote-grid" style="margin-top:14px"><button class="vote a" onclick="vote('${b.id}','${esc(local?b.local_participant_a:b.creator_id)}')">Votar ${esc(pa)}</button><button class="vote b" onclick="vote('${b.id}','${esc(local?b.local_participant_b:b.opponent_id||'')}')" ${pb==='Esperando…'?'disabled':''}>Votar ${esc(pb)}</button></div>${action}<p class="hint">Resolución: mínimo ${CONFIG.MIN_VOTES} votos y diferencia ${CONFIG.MIN_DIFF}. En local, el árbitro neutral puede cerrar desde ${CONFIG.ARBITER_CLOSE_VOTES} votos. A las 2 horas se resuelve automáticamente si se cumplen los mínimos; si no, se cancela sin repartir Aura.</p><button class="linkbtn" style="width:100%;margin-top:8px" onclick="reportBattle('${b.id}')">⚠️ Reportar contenido</button>${adminDeleteBtn}</div>`;
+}
+
+async function joinMediaBattle(id){try{const b=await api('/battles/'+id);if(!b||b.status!=='active')throw Error('La batalla no está activa.');const input=document.createElement('input');input.type='file';input.accept=b.mode==='video'?'video/*':b.mode==='audio'?'audio/*':'image/*';input.onchange=async()=>{const f=input.files[0];if(!f)return;try{if(f.size>50*1024*1024)throw Error('Máximo 50 MB.');toast('Subiendo respuesta…');const url=await uploadFile(f);await api('/battles/'+id+'/join',{method:'POST',body:JSON.stringify({media_url:url})});toast('¡Te uniste a la batalla!');openBattle(id)}catch(e){toast(e.message)}};input.click()}catch(e){toast(e.message)}}
+let currentBattleMode='video';
+async function vote(id,user){if(!user)return;try{const r=await api('/battles/'+id+'/vote',{method:'POST',body:JSON.stringify({voted_user_id:user})});toast(r.completed?'🏆 ¡Batalla finalizada!':'¡Voto registrado!');openBattle(id)}catch(e){toast(e.message)}}
+async function arbiterClose(id){try{await api('/battles/'+id+'/arbiter-close',{method:'POST'});toast('Batalla cerrada por el árbitro');openBattle(id)}catch(e){toast(e.message)}}
+async function reportBattle(id){const reason=prompt('Motivo del reporte:');if(!reason)return;try{const r=await api('/battles/'+id+'/report',{method:'POST',body:JSON.stringify({reason})});toast(r.message)}catch(e){toast(e.message)}}
+let searchTimer;async function searchLocal(){clearTimeout(searchTimer);const q=document.getElementById('localSearch').value.trim(),box=document.getElementById('localResults');if(q.length<2){box.innerHTML='<div class="empty">Escribí al menos 2 caracteres.</div>';return}searchTimer=setTimeout(async()=>{try{const rows=await api('/battles/local/search?q='+encodeURIComponent(q));box.innerHTML=rows.length?rows.map(b=>`<div class="local-result"><div class="grow"><b>${esc(b.title)}</b><div class="muted">${esc(b.local_a_name)} vs ${esc(b.local_b_name)}</div><div class="timer">${b.votes_creator+b.votes_opponent} votos · ${timeLeft(b.local_closes_at)}</div></div><button class="secondary" style="width:auto;padding:9px 11px" onclick="openBattle('${b.id}')">Abrir</button></div>`).join(''):'<div class="empty">No encontramos esa batalla.</div>'}catch(e){box.innerHTML='<div class="empty">No se pudo buscar.</div>'}},250)}
+function scanFor(target){window.scanTarget=target;const title=document.getElementById('scannerTitle');if(title)title.textContent='Escanear QR de usuario';startScanner()}
+function startEventScanner(){window.scanTarget=null;const title=document.getElementById('scannerTitle');if(title)title.textContent='Escanear QR de evento';startScanner()}
+async function startScanner(){const el=document.getElementById('scanner');el.classList.add('active');try{if(!navigator.mediaDevices?.getUserMedia)throw Error('camera');scanStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});const v=document.getElementById('scanVideo');v.srcObject=scanStream;scanTimer=setInterval(scanFrame,250)}catch(e){stopScanner();if(window.scanTarget){const id=prompt('No se pudo abrir la cámara. Pegá el ID del usuario:');if(id&&document.getElementById(window.scanTarget))document.getElementById(window.scanTarget).value=id}else{const id=prompt('No se pudo abrir la cámara. Pegá el ID del evento:');if(id)openTournament(id.trim().replace(/^aura:event:/,''))}}}
+function scanFrame(){const v=document.getElementById('scanVideo'),c=document.getElementById('scanCanvas');if(v.readyState<2)return;c.width=v.videoWidth;c.height=v.videoHeight;const ctx=c.getContext('2d');ctx.drawImage(v,0,0,c.width,c.height);const data=ctx.getImageData(0,0,c.width,c.height);const code=window.jsQR?jsQR(data.data,c.width,c.height):null;if(code){const raw=String(code.data||'');if(raw.startsWith('aura:event:')){const id=raw.slice(11);if(id){stopScanner();openTournament(id);toast('🏆 Evento identificado');return}}const val=raw.replace(/^aura:user:/,'');if(val&&window.scanTarget&&document.getElementById(window.scanTarget)){document.getElementById(window.scanTarget).value=val;stopScanner();toast('QR identificado')}}}
+function stopScanner(){clearInterval(scanTimer);scanTimer=null;if(scanStream)scanStream.getTracks().forEach(t=>t.stop());scanStream=null;document.getElementById('scanner').classList.remove('active')}
+let pendingShareToken='';
+function captureShareToken(){
+  const token=new URLSearchParams(location.search).get('ref');
+  if(token && /^[A-Za-z0-9_-]{20,100}$/.test(token)){
+    pendingShareToken=token;
+    localStorage.setItem('aura_pending_ref',token);
+    history.replaceState({},document.title,location.pathname);
+  }else if(!pendingShareToken){
+    pendingShareToken=localStorage.getItem('aura_pending_ref')||'';
+  }
+}
+async function claimPendingReferral(){
+  const token=pendingShareToken||localStorage.getItem('aura_pending_ref')||'';
+  if(!token)return;
+  try{
+    const r=await api('/share/claim',{method:'POST',body:JSON.stringify({token})});
+    if(r?.credited) toast(`🎉 ${r.message}`); else if(r?.verified_users) toast('Invitación verificada.');
+    localStorage.removeItem('aura_pending_ref');pendingShareToken='';
+  }catch(e){
+    if(e.status===400) localStorage.removeItem('aura_pending_ref');
+  }
+}
+
+async function loadShareStatus(){
+  const profile=document.getElementById('shareProfileData');
+  if(!profile)return;
+  try{
+    const d=await api('/share');
+    const count=Number(d.verified_users||0);
+    const milestones=d.milestones||[{users:5,points:5},{users:10,points:10},{users:25,points:25}];
+    const next=d.next_milestone||milestones.find(m=>m.users>count)||null;
+    
+    if(next){
+      const remaining=Math.max(0,next.users-count);
+      profile.innerHTML=`<b>${count} usuarios verificados</b> · ${d.total_aura_awarded||0} Aura obtenidos.<br>Te faltan <b>${remaining}</b> ${remaining===1?'usuario':'usuarios'} para recibir +${next.points} Aura.`;
+    }else{
+      profile.innerHTML=`<b>${count} usuarios verificados</b> · ${d.total_aura_awarded||0} Aura obtenidos.<br>🎉 ¡Alcanzaste todos los hitos de invitaciones!`;
+    }
+  }catch(e){
+    profile.textContent='Compartí tu enlace con amigos para sumar Aura extra.';
+  }
+}
+
+async function shareApp(){
+  try{
+    const d=await api('/share');
+    let url = d.share_url || '';
+    if(!url.startsWith('http')){
+      url = 'https://guillaumelk777-commits.github.io/aura-star-frontend/' + (url.startsWith('/') ? url.slice(1) : url);
+    }
+    const title='AURA STAR';
+    const text='Entrá a AURA STAR y descubrí quién tiene Aura. ⚡';
+    if(navigator.share){
+      await navigator.share({title, text, url});
+      toast('¡Enlace compartido!');
+    } else if(navigator.clipboard){
+      await navigator.clipboard.writeText(url);
+      toast('Enlace copiado al portapapeles.');
+    } else {
+      window.prompt('Copiá tu enlace de AURA STAR:', url);
+    }
+  } catch(e){
+    if(e.name !== 'AbortError'){ 
+      toast('Error al compartir enlace');
+    }
+  }
+}
+
+function openTournamentCreate(){
+  const box=document.getElementById('eventCreate'); box.style.display='block';
+  box.innerHTML=`<h3 style="margin-top:0">🏆 Nuevo torneo local</h3><p class="hint">Creación de torneos <b>gratuita</b> durante esta fase de prelanzamiento.</p>
+  <form id="tournamentForm"><input id="tTitle" class="search" maxlength="80" placeholder="Nombre del torneo" required><textarea id="tDesc" class="search" maxlength="300" placeholder="Descripción o temática (opcional)" rows="3"></textarea><select id="tCat" class="search"><option value="freestyle">🎤 Freestyle</option><option value="dance">💃 Dance</option><option value="singing">🎤 Canto</option><option value="music">🎸 Música</option><option value="gaming">🎮 Gaming</option><option value="sports">🏅 Deportes</option><option value="art">🎨 Arte</option><option value="other">✨ Otro</option></select><select id="tSize" class="search"><option value="4">4 participantes</option><option value="8">8 participantes</option></select><select id="tAge" class="search"><option value="18_plus">18 años o más</option><option value="13_17">13 a 17 años</option></select><div class="mode-info"><b>📍 Ubicación</b><br>Usaremos tu ubicación solo para descubrimiento aproximado. Nunca mostraremos coordenadas exactas al público.<br><button type="button" class="secondary" onclick="captureEventLocation()">📍 Usar mi ubicación</button><span id="geoStatus" class="hint"></span></div><div class="mode-info"><b>⚠️ Aviso para organizadores</b><br>AURA STAR es únicamente la herramienta digital de registro y votación. El organizador es responsable de la organización física, seguridad, permisos, lugar, participantes, horarios, logística y resolución de conflictos del evento. AURA STAR no organiza ni garantiza el desarrollo físico del evento.</div><label style="display:flex;gap:8px;align-items:flex-start;font-size:.78rem;margin:12px 0"><input id="tDisclaimer" type="checkbox" required style="margin-top:3px"><span>Acepto y entiendo el aviso de organizador.</span></label><button class="primary" type="submit">Crear torneo gratis</button></form>`;
+  document.getElementById('tournamentForm').onsubmit=createTournament;
+}
+let eventCoords={latitude:null,longitude:null};
+function captureEventLocation(){const st=document.getElementById('geoStatus');if(!navigator.geolocation){st.textContent=' GPS no disponible';return}st.textContent=' Buscando…';navigator.geolocation.getCurrentPosition(pos=>{eventCoords={latitude:pos.coords.latitude,longitude:pos.coords.longitude};st.textContent=' Ubicación lista.'},()=>{st.textContent=' No se pudo obtener ubicación.'},{enableHighAccuracy:false,timeout:8000,maximumAge:300000});}
+async function createTournament(e){e.preventDefault();try{const x=await api('/tournaments',{method:'POST',body:JSON.stringify({title:document.getElementById('tTitle').value,description:document.getElementById('tDesc').value,category:document.getElementById('tCat').value,size:Number(document.getElementById('tSize').value),age_bracket:document.getElementById('tAge').value,latitude:eventCoords.latitude,longitude:eventCoords.longitude,organizer_disclaimer_accepted:document.getElementById('tDisclaimer').checked})});toast('🏆 Torneo creado');document.getElementById('eventCreate').style.display='none';openTournament(x.id)}catch(e){toast(e.message)}}
+async function loadEvents(){const box=document.getElementById('eventsList');if(!box)return;box.innerHTML='<div class="empty">Buscando eventos…</div>';let qs='';if(navigator.geolocation){try{const pos=await new Promise((res,rej)=>navigator.geolocation.getCurrentPosition(res,rej,{enableHighAccuracy:false,timeout:4000,maximumAge:300000}));qs=`?lat=${pos.coords.latitude}&lng=${pos.coords.longitude}`}catch{}}try{const d=await api('/events/local'+qs);box.innerHTML=d.events.length?d.events.map(t=>`<div class="card"><div class="badge">${t.status==='live'?'🔴 EN VIVO':'📝 INSCRIPCIONES'}</div><h3>${esc(t.title)}</h3><p class="hint">${esc(t.category)} · ${t.size} participantes · ${t.participant_count}/${t.size} inscriptos · ${t.age_bracket==='13_17'?'13–17':'18+'}</p><p class="hint">📍 ${esc(t.proximity_label||'Evento local')} · Organiza @${esc(t.organizer_name||'organizador')}</p><button class="secondary" onclick="openTournament('${t.id}')">Ver evento</button></div>`).join(''):'<div class="empty">No hay eventos activos disponibles.</div>'}catch(e){box.innerHTML='<div class="empty">No se pudieron cargar los eventos.</div>'}}
+async function joinTournament(id){try{const r=await api('/tournaments/'+id+'/join',{method:'POST'});toast(r.started?'🏆 ¡Torneo iniciado!':'Inscripción realizada');openTournament(id)}catch(e){toast(e.message)}}
+async function openTournament(id){show('events');const box=document.getElementById('tournamentDetail');box.innerHTML='<div class="empty">Cargando torneo…</div>';try{const d=await api('/tournaments/'+id);const t=d.tournament;const rounds={};d.matches.forEach(m=>(rounds[m.round]??=[]).push(m));const bracket=Object.entries(rounds).map(([r,ms])=>`<div class="card"><h3>Ronda ${r}</h3>${ms.map(m=>`<div class="local-result"><div class="grow"><b>${esc(m.player_a_name||'Esperando…')} <span class="vs">VS</span> ${esc(m.player_b_name||'Esperando…')}</b><div class="muted">${m.status}${m.battle_id?' · votos '+(Number(m.votes_creator||0)+Number(m.votes_opponent||0)):''}</div></div>${m.battle_id?`<button class="secondary" style="width:auto" onclick="openBattle('${m.battle_id}')">Abrir</button>`:''}</div>`).join('')}</div>`).join('');const canJoin=t.status==='registration'&&d.participants.length<t.size&&!d.participants.some(p=>p.user_id===getUserId());box.innerHTML=`<div class="hero"><span class="badge">${t.status==='live'?'🔴 EN VIVO':t.status==='completed'?'🏆 FINALIZADO':'🏆 TORNEO LOCAL'}</span><h1>${esc(t.title)}</h1><p>${esc(t.description||'')} · ${t.size} participantes · ${t.age_bracket==='13_17'?'13–17':'18+'}</p></div><div class="card"><div class="qr" id="eventQr"></div><p class="hint" style="text-align:center">Mostrá este QR en el lugar para que el público entre al evento digital.</p>${canJoin?'<button class="primary" onclick="joinTournament(\''+id+'\')">⚔️ Inscribirme</button>':''}<p class="hint">🛡️ No se muestran coordenadas exactas. AURA STAR solo gestiona el registro y la votación digital.</p></div>${bracket||'<div class="empty">El bracket aparecerá al completar las inscripciones.</div>'}`;setTimeout(()=>{const q=document.getElementById('eventQr');if(q)new QRCode(q,{text:'aura:event:'+id,width:180,height:180,colorDark:'#f6c453',colorLight:'#080b12'})},30)}catch(e){box.innerHTML='<div class="empty">No se pudo cargar el torneo.</div>'}}
+
+async function loadRanking(){
+  const box=document.getElementById('ranking');
+  if(!box)return;
+  box.innerHTML='<div class="empty">Cargando ranking…</div>';
+
+  const normalizeRanking=(d)=>{
+    if(Array.isArray(d))return d;
+    if(Array.isArray(d?.ranking))return d.ranking;
+    if(Array.isArray(d?.data))return d.data;
+    if(Array.isArray(d?.users))return d.users;
+    return [];
+  };
+
+  const renderRanking=(rows)=>{
+    const valid=rows.filter(u=>u && (u.username||u.aura_points!==undefined));
+    box.innerHTML=valid.length?valid.map((u,i)=>`<div class="card rank"><div class="ranknum">#${i+1}</div><div class="rankavatar">${esc((u.username||'?')[0]).toUpperCase()}</div><div class="rankname">${esc(u.username||'Usuario')}<small>${u.battles_won||0} victorias</small></div><div class="aura">★ ${Number(u.aura_points||0)}</div></div>`).join(''):'<div class="empty">El ranking aparecerá cuando haya usuarios.</div>';
+  };
+
+  let lastError=null;
+  for(let attempt=1;attempt<=3;attempt++){
+    try{
+      const controller=new AbortController();
+      const timer=setTimeout(()=>controller.abort(),8000);
+      const r=await fetch(CONFIG.API+'/users/ranking?limit=50',{method:'GET',headers:{Accept:'application/json'},cache:'no-store',signal:controller.signal});
+      clearTimeout(timer);
+      const d=await r.json().catch(()=>null);
+      if(!r.ok)throw Error(d?.error||`No se pudo cargar el ranking (${r.status}).`);
+      const rows=normalizeRanking(d);
+      renderRanking(rows);
+      return;
+    }catch(e){
+      lastError=e;
+      console.error('loadRanking intento '+attempt,e);
+      if(attempt<3)await new Promise(r=>setTimeout(r,700*attempt));
+    }
+  }
+
+  try{
+    const d=await api('/users/ranking');
+    const rows=normalizeRanking(d);
+    renderRanking(rows);
+    return;
+  }catch(e){
+    console.error('loadRanking fallback autenticado',e);
+    lastError=e||lastError;
+  }
+
+  box.innerHTML=`<div class="empty">No se pudo cargar el ranking.<br><small>${esc(lastError?.message||'Error de conexión con el servidor')}</small><br><button class="secondary" style="margin-top:10px" onclick="loadRanking()">Reintentar</button></div>`;
+}
+
+const STORE_PACKAGES=[
+  {id:'starter',points:50,price:'$2.000 ARS'},
+  {id:'plus',points:120,price:'$4.500 ARS'},
+  {id:'pro',points:300,price:'$10.000 ARS'},
+  {id:'mega',points:700,price:'$22.000 ARS'}
+];
+
+function loadStore(){
+  const box=document.getElementById('storePackages');
+  if(!box)return;
+  box.innerHTML=STORE_PACKAGES.map(x=>`
+    <div class="store-item">
+      <b>✦ ${x.points} Estrellas Aura</b>
+      <div class="price">${x.price}</div>
+      <button class="primary" style="margin-top:0" onclick="startPurchase('${x.id}')">Comprar</button>
+    </div>
+  `).join('');
+}
+
+async function startPurchase(packageId){
+  try{
+    toast('Generando link de pago…');
+    const r=await api('/payments/create-checkout',{
+      method:'POST',
+      body:JSON.stringify({package_id:packageId})
+    });
+    if(r?.init_point){
+      window.location.href=r.init_point;
+    }else{
+      throw Error('No se recibió la URL de pago.');
+    }
+  }catch(e){
+    toast(e.message||'No se pudo iniciar la compra.');
+  }
 }
 
 function openGiftModal() { document.getElementById('giftModal').classList.add('active'); }
@@ -186,7 +780,7 @@ async function sendGiftStars(e) {
 }
 
 async function loadProfile(){
-  const box=document.getElementById('profileCard'), data=document.getElementById('profileData');
+  const box=document.getElementById('profileCard'),data=document.getElementById('profileData');
   try{
     const u=await api('/users/'+encodeURIComponent(getUserId()));
     box.innerHTML=`
@@ -203,32 +797,400 @@ async function loadProfile(){
       </div>
       <button class="primary" onclick="show('store')" style="margin-top:8px">⭐ Comprar Estrellas Aura</button>
     `;
-    data.innerHTML=`<div class="card"><div class="stats"><div class="stat"><b>${u.battles_won||0}</b><span>Victorias</span></div><div class="stat"><b>${u.battles_played||0}</b><span>Batallas</span></div></div><button class="secondary" onclick="signOut()" style="margin-top:12px">Cerrar sesión</button></div>`;
+    data.innerHTML=`<div class="card"><div class="stats"><div class="stat"><b>${u.battles_won||0}</b><span>Victorias</span></div><div class="stat"><b>${u.battles_played||0}</b><span>Batallas</span></div></div><p class="hint">Tu QR identifica tu cuenta autenticada para batallas locales y regalos.</p><button class="secondary" onclick="signOut()">Cerrar sesión</button><button class="danger" onclick="deleteAccount()">Eliminar mi cuenta</button></div>`;
     setTimeout(showQr,50);
-  }catch(e){ box.innerHTML='<div class="empty">No se pudo cargar el perfil.</div>'; }
+    loadAdminSection();
+  }catch(e){box.innerHTML='<div class="empty">No se pudo cargar tu perfil.</div>'}
 }
 
-function showQr(){const q=document.getElementById('myQr');if(q){q.innerHTML='';new QRCode(q,{text:'aura:user:'+getUserId(),width:180,height:180,colorDark:'#000',colorLight:'#fff'});}}
-async function signOut(){await sb.auth.signOut();location.reload();}
+function showQr(){const q=document.getElementById('myQr');if(!q)return;q.innerHTML='';if(window.QRCode)new QRCode(q,{text:'aura:user:'+getUserId(),width:180,height:180,colorDark:'#000',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.M})}
+async function signOut(){await sb.auth.signOut();location.reload()}
+async function deleteAccount(){if(!confirm('¿Eliminar definitivamente tu cuenta?'))return;try{await api('/users/'+encodeURIComponent(CURRENT_USER.id),{method:'DELETE'});await sb.auth.signOut();localStorage.clear();location.reload()}catch(e){toast(e.message)}}
 
-// FUNCIONES BASE DE LA APP
-function show(v){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(v).classList.add('active');if(v==='profile')loadProfile();if(v==='store')loadStore();}
-const STORE_PACKAGES=[{id:'starter',points:50,price:'$2.000 ARS'},{id:'plus',points:120,price:'$4.500 ARS'},{id:'pro',points:300,price:'$10.000 ARS'},{id:'mega',points:700,price:'$22.000 ARS'}];
-function loadStore(){const b=document.getElementById('storePackages');if(b)b.innerHTML=STORE_PACKAGES.map(x=>`<div class="store-item"><b>✦ ${x.points} Estrellas Aura</b><div class="price">${x.price}</div><button class="primary" style="margin-top:0" onclick="startPurchase('${x.id}')">Comprar</button></div>`).join('');}
-async function startPurchase(p){try{toast('Generando pago…');const r=await api('/payments/create-checkout',{method:'POST',body:JSON.stringify({package_id:p})});if(r?.init_point)window.location.href=r.init_point;}catch(e){toast('Error al iniciar compra.');}}
+async function loadAdminSection(){
+  const box=document.getElementById('adminSection');
+  if(!box)return;
+  try{
+    const u=await api('/users/'+encodeURIComponent(getUserId()));
+    const allowed=!!(u.is_admin||u.moderation_role==='admin');
+    box.style.display=allowed?'block':'none';
+    if(allowed){
+      try{
+        const s=await api('/admin/summary');
+        document.getElementById('adminSummary').innerHTML=`👥 ${s.users} usuarios · ⚡ ${s.active_battles} batallas activas · 🎁 +${s.aura_granted_today} Aura otorgada hoy`;
+      }catch(_){}
+    }
+  }catch(e){box.style.display='none'}
+}
+let adminSearchTimer;
+async function searchAdminUsers(){
+  clearTimeout(adminSearchTimer);
+  const q=document.getElementById('adminSearchUser')?.value.trim(),box=document.getElementById('adminUserResults');
+  if(!box)return;
+  if(q.length<2){box.innerHTML='<div class="empty">Escribí al menos 2 caracteres.</div>';return}
+  adminSearchTimer=setTimeout(async()=>{
+    try{
+      const users=await api('/admin/users/search?q='+encodeURIComponent(q));
+      box.innerHTML=users.length?users.map(u=>`<div class="admin-result"><b>@${esc(u.username||'sin_nombre')}</b><div class="admin-meta">Aura: ${u.aura_points||0} · Estrellas Aura: ${u.giftable_points||0} · ${u.is_organizer?'🎪 Organizador · ':''}${u.is_test_account?'🧪 Cuenta de prueba':'👤 Cuenta real'} · ${u.is_banned?'🔴 Suspendida':'🟢 Activa'}</div><div class="admin-actions"><button class="secondary" onclick="adminGrant('${esc(u.id)}','aura',10)">+10 Aura</button><button class="secondary" onclick="adminGrant('${esc(u.id)}','aura',50)">+50 Aura</button><button class="secondary" onclick="adminGrant('${esc(u.id)}','giftable',10)">+10 Estrellas</button><button class="${u.is_organizer?'danger':'secondary'}" onclick="adminSetOrganizer('${esc(u.id)}',${u.is_organizer?'false':'true'})">${u.is_organizer?'🚫 Quitar organizador':'🎪 Hacer organizador'}</button>${u.is_test_account?`<button class="danger" onclick="adminDeleteTest('${esc(u.id)}')">🗑️ Eliminar prueba</button>`:`<button class="secondary" onclick="adminMarkTest('${esc(u.id)}')">🧪 Marcar prueba</button><button class="danger" onclick="adminSuspend('${esc(u.id)}')">⚠️ Suspender</button>`}</div></div>`).join(''):'<div class="empty">No encontramos usuarios.</div>';
+    }catch(e){box.innerHTML='<div class="empty">'+esc(e.message)+'</div>'}
+  },300);
+}
+async function adminSetOrganizer(userId,enabled){
+  const action=enabled?'designar como ORGANIZADOR':'quitar el rol de ORGANIZADOR';
+  if(!confirm(`¿Querés ${action}?`))return;
+  try{
+    await api('/admin/set-organizer',{method:'POST',body:JSON.stringify({target_user_id:userId,enabled})});
+    toast(enabled?'🎪 Usuario designado como organizador':'🚫 Rol de organizador retirado');
+    searchAdminUsers();
+  }catch(e){toast(e.message)}
+}
+async function adminGrant(userId,type,amount){
+  const reason=prompt(`Motivo para otorgar ${amount} ${type==='aura'?'Aura':'Estrellas Aura'}:`);
+  if(reason===null)return;
+  try{
+    await api('/admin/grant-points',{method:'POST',body:JSON.stringify({target_user_id:userId,type,points:amount,reason:reason.trim()||'Premio / promoción'})});
+    toast(`✦ +${amount} ${type==='aura'?'Aura':'Estrellas Aura'}`);
+    searchAdminUsers();
+  }catch(e){toast(e.message)}
+}
+async function adminMarkTest(userId){
+  if(!confirm('¿Marcar esta cuenta como CUENTA DE PRUEBA? Solo una cuenta marcada por vos podrá eliminarse desde este panel.'))return;
+  try{
+    await api('/admin/mark-test-user',{method:'POST',body:JSON.stringify({target_user_id:userId})});
+    toast('🧪 Cuenta marcada como prueba');
+    searchAdminUsers();
+  }catch(e){toast(e.message)}
+}
+async function adminSuspend(userId){
+  const reason=prompt('Motivo de suspensión:');
+  if(reason===null)return;
+  try{
+    await api('/admin/suspend-user',{method:'POST',body:JSON.stringify({target_user_id:userId,reason:reason.trim()||'Moderación'})});
+    toast('Usuario suspendido');
+    searchAdminUsers();
+  }catch(e){toast(e.message)}
+}
+async function adminDeleteTest(userId){
+  if(!confirm('Esta cuenta está marcada como PRUEBA. ¿Eliminarla y cancelar sus participaciones activas?'))return;
+  try{
+    await api('/admin/delete-test-user',{method:'POST',body:JSON.stringify({target_user_id:userId})});
+    toast('🗑️ Cuenta de prueba eliminada');
+    searchAdminUsers();
+  }catch(e){toast(e.message)}
+}
+async function adminDeleteBattle(battleId) {
+  if (!confirm('¿Seguro que querés eliminar definitivamente esta batalla de prueba?')) return;
+  try {
+    const r = await api('/admin/battles/' + battleId, { method: 'DELETE' });
+    toast(r.message || 'Batalla borrada');
+    show('home');
+    loadBattles(false);
+  } catch (e) {
+    toast(e.message || 'No se pudo borrar la batalla');
+  }
+}
 
-// RESTO DEL CODIGO COMPLETO EN FRONTEND
-function battlePeople(b){return b.mode==='local'?[b.local_a_name||b.local_participant_a,b.local_b_name||b.local_participant_b]:[b.creator_name||b.creator_id,b.opponent_name||b.opponent_id||'Esperando…']}
-function feedMedia(url,mode,name){if(!url)return `<div class="feed-media"><div style="aspect-ratio:9/14;border-radius:16px;background:#090c14;display:grid;place-items:center;color:var(--muted);border:1px solid var(--border)">Esperando…</div><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='photo')return `<div class="feed-media"><img src="${esc(url)}" alt="Participación de ${esc(name)}"><small class="feed-media-name">${esc(name)}</small></div>`;return `<div class="feed-media"><video playsinline controlsList="nodownload" preload="metadata" src="${esc(url)}"></video><small class="feed-media-name">${esc(name)}</small></div>`}
-function battleCard(b){const [aName,oName]=battlePeople(b);const a=+b.votes_creator||0,o=+b.votes_opponent||0,total=a+o;const p=total>0?Math.round((a/total)*100):50;const local=b.mode==='local';const targetA=local?b.local_participant_a:b.creator_id;const targetB=local?b.local_participant_b:b.opponent_id;const hasOpponent=local?Boolean(targetB):Boolean(b.opponent_id&&b.media_url_opponent);const disableVoting=!hasOpponent||b.status!=='active';const media=!local?`<div class="feed-media-grid">${feedMedia(b.media_url_creator,b.mode,aName)}${feedMedia(b.media_url_opponent,b.mode,oName)}</div>`:'';return `<div class="card battle-card"><div class="battle-title">${esc(b.title)}</div>${media}<div class="players"><div class="player"><div>${esc(aName)}</div><div class="score">${a}</div></div><div class="vs">VS</div><div class="player"><div>${esc(oName)}</div><div class="score">${o}</div></div></div><div class="bar"><i style="width:${p}%"></i></div><div class="vote-grid" style="margin-top:12px"><button class="vote a" onclick="voteDirect(event,'${b.id}','${esc(targetA)}')" ${disableVoting?'disabled':''}>⚡ Votar</button><button class="vote b" onclick="voteDirect(event,'${b.id}','${esc(targetB||'')}')" ${disableVoting?'disabled':''}>⚡ Votar</button></div>${!hasOpponent?'<div class="hint" style="text-align:center;margin-top:6px;color:var(--gold)">⏳ Esperando oponente para abrir votación.</div>':''}</div>`}
-async function voteDirect(e,id,target){if(e)e.stopPropagation();try{const r=await api('/battles/'+id+'/vote',{method:'POST',body:JSON.stringify({voted_user_id:target})});toast(r.completed?'🏆 ¡Batalla finalizada!':'¡Voto registrado!');loadBattles(true);}catch(err){toast(err.message);}}
-async function loadBattles(isSilent=false){try{const r=await fetch(CONFIG.API+'/battles?limit=30');const d=await r.json();document.getElementById('battles').innerHTML=(Array.isArray(d)?d:[]).map(battleCard).join('');}catch(e){}}
-async function handleAuth(){const {data}=await sb.auth.getSession();CURRENT_USER=data.session?.user||null;if(CURRENT_USER){document.getElementById('login').classList.remove('active');loadBattles();}else{document.getElementById('login').classList.add('active');}}
-sb.auth.onAuthStateChange((event,session)=>{CURRENT_USER=session?.user||null;if(CURRENT_USER){document.getElementById('login').classList.remove('active');loadBattles();}});
-function startScanner(){document.getElementById('scanner').classList.add('active');try{navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}).then(s=>{scanStream=s;document.getElementById('scanVideo').srcObject=s;scanTimer=setInterval(scanFrame,250)});}catch(e){}}
-function scanFrame(){const v=document.getElementById('scanVideo'),c=document.getElementById('scanCanvas');if(v.readyState<2)return;c.width=v.videoWidth;c.height=v.videoHeight;const ctx=c.getContext('2d');ctx.drawImage(v,0,0,c.width,c.height);const code=jsQR(ctx.getImageData(0,0,c.width,c.height).data,c.width,c.height);if(code){const val=String(code.data||'').replace(/^aura:user:/,'');if(val&&window.scanTarget&&document.getElementById(window.scanTarget)){document.getElementById(window.scanTarget).value=val;stopScanner();toast('QR identificado');}}}
-function stopScanner(){clearInterval(scanTimer);if(scanStream)scanStream.getTracks().forEach(t=>t.stop());document.getElementById('scanner').classList.remove('active');}
+const AURA_TEST_QUESTIONS=[
+  {q:'Cuando aparece un desafío inesperado, ¿qué hacés primero?',o:[
+    ['Voy de frente.','Me gusta actuar rápido.'],
+    ['Observo y pienso.','Prefiero entender antes de moverme.'],
+    ['Busco una alternativa.','Siempre intento encontrar otro camino.'],
+    ['Me adapto sobre la marcha.','La presión me activa.']
+  ]},
+  {q:'¿Qué situación te representa más?',o:[
+    ['Ser el centro de atención.','Disfruto mostrar lo que hago.'],
+    ['Sorprender sin avisar.','Me gusta lo inesperado.'],
+    ['Ayudar a alguien a destacar.','Prefiero potenciar a otros.'],
+    ['Competir hasta el final.','No me gusta rendirme.']
+  ]},
+  {q:'Si tenés que elegir una energía para tu día, ¿cuál preferís?',o:[
+    ['Intensa.','Mucho movimiento y acción.'],
+    ['Tranquila.','Calma, foco y control.'],
+    ['Creativa.','Ideas, música y cosas nuevas.'],
+    ['Social.','Personas, risas y conexión.']
+  ]},
+  {q:'¿Qué hacés cuando algo no sale como esperabas?',o:[
+    ['Lo intento de nuevo.','No me gusta dejarlo a medias.'],
+    ['Cambio de estrategia.','Si no funciona, pruebo otra cosa.'],
+    ['Me tomo un momento.','Prefiero recuperar el foco.'],
+    ['Me río y sigo.','No dejo que me corte la energía.']
+  ]},
+  {q:'Elegí la frase que más se parece a vos.',o:[
+    ['“Voy a intentarlo.”','Aunque no sepa cómo todavía.'],
+    ['“Tengo una idea.”','Siempre se me ocurre algo.'],
+    ['“Vamos juntos.”','La energía compartida es mejor.'],
+    ['“Mirá esto.”','Me gusta sorprender.']
+  ]}
+];
 
+let auraTestState={index:0,answers:[],cameraWanted:false,cameraStream:null,visualDone:false,submitting:false};
+
+function auraTestCompleted(u){
+  return !!(u && (u.aura_test_completed===true || u.aura_test_completed==='true' || Number(u.aura_test_completed)===1));
+}
+
+function openAuraTest(){
+  const el=document.getElementById('auraTest');
+  if(!el)return;
+  auraTestState={index:0,answers:[],cameraWanted:false,cameraStream:null,visualDone:false,submitting:false};
+  document.getElementById('auraTestIntro').classList.remove('hidden');
+  document.getElementById('auraTestQuestion').classList.add('hidden');
+  document.getElementById('auraCameraStage').classList.add('hidden');
+  document.getElementById('auraCalculating').classList.remove('active');
+  document.getElementById('auraResult').classList.remove('active');
+  updateAuraTestProgress(0);
+  el.classList.add('active');
+}
+
+function closeAuraTest(){
+  stopAuraCamera();
+  document.getElementById('auraTest')?.classList.remove('active');
+}
+
+function updateAuraTestProgress(step){
+  const pct=step<=0?0:Math.min(100,(step/5)*100);
+  document.getElementById('auraTestProgress').style.width=(pct||20)+'%';
+  document.getElementById('auraTestStep').textContent=step<5?`Pregunta ${Math.min(step+1,5)} de 5`:'Lectura final';
+}
+
+function beginAuraTest(){
+  document.getElementById('auraTestIntro').classList.add('hidden');
+  auraTestState.index=0;
+  renderAuraQuestion();
+}
+
+function renderAuraQuestion(){
+  const q=AURA_TEST_QUESTIONS[auraTestState.index];
+  const box=document.getElementById('auraTestQuestion');
+  updateAuraTestProgress(auraTestState.index);
+  box.classList.remove('hidden');
+  box.innerHTML=`<div class="aura-test-card">
+    <div class="muted" style="margin-bottom:8px">PREGUNTA ${auraTestState.index+1} / 5</div>
+    <div class="aura-question">${esc(q.q)}</div>
+    <div class="aura-options">${q.o.map((x,i)=>`<button class="aura-option" onclick="selectAuraAnswer(${i})"><b>${esc(x[0])}</b><span>${esc(x[1])}</span></button>`).join('')}</div>
+  </div>`;
+}
+
+function selectAuraAnswer(i){
+  auraTestState.answers[auraTestState.index]=i;
+  if(auraTestState.index<4){
+    auraTestState.index++;
+    renderAuraQuestion();
+  }else{
+    document.getElementById('auraTestQuestion').classList.add('hidden');
+    showAuraCameraChoice();
+  }
+}
+
+function showAuraCameraChoice(){
+  updateAuraTestProgress(5);
+  const box=document.getElementById('auraCameraStage');
+  box.classList.remove('hidden');
+  box.innerHTML=`<div class="aura-test-card">
+    <div style="font-size:2rem;margin-bottom:8px">📷</div>
+    <h2 style="margin:0 0 8px">Activá la cámara</h2>
+    <p class="hint" style="margin:0">Podés usar la cámara para disfrutar la experiencia visual de lectura de Aura. No guardamos tu imagen y el puntaje no se calcula a partir de tu rostro.</p>
+    <div class="aura-camera-choice">
+      <button class="primary" onclick="enableAuraCamera()">📷 Activar cámara</button>
+      <button class="secondary" onclick="skipAuraCamera()">Continuar sin cámara</button>
+    </div>
+  </div>`;
+}
+
+async function enableAuraCamera(){
+  auraTestState.cameraWanted=true;
+  const box=document.getElementById('auraCameraStage');
+  try{
+    if(!navigator.mediaDevices?.getUserMedia)throw Error('Este navegador no permite cámara.');
+    const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});
+    auraTestState.cameraStream=stream;
+    box.innerHTML=`<div class="aura-test-card">
+      <div class="aura-camera">
+        <video id="auraCameraVideo" autoplay playsinline muted></video>
+        <div class="aura-scanline"></div>
+        <div id="auraScanLabel" class="aura-scan-label">Calibrando experiencia…</div>
+      </div>
+      <p class="aura-camera-note">La cámara aporta el efecto visual de la experiencia. El puntaje no se obtiene de tu rostro ni de datos biométricos.</p>
+      <button id="auraCameraContinue" class="primary" onclick="finishAuraVisualStep()">Continuar</button>
+    </div>`;
+    const video=document.getElementById('auraCameraVideo');
+    video.srcObject=stream;
+    const labels=['Calibrando experiencia…','Sincronizando respuestas…','Preparando lectura…','Casi listo…'];
+    let n=0;
+    const timer=setInterval(()=>{
+      if(!document.getElementById('auraCameraStage')?.classList.contains('hidden') && document.getElementById('auraScanLabel')){
+        document.getElementById('auraScanLabel').textContent=labels[n++%labels.length];
+      }else clearInterval(timer);
+    },850);
+  }catch(e){
+    toast('No pudimos abrir la cámara. Podés continuar sin ella.');
+    skipAuraCamera();
+  }
+}
+
+function skipAuraCamera(){
+  auraTestState.cameraWanted=false;
+  stopAuraCamera();
+  finishAuraVisualStep();
+}
+
+function finishAuraVisualStep(){
+  auraTestState.visualDone=true;
+  stopAuraCamera();
+  document.getElementById('auraCameraStage').classList.add('hidden');
+  calculateAndSubmitAuraTest();
+}
+
+function stopAuraCamera(){
+  if(auraTestState.cameraStream){
+    auraTestState.cameraStream.getTracks().forEach(t=>t.stop());
+    auraTestState.cameraStream=null;
+  }
+  const v=document.getElementById('auraCameraVideo');
+  if(v)v.srcObject=null;
+}
+
+function auraRangeFromAnswers(){
+  const weights=[0,0,0,0];
+  auraTestState.answers.forEach((a,i)=>{
+    const base=[1,3,2,4][i];
+    weights[a]=(weights[a]||0)+base;
+  });
+  const total=weights.reduce((a,b)=>a+b,0)||1;
+  const dominant=weights.indexOf(Math.max(...weights));
+  const spread=[0,4,8,12][dominant];
+  const normalized=Math.round((weights[dominant]/total)*25);
+  const min=Math.max(20,20+normalized+spread);
+  const max=Math.min(100,min+28);
+  return [Math.min(min,max),Math.max(min,max)];
+}
+
+async function calculateAndSubmitAuraTest(){
+  if(auraTestState.submitting) return;
+  auraTestState.submitting = true;
+  
+  const calcEl = document.getElementById('auraCalculating');
+  if(calcEl) calcEl.classList.add('active');
+  
+  const stepEl = document.getElementById('auraTestStep');
+  if(stepEl) stepEl.textContent = 'Lectura final';
+  
+  const texts = [
+    ['Conectando con tu Aura…', 'Interpretando tus respuestas…'],
+    ['Sincronizando energía…', 'Combinando tu perfil con la lectura inicial…'],
+    ['Determinando intensidad…', 'Preparando tu resultado…'],
+    ['Lectura completa.', 'Revelando tu Aura…']
+  ];
+  
+  for(const [title, text] of texts){
+    const t = document.getElementById('auraCalcTitle'), p = document.getElementById('auraCalcText');
+    if(t) t.textContent = title; 
+    if(p) p.textContent = text;
+    await new Promise(r => setTimeout(r, 500));
+  }
+  
+  try {
+    const [rangeMin, rangeMax] = auraRangeFromAnswers();
+    const r = await api('/users/aura-test', {
+      method: 'POST',
+      body: JSON.stringify({
+        answers: auraTestState.answers,
+        camera_used: !!auraTestState.cameraWanted,
+        score_min: rangeMin,
+        score_max: rangeMax
+      })
+    });
+    
+    if(calcEl) calcEl.classList.remove('active');
+    
+    const resEl = document.getElementById('auraResult');
+    if(resEl) resEl.classList.add('active');
+    
+    const numEl = document.getElementById('auraResultNumber');
+    if(numEl) numEl.textContent = r.credited_aura || 50;
+    
+    const earnEl = document.getElementById('auraEarned');
+    if(earnEl) earnEl.textContent = `+${r.credited_aura || 50} Aura inicial`;
+    
+    try { localStorage.setItem('aura_test_completed_' + getUserId(), '1'); } catch(_) {}
+    updateAuraTestProgress(5);
+  } catch(e) {
+    if(calcEl) calcEl.classList.remove('active');
+    auraTestState.submitting = false;
+    
+    if(e.status === 409 || /ya realizaste|already/i.test(e.message || '')) {
+      toast('Ya habías completado tu test inicial.');
+      closeAuraTest();
+    } else {
+      toast(e.message || 'Error al guardar test.');
+      closeAuraTest();
+    }
+  }
+}
+
+async function maybeShowAuraTest(u){
+  if(!CURRENT_USER || auraTestCompleted(u))return;
+  setTimeout(()=>openAuraTest(),450);
+}
+
+setInterval(()=>{
+  if(document.getElementById('home').classList.contains('active') && CURRENT_USER){
+    loadBattles(true);
+  }
+}, 30000);
+
+renderCreate();
 handleAuth();
 </script>
+
+<div id="auraTest" class="aura-test" aria-modal="true" role="dialog">
+  <div class="aura-test-inner">
+    <div class="aura-test-top">
+      <div class="brand"><span class="brand-icon"></span><div class="logo">AURA STAR</div></div>
+      <span id="auraTestStep" class="aura-test-step">Test inicial</span>
+    </div>
+    <div class="aura-test-progress"><i id="auraTestProgress"></i></div>
+
+    <div id="auraTestIntro">
+      <h1 class="aura-test-title">✨ Descubrí tu Aura inicial</h1>
+      <p class="aura-test-subtitle">Respondé 5 preguntas y viví una breve experiencia de lectura de Aura. Tu resultado inicial estará entre <b>20 y 100 Aura</b>.</p>
+      <div class="aura-test-card">
+        <div style="font-size:2rem;margin-bottom:8px">◈</div>
+        <h2 style="margin:0 0 8px">¿Listo para descubrirla?</h2>
+        <p class="hint" style="margin:0">La cámara es opcional. Si la activás, se utiliza únicamente para crear la experiencia visual del test y <b>no guardamos tu imagen</b>.</p>
+        <button class="primary" style="margin-top:18px" onclick="beginAuraTest()">Comenzar test</button>
+      </div>
+    </div>
+
+    <div id="auraTestQuestion" class="hidden"></div>
+
+    <div id="auraCameraStage" class="hidden">
+      <div class="aura-test-card">
+        <div class="aura-camera">
+          <video id="auraCameraVideo" autoplay playsinline muted></video>
+          <div class="aura-scanline"></div>
+          <div id="auraScanLabel" class="aura-scan-label">Preparando experiencia…</div>
+        </div>
+        <p class="aura-camera-note">La cámara aporta el efecto visual de la experiencia. El puntaje no se obtiene de tu rostro ni de datos biométricos.</p>
+        <button id="auraCameraContinue" class="primary" onclick="finishAuraVisualStep()">Continuar</button>
+        <button class="secondary" onclick="skipAuraCamera()">Continuar sin cámara</button>
+      </div>
+    </div>
+
+    <div id="auraCalculating" class="aura-calculating">
+      <div class="aura-orbit"></div>
+      <h2 id="auraCalcTitle" style="margin:0 0 7px">Conectando con tu Aura…</h2>
+      <p id="auraCalcText" class="hint">Interpretando tus respuestas…</p>
+    </div>
+
+    <div id="auraResult" class="aura-result">
+      <div class="aura-test-card">
+        <div class="aura-result-glow"><div><div id="auraResultNumber" class="aura-result-number">--</div><div class="aura-result-label">Aura</div></div></div>
+        <div id="auraEarned" class="aura-earned">+0 Aura inicial</div>
+        <p class="aura-result-copy">Tu lectura inicial está lista. Este resultado se incorpora a tu Aura y solo puede obtenerse una vez.</p>
+        <button class="primary" onclick="closeAuraTest()">Entrar a AURA STAR</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body></html>
