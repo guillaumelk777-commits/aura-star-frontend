@@ -317,10 +317,10 @@ function battleCard(b){
 
       <div class="vote-grid" style="margin-top:12px">
         <button class="vote a" style="padding:10px;font-size:.8rem" onclick="voteDirect(event, '${b.id}', '${esc(targetA)}')">
-          ⚡ Votar ${esc(aName.split(' ')[0])}
+          ⚡ Votar
         </button>
         <button class="vote b" style="padding:10px;font-size:.8rem" onclick="voteDirect(event, '${b.id}', '${esc(targetB || '')}')" ${disableB ? 'disabled' : ''}>
-          ⚡ Votar ${esc(oName.split(' ')[0])}
+          ⚡ Votar
         </button>
       </div>
 
