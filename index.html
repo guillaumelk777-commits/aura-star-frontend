@@ -7,13 +7,14 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
-<!-- MODELO LIVIANO PARA PROCESAMIENTO DE SILUETA DE KI -->
+<!-- TENSORFLOW.JS + BODYPIX PARA PROCESAMIENTO DE GALERÍA -->
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.2.0/dist/body-pix.min.js"></script>
 
 <style>
 :root{--bg:#06070d;--surface:#0e111b;--surface2:#151a28;--purple:#8b5cf6;--purple2:#a78bfa;--gold:#fbbf24;--green:#22c55e;--red:#ef4444;--text:#f8fafc;--muted:#94a3b8;--border:rgba(255,255,255,.09);--glow:rgba(139,92,246,.3);--goldglow:rgba(251,191,36,.24)}
-*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:radial-gradient(circle at 50% 0,rgba(139,92,246,.22),transparent 42%),radial-gradient(circle at 100% 50%,rgba(139,92,246,.08),transparent 35%),var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button{border:0;cursor:pointer}.app{max-width:480px;margin:auto;min-height:100vh;padding-bottom:92px}header{padding:15px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:rgba(6,7,13,.82);backdrop-filter:blur(18px);z-index:20;border-bottom:1px solid var(--border)}.brand{display:flex;align-items:center;gap:10px}.brand-icon{width:32px;height:32px;background:linear-gradient(135deg,#fff,var(--purple));clip-path:polygon(50% 0,65% 35%,100% 50%,65% 65%,50% 100%,35% 65%,0 50%,35% 35%);filter:drop-shadow(0 0 9px var(--glow))}.logo{font-weight:900;font-size:1.38rem;letter-spacing:.6px;background:linear-gradient(135deg,#fff,var(--purple2));-webkit-background-clip:text;color:transparent}.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--surface2),#24164a);border:1px solid rgba(167,139,250,.6);font-weight:900;color:#fff}.view{display:none;animation:in .25s ease}.view.active{display:block}@keyframes in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}main{padding:10px 16px}.hero{padding:22px 3px 16px}.hero h1{font-size:1.8rem;line-height:1.06;margin:0 0 8px;font-weight:900;letter-spacing:-.8px}.hero p{margin:0;color:var(--muted);font-size:.9rem}.muted{color:var(--muted);font-size:.78rem}.card{background:linear-gradient(145deg,rgba(20,25,39,.9),rgba(10,13,22,.94));border:1px solid var(--border);border-radius:22px;padding:17px;margin:12px 0;box-shadow:0 18px 38px rgba(0,0,0,.28);position:relative;overflow:hidden}.card:before{content:"";position:absolute;left:10%;right:10%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent)}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.action{padding:17px 15px;border-radius:18px;background:var(--surface);border:1px solid var(--border);color:var(--text);text-align:left}.action:active,.battle-card:active{transform:scale(.98)}.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(139,92,246,.13);color:#c4b5fd;border:1px solid rgba(139,92,246,.2);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.4px}.battle-title{font-size:1.15rem;font-weight:900;margin:10px 0;color:#fff9e8}
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:radial-gradient(circle at 50% 0,rgba(139,92,246,.22),transparent 42%),radial-gradient(circle at 100% 50%,rgba(139,92,246,.08),transparent 35%),var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button{border:0;cursor:pointer}.app{max-width:480px;margin:auto;min-height:100vh;padding-bottom:92px}header{padding:15px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:rgba(6,7,13,.82);backdrop-filter:blur(18px);z-index:20;border-bottom:1px solid var(--border)}.brand{display:flex;align-items:center;gap:10px}.brand-icon{width:32px;height:32px;background:linear-gradient(135deg,#fff,var(--purple));clip-path:polygon(50% 0,65% 35%,100% 50%,65% 65%,50% 100%,35% 65%,0 50%,35% 35%);filter:drop-shadow(0 0 9px var(--glow))}.logo{font-weight:900;font-size:1.38rem;letter-spacing:.6px;background:linear-gradient(135deg,#fff,var(--purple2));-webkit-background-clip:text;color:transparent}.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--surface2),#24164a);border:1px solid rgba(167,139,250,.6);font-weight:900;color:#fff}.view{display:none;animation:in .25s ease}.view.active{display:block}@keyframes in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}main{padding:10px 16px}.hero{padding:22px 3px 16px}.hero h1{font-size:2rem;line-height:1.06;margin:0 0 8px;font-weight:900;letter-spacing:-.8px}.hero p{margin:0;color:var(--muted);font-size:.9rem}.section-title{display:flex;justify-content:space-between;align-items:center;margin:23px 2px 12px}.section-title h2{font-size:1rem;margin:0;font-weight:800}.muted{color:var(--muted);font-size:.78rem}.card{background:linear-gradient(145deg,rgba(20,25,39,.9),rgba(10,13,22,.94));border:1px solid var(--border);border-radius:22px;padding:17px;margin:12px 0;box-shadow:0 18px 38px rgba(0,0,0,.28);position:relative;overflow:hidden}.card:before{content:"";position:absolute;left:10%;right:10%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent)}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.action{padding:17px 15px;border-radius:18px;background:var(--surface);border:1px solid var(--border);color:var(--text);text-align:left}.action:active,.battle-card:active{transform:scale(.98)}.action strong{display:block;margin-bottom:5px}.action span{color:var(--muted);font-size:.72rem}.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(139,92,246,.13);color:#c4b5fd;border:1px solid rgba(139,92,246,.2);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.4px}.battle-title{font-size:1.08rem;font-weight:850;margin:10px 0}
+
 .feed-media-grid, .media-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
 .feed-media, .media-grid > div{position:relative;min-width:0;text-align:center}
 .feed-media video, .feed-media img, .media-grid video, .media-grid img{width:100%;aspect-ratio:9/14;object-fit:cover;border-radius:16px;background:#000;border:1px solid var(--border);display:block}
@@ -23,19 +24,26 @@
 .feed-media.playing .feed-play{opacity:0;transform:translate(-50%,-50%) scale(.9)}
 .feed-audio, .audio-box{background:#090c14;border:1px solid var(--border);border-radius:16px;padding:12px;text-align:center}
 .feed-audio audio, .audio-box audio{width:100%}
+
 .chrome-tabs{display:flex;background:#090c14;padding:4px;border-radius:16px;border:1px solid rgba(246,196,83,.15);margin:12px 0 16px;gap:4px}
 .chrome-tab{flex:1;padding:12px 8px;text-align:center;background:none;color:var(--muted);border-radius:12px;font-weight:800;font-size:.82rem;display:flex;align-items:center;justify-content:center;gap:6px;transition:.2s}
 .chrome-tab.active{background:linear-gradient(135deg,rgba(139,92,246,.25),rgba(246,196,83,.12));color:#ffe7a0;border:1px solid rgba(246,196,83,.22);box-shadow:0 6px 18px rgba(0,0,0,.35)}
+
 .local-card{border:1px solid rgba(246,196,83,.32);background:linear-gradient(145deg,rgba(246,196,83,.06),rgba(14,17,27,.98));box-shadow:0 18px 42px rgba(0,0,0,.45)}
+.local-card{overflow:hidden;position:relative}
+
 .local-badge{background:linear-gradient(135deg,rgba(246,196,83,.25),rgba(139,92,246,.15));color:#ffe7a0;border:1px solid rgba(246,196,83,.4);font-weight:900}
 .event-card{border:1px solid rgba(246,196,83,.22);background:linear-gradient(145deg,rgba(246,196,83,.04),rgba(14,17,27,.98));padding:18px;border-radius:20px;margin:12px 0}
 .event-title{font-size:1.2rem;font-weight:900;color:#fff;margin:8px 0 6px}
 .event-meta{font-size:.8rem;color:var(--muted);line-height:1.5;margin-bottom:12px}
-.backbtn{display:flex;align-items:center;gap:7px;background:none;color:#c4b5fd;font-weight:850;padding:4px 0;margin:2px 0 4px}.backbtn span{font-size:1.35rem;line-height:1}.players{display:grid;grid-template-columns:1fr 40px 1fr;gap:8px;align-items:center;text-align:center;margin:17px 0}.player{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);border-radius:15px;padding:12px 6px;font-weight:750}.score{font-size:1.65rem;font-weight:900;margin-top:2px;color:var(--gold)}.vs{width:34px;height:34px;margin:auto;border-radius:50%;display:grid;place-items:center;color:var(--gold);background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.18);font-size:.7rem;font-weight:900}.bar{height:8px;background:linear-gradient(90deg, #ef4444, #b98218);border-radius:99px;overflow:hidden;border:1px solid var(--border)}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--purple),#22c55e);border-radius:99px;transition:width .3s ease}.meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.72rem;margin-top:10px}.linkbtn{background:none;color:#c4b5fd;font-weight:800}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:#090c14;padding:5px;border-radius:16px;margin-bottom:12px}.tab{background:none;color:var(--muted);padding:10px 4px;border-radius:12px;font-size:.7rem;font-weight:800}.tab.active{background:var(--surface2);color:#fff;box-shadow:0 5px 15px rgba(0,0,0,.25)}form input,form select,form textarea,.search{width:100%;padding:13px 14px;margin:7px 0;border-radius:13px;background:#090c14;color:#fff;border:1px solid var(--border);outline:none}form input:focus,form select:focus,form textarea:focus,.search:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(139,92,246,.1)}select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#94a3b8 50%),linear-gradient(135deg,#94a3b8 50%,transparent 50%);background-position:calc(100% - 17px) 55%,calc(100% - 12px) 55%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:34px}.primary{width:100%;padding:14px;border-radius:15px;background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;font-weight:850;box-shadow:0 9px 22px var(--glow);margin-top:8px}.primary:disabled{opacity:.45;box-shadow:none;cursor:not-allowed}.secondary{width:100%;padding:13px;border-radius:14px;background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--border);font-weight:800;margin-top:8px}.danger{width:100%;padding:13px;border-radius:14px;background:rgba(239,68,68,.1);color:#fca5a5;border:1px solid rgba(239,68,68,.25);font-weight:800}.vote-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.vote{padding:15px;border-radius:15px;color:#fff;font-weight:850}.vote.a{background:linear-gradient(135deg,#166534,#22c55e)}.vote.b{background:linear-gradient(135deg,#991b1b,#ef4444)}.vote:disabled{opacity:.3;filter:grayscale(1)}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:15px 8px;text-align:center;background:#090c14;border:1px solid var(--border);border-radius:16px}.stat b{display:block;color:var(--gold);font-size:1.35rem}.stat span{color:var(--muted);font-size:.67rem;text-transform:uppercase}.rank{display:flex;align-items:center;gap:12px}.ranknum{width:28px;color:var(--gold);font-weight:900}.rankavatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#21173e;border:1px solid rgba(139,92,246,.3);font-weight:900}.rankname{flex:1;font-weight:800}.rankname small{display:block;color:var(--muted);font-weight:500}.aura{color:var(--gold);font-weight:900}.timer{color:var(--gold);font-weight:850;font-size:.8rem}.mode-info{padding:12px 13px;border-radius:15px;background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.15);color:#cbd5e1;font-size:.76rem;line-height:1.45}.qr{display:grid;place-items:center;background:#fff;border-radius:14px;padding:12px;margin:12px auto;width:max-content}.scan{position:fixed;inset:0;background:rgba(3,5,10,.96);z-index:50;display:none;flex-direction:column;align-items:center;justify-content:center;padding:18px}.scan.active{display:flex}.scan video{width:min(92vw,380px);aspect-ratio:1;border-radius:20px;object-fit:cover;background:#000}.scan canvas{display:none}.scan .close{margin-top:14px;width:min(92vw,380px)}.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(480px,100%);display:grid;grid-template-columns:repeat(5,1fr);padding:10px 8px calc(10px + env(safe-area-inset-bottom));background:rgba(6,7,13,.91);backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:20}.nav{background:none;color:var(--muted);font-size:.67rem;padding:6px;font-weight:700}.nav.active{color:#fff}.nav b{display:block;font-size:1.2rem;margin-bottom:3px}.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:#111827;color:#fff;border:1px solid var(--border);padding:12px 18px;border-radius:25px;display:none;z-index:60;font-size:.8rem;box-shadow:0 10px 30px rgba(0,0,0,.45);max-width:90%;text-align:center}.empty{text-align:center;padding:30px 15px;color:var(--muted);font-size:.82rem}.hint{font-size:.73rem;color:var(--muted);line-height:1.45}.store-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.store-item{padding:15px;border:1px solid var(--border);border-radius:17px;background:rgba(255,255,255,.025)}.store-item b{display:block;font-size:1.1rem}.store-item .price{color:var(--gold);font-weight:900;margin:5px 0 10px}.store-item button{margin-top:0}.hidden{display:none!important}@media(min-width:700px){body{padding:20px}.app{border:1px solid var(--border);border-radius:30px;overflow:hidden}.bottom{position:fixed}}
+
+.backbtn{display:flex;align-items:center;gap:7px;background:none;color:#c4b5fd;font-weight:850;padding:4px 0;margin:2px 0 4px}.backbtn span{font-size:1.35rem;line-height:1}.players{display:grid;grid-template-columns:1fr 40px 1fr;gap:8px;align-items:center;text-align:center;margin:0 0 14px}.player{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);border-radius:15px;padding:12px 5px;font-weight:750}.score{font-size:1.55rem;font-weight:900;margin-top:2px}.vs{width:34px;height:34px;margin:auto;border-radius:50%;display:grid;place-items:center;color:var(--gold);background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.18);font-size:.7rem;font-weight:900}.bar{height:8px;background:linear-gradient(90deg, #ef4444, #b98218);border-radius:99px;overflow:hidden;border:1px solid var(--border)}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--purple),#22c55e);border-radius:99px;transition:width .3s ease}.meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.72rem;margin-top:10px}.linkbtn{background:none;color:#c4b5fd;font-weight:800}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:#090c14;padding:5px;border-radius:16px;margin-bottom:12px}.tab{background:none;color:var(--muted);padding:10px 4px;border-radius:12px;font-size:.7rem;font-weight:800}.tab.active{background:var(--surface2);color:#fff;box-shadow:0 5px 15px rgba(0,0,0,.25)}form input,form select,form textarea,.search{width:100%;padding:13px 14px;margin:7px 0;border-radius:13px;background:#090c14;color:#fff;border:1px solid var(--border);outline:none}form input:focus,form select:focus,form textarea:focus,.search:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(139,92,246,.1)}select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#94a3b8 50%),linear-gradient(135deg,#94a3b8 50%,transparent 50%);background-position:calc(100% - 17px) 55%,calc(100% - 12px) 55%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:34px}.primary{width:100%;padding:14px;border-radius:15px;background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;font-weight:850;box-shadow:0 9px 22px var(--glow);margin-top:8px}.primary:disabled{opacity:.45;box-shadow:none;cursor:not-allowed}.secondary{width:100%;padding:13px;border-radius:14px;background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--border);font-weight:800;margin-top:8px}.danger{width:100%;padding:13px;border-radius:14px;background:rgba(239,68,68,.1);color:#fca5a5;border:1px solid rgba(239,68,68,.25);font-weight:800}.vote-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.vote{padding:15px;border-radius:15px;color:#fff;font-weight:850}.vote.a{background:linear-gradient(135deg,#166534,#22c55e)}.vote.b{background:linear-gradient(135deg,#991b1b,#ef4444)}.vote:disabled{opacity:.3;filter:grayscale(1)}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:15px 8px;text-align:center;background:#090c14;border:1px solid var(--border);border-radius:16px}.stat b{display:block;color:var(--gold);font-size:1.35rem}.stat span{color:var(--muted);font-size:.67rem;text-transform:uppercase}.rank{display:flex;align-items:center;gap:12px}.ranknum{width:28px;color:var(--gold);font-weight:900}.rankavatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#21173e;border:1px solid rgba(139,92,246,.3);font-weight:900}.rankname{flex:1;font-weight:800}.rankname small{display:block;color:var(--muted);font-weight:500}.aura{color:var(--gold);font-weight:900}.local-search{position:relative}.local-result{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--border);border-radius:15px;background:rgba(255,255,255,.025);margin:8px 0}.local-result .grow{flex:1}.timer{color:var(--gold);font-weight:850;font-size:.8rem}.mode-info{padding:12px 13px;border-radius:15px;background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.15);color:#cbd5e1;font-size:.76rem;line-height:1.45}.qr{display:grid;place-items:center;background:#fff;border-radius:14px;padding:12px;margin:12px auto;width:max-content}.scan{position:fixed;inset:0;background:rgba(3,5,10,.96);z-index:50;display:none;flex-direction:column;align-items:center;justify-content:center;padding:18px}.scan.active{display:flex}.scan video{width:min(92vw,380px);aspect-ratio:1;border-radius:20px;object-fit:cover;background:#000}.scan canvas{display:none}.scan .close{margin-top:14px;width:min(92vw,380px)}.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(480px,100%);display:grid;grid-template-columns:repeat(5,1fr);padding:10px 8px calc(10px + env(safe-area-inset-bottom));background:rgba(6,7,13,.91);backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:20}.nav{background:none;color:var(--muted);font-size:.67rem;padding:6px;font-weight:700}.nav.active{color:#fff}.nav b{display:block;font-size:1.2rem;margin-bottom:3px}.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:#111827;color:#fff;border:1px solid var(--border);padding:12px 18px;border-radius:25px;display:none;z-index:60;font-size:.8rem;box-shadow:0 10px 30px rgba(0,0,0,.45);max-width:90%;text-align:center}.empty{text-align:center;padding:30px 15px;color:var(--muted);font-size:.82rem}.hint{font-size:.73rem;color:var(--muted);line-height:1.45}.store-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.store-item{padding:15px;border:1px solid var(--border);border-radius:17px;background:rgba(255,255,255,.025)}.store-item b{display:block;font-size:1.1rem}.store-item .price{color:var(--gold);font-weight:900;margin:5px 0 10px}.store-item button{margin-top:0}.hidden{display:none!important}@media(min-width:700px){body{padding:20px}.app{border:1px solid var(--border);border-radius:30px;overflow:hidden}.bottom{position:fixed}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
 .new-battles-banner{position:sticky;top:66px;z-index:19;margin:-10px 0 14px;text-align:center;display:none}
 .new-battles-banner button{background:linear-gradient(135deg,var(--gold),#b98218);color:#15110a;font-weight:900;font-size:.78rem;padding:8px 16px;border-radius:999px;box-shadow:0 8px 20px var(--goldglow);border:1px solid rgba(255,255,255,.3);animation:floatBanner .3s ease}
 @keyframes floatBanner{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+
 :root{--gold:#f6c453;--gold2:#ffe7a0;--gold3:#b98218;--goldglow:rgba(246,196,83,.28);--purple:#8b5cf6;--purple2:#b99cff}
 body{background:radial-gradient(circle at 50% -8%,rgba(246,196,83,.13),transparent 28%),radial-gradient(circle at 10% 35%,rgba(139,92,246,.16),transparent 30%),radial-gradient(circle at 100% 70%,rgba(246,196,83,.07),transparent 28%),#06070d}
 .app{position:relative}
@@ -70,6 +78,7 @@ header{border-bottom:1px solid rgba(246,196,83,.18);box-shadow:0 8px 30px rgba(0
 .linkbtn{color:#e8c96f}
 input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!important;box-shadow:0 0 0 3px rgba(246,196,83,.08)!important}
 .share-card{background:linear-gradient(145deg,rgba(246,196,83,.08),rgba(139,92,246,.08));border:1px solid rgba(246,196,83,.22)}.share-btn{background:linear-gradient(135deg,#f6c453,#b98218);color:#15110a;border:0;box-shadow:0 8px 22px rgba(246,196,83,.18)}
+
 .admin-card{border-color:rgba(251,191,36,.25)}
 .admin-result{padding:12px 0;border-top:1px solid var(--border)}
 .admin-result:first-child{border-top:0}
@@ -77,7 +86,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .admin-actions button{width:auto;padding:8px 10px}
 .admin-meta{font-size:.72rem;color:var(--muted);margin-top:3px}
 
-/* TARJETA DE AURA */
+/* TARJETA DE EXPORTACIÓN */
 .aura-filter-card {
   background: linear-gradient(145deg, rgba(20,25,39,.95), rgba(8,11,19,.98));
   border: 1px solid rgba(246,196,83,.22);
@@ -98,29 +107,6 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
   border: 1px solid rgba(246,196,83,.3);
   box-shadow: 0 0 25px rgba(246,196,83,.15);
 }
-
-/* EFECTO DE GLOW EN CÁMARA (DROP-SHADOW CSS) */
-.aura-filter-view video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transform: scaleX(-1); /* Espejo */
-  transition: filter 0.3s ease;
-}
-.aura-filter-view video.rainbow {
-  filter: drop-shadow(0 0 20px rgba(168,85,247,0.9)) drop-shadow(0 0 40px rgba(59,130,246,0.7));
-}
-.aura-filter-view video.gold {
-  filter: drop-shadow(0 0 22px rgba(251,191,36,0.95)) drop-shadow(0 0 45px rgba(245,158,11,0.75));
-}
-.aura-filter-view video.cyan {
-  filter: drop-shadow(0 0 22px rgba(6,182,212,0.95)) drop-shadow(0 0 45px rgba(14,165,233,0.75));
-}
-.aura-filter-view video.purple {
-  filter: drop-shadow(0 0 22px rgba(168,85,247,0.95)) drop-shadow(0 0 45px rgba(126,34,206,0.75));
-}
-
 .aura-filter-view canvas, .aura-filter-view img {
   width: 100%;
   height: 100%;
@@ -128,6 +114,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
   display: block;
 }
 
+/* MARCO TIPO CÁPSULA Y LÍNEA DE SCANNER PARA CÁMARA EN VIVO */
 .aura-scanner-capsule {
   position: absolute;
   inset: 0;
@@ -175,7 +162,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .aura-test{position:fixed;inset:0;background:radial-gradient(circle at 50% 15%,rgba(246,196,83,.12),transparent 28%),rgba(3,5,10,.985);z-index:70;display:none;overflow:auto}
 .aura-test.active{display:block}
 .aura-test-inner{width:min(100%,480px);min-height:100%;margin:auto;padding:22px 16px 34px;display:flex;flex-direction:column}
-.aura-test-step{font-size:.7rem;color:#e8c96f;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.aura-test-step{font-size:.7rem;color:#e8c96f;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
 .aura-test-progress{height:5px;background:#0b0e17;border-radius:999px;overflow:hidden;border:1px solid rgba(246,196,83,.12);margin-bottom:22px}
 .aura-test-progress i{display:block;height:100%;width:20%;background:linear-gradient(90deg,#8b5cf6,#f6c453,#ffe7a0);border-radius:999px;transition:width .35s ease}
 .aura-test-title{font-size:1.75rem;line-height:1.08;font-weight:900;margin:0 0 8px;letter-spacing:-.5px}
@@ -185,12 +172,11 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .aura-options{display:grid;gap:10px}
 .aura-option{width:100%;padding:15px;text-align:left;border-radius:16px;background:rgba(255,255,255,.035);color:#fff;border:1px solid rgba(246,196,83,.12);transition:.2s}
 .aura-option:hover{border-color:rgba(246,196,83,.35);background:rgba(246,196,83,.055)}
+.aura-option b{display:block;font-size:.88rem;margin-bottom:3px}
+.aura-option span{display:block;color:var(--muted);font-size:.7rem;line-height:1.35}
 .aura-result{display:none;text-align:center}
 .aura-result.active{display:block}
-.aura-result-glow{width:190px;height:190px;margin:4px auto 18px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,rgba(246,196,83,.22),rgba(139,92,246,.08) 45%,transparent 70%);animation:auraPulse 1.8s ease-in-out infinite}
-@keyframes auraPulse{50%{transform:scale(1.045);filter:brightness(1.12)}}
 .aura-result-number{font-size:4.8rem;line-height:1;font-weight:900;letter-spacing:-3px;background:linear-gradient(135deg,#fff,#ffe7a0,#f6c453);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 35px rgba(246,196,83,.18)}
-.aura-result-label{font-size:.72rem;color:#e8c96f;text-transform:uppercase;letter-spacing:.18em;font-weight:900}
 .aura-result-copy{color:var(--muted);font-size:.78rem;line-height:1.5;max-width:310px;margin:0 auto 18px}
 </style></head>
 <body>
@@ -198,14 +184,17 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 <main>
 <section id="home" class="view active">
   <div class="hero"><h1>La comunidad<br><span style="color:var(--purple2)">decide quién tiene Aura.</span></h1></div>
+  
   <div class="chrome-tabs">
     <button class="chrome-tab active" id="tabFeedGlobal" onclick="switchFeedTab('global')">🌐 Feed Global</button>
     <button class="chrome-tab" id="tabFeedLocal" onclick="switchFeedTab('local')">🏟️ Batallas Locales</button>
   </div>
+
   <div id="sectionFeedGlobal">
     <div id="newBattlesBanner" class="new-battles-banner"><button onclick="applyNewBattles()">✨ Nuevas batallas en el feed · Tocar para ver</button></div>
     <div id="battles"></div>
   </div>
+
   <div id="sectionFeedLocal" style="display:none">
     <div class="card" style="display:flex;align-items:center;gap:10px;padding:12px 16px;">
       <span>📍 Ciudad:</span>
@@ -220,7 +209,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 
 <section id="battle" class="view"><div id="battleDetail"></div></section>
 
-<section id="events" class="view"><div class="hero"><h1>🎪 Eventos</h1><p>Torneos locales de 4 u 8 participantes, con bracket automático y QR para el público.</p></div><div class="grid"><button class="action" onclick="openTournamentCreate()"><strong>🏆 Crear torneo</strong><span>Organizá un evento presencial</span></button><button class="action" onclick="loadEvents()"><strong>📍 Eventos cercanos</strong><span>Descubrí torneos</span></button><button class="action" onclick="startEventScanner()"><strong>📷 Escanear QR</strong><span>Entrá directamente al evento</span></button></div><div class="mode-info" style="margin-top:12px"><b>🛡️ Seguridad</b><br>Los torneos están separados por rango de edad. AURA STAR no publica coordenadas exactas ni organiza físicamente el evento.</div><div id="eventCreate" class="card" style="display:none;margin-top:12px"></div><div id="eventsList"></div><div id="tournamentDetail"></div></section>
+<section id="events" class="view"><div class="hero"><h1>🎪 Eventos</h1><p>Torneos locales de 4 u 8 participantes, con bracket automático y QR para el público.</p></div><div class="grid"><button class="action" onclick="openTournamentCreate()"><strong>🏆 Crear torneo</strong><span>Organizá un evento presencial</span></button><button class="action" onclick="loadEvents()"><strong>📍 Eventos cercanos</strong><span>Descubrí eventos sin mostrar ubicaciones exactas</span></button><button class="action" onclick="startEventScanner()"><strong>📷 Escanear QR</strong><span>Entrá directamente al evento</span></button></div><div class="mode-info" style="margin-top:12px"><b>🛡️ Seguridad</b><br>Los torneos están separados por rango de edad. AURA STAR no publica coordenadas exactas ni organiza físicamente el evento.</div><div id="eventCreate" class="card" style="display:none;margin-top:12px"></div><div id="eventsList"></div><div id="tournamentDetail"></div></section>
 
 <section id="rank" class="view"><div class="hero"><h1>🏆 Ranking</h1><p>Las estrellas con más Aura.</p></div><div id="ranking"></div></section>
 
@@ -240,10 +229,10 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 
     <div class="aura-filter-card" id="auraFilterCardBox">
       <div class="aura-filter-view" id="auraFrameBox">
-        <video id="auraRawVideo" playsinline autoplay class="rainbow"></video>
-        <canvas id="auraCanvasView" style="display:none;"></canvas>
+        <video id="auraRawVideo" playsinline style="display:none;"></video>
+        <canvas id="auraCanvasView"></canvas>
         <img id="auraCapturedImg" style="display:none;" alt="Foto capturada">
-        <div id="auraScannerOverlay" class="aura-scanner-capsule">
+        <div id="auraScannerOverlay" class="aura-scanner-capsule" style="display:none;">
           <div class="aura-scan-line"></div>
         </div>
       </div>
@@ -332,26 +321,6 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
   </div>
 </div>
 
-<div id="auraTest" class="aura-test" aria-modal="true" role="dialog">
-  <div class="aura-test-inner">
-    <div id="auraTestIntro">
-      <h1 class="aura-test-title">✨ Descubrí tu Aura inicial</h1>
-      <div class="aura-test-card">
-        <p class="hint">Respondé 5 preguntas para definir tu resultado inicial entre <b>20 y 100 Aura</b>.</p>
-        <button class="primary" style="margin-top:18px" onclick="beginAuraTest()">Comenzar test</button>
-      </div>
-    </div>
-    <div id="auraTestQuestion" class="hidden"></div>
-    <div id="auraResult" class="aura-result">
-      <div class="aura-test-card">
-        <div class="aura-result-glow"><div><div id="auraResultNumber" class="aura-result-number">--</div><div class="aura-result-label">Aura</div></div></div>
-        <p class="aura-result-copy">Tu Aura inicial ha sido asignada a tu perfil.</p>
-        <button class="primary" onclick="closeAuraTest()">Entrar a AURA STAR</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
 const CONFIG={API:'https://aura-backend-oflg.onrender.com/api',SUPABASE_URL:'https://saqhaofycdjlwdauzhtv.supabase.co',SUPABASE_ANON_KEY:'sb_publishable_itAVUVk2JCkBjqKXSgQYrw_WsweKG1H'};
 const OAUTH_REDIRECT='https://guillaumelk777-commits.github.io/aura-star-frontend/';
@@ -359,9 +328,10 @@ const sb=supabase.createClient(CONFIG.SUPABASE_URL,CONFIG.SUPABASE_ANON_KEY);
 let CURRENT_USER=null,IS_ADMIN=false,cache=[],pendingNewBattles=[],currentMode='video',scanStream=null,scanTimer=null,currentGiftMethod='username',currentCity='Trelew',currentFeedTab='global';
 
 let bodyPixNet = null;
-let auraCamStream = null;
-let auraInputMode = 'live'; 
+let auraCamStream = null, auraAnimFrame = null;
+let auraInputMode = 'live'; // 'live' | 'gallery'
 let auraStyleMode = 'rainbow';
+let auraPulseAngle = 0;
 let loadedGalleryImage = null;
 
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
@@ -531,6 +501,7 @@ async function handleAuth(){
   captureShareToken();
   const params=new URLSearchParams(location.search);
   if(params.get('error')){
+    const desc=params.get('error_description')||params.get('error');
     history.replaceState({},document.title,location.pathname);
     document.getElementById('login').classList.add('active');
     return;
@@ -1106,17 +1077,12 @@ function setAuraStyle(style) {
   document.getElementById('fBtnCyan').classList.toggle('active', style === 'cyan');
   document.getElementById('fBtnPurple').classList.toggle('active', style === 'purple');
 
-  const video = document.getElementById('auraRawVideo');
-  if (video) {
-    video.className = style; // Aplica la clase CSS de brillo correspondiente al video
-  }
-
   if (auraInputMode === 'gallery' && loadedGalleryImage) {
     processGalleryAura(loadedGalleryImage);
   }
 }
 
-// OPCIÓN 1: FOTO EN VIVO CON SCANNER Y RESPLANDOR DIRECTO
+// OPCIÓN 1: FOTO EN VIVO CON SCANNER DE CÁPSULA
 async function startAuraCamera() {
   toast('Activando cámara…');
   const video = document.getElementById('auraRawVideo');
@@ -1124,16 +1090,17 @@ async function startAuraCamera() {
 
   document.getElementById('auraCapturedImg').style.display = 'none';
   document.getElementById('auraScannerOverlay').style.display = 'block';
-  canvas.style.display = 'none';
-  video.style.display = 'block';
+  canvas.style.display = 'block';
 
   try {
     if (!navigator.mediaDevices?.getUserMedia) throw Error('Cámara no soportada.');
     auraCamStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: 480, height: 480 } });
     video.srcObject = auraCamStream;
+    video.style.display = 'none';
 
     video.onloadedmetadata = () => {
       video.play();
+      drawLiveScannerLoop();
     };
 
     document.getElementById('btnStartAuraCam').style.display = 'none';
@@ -1146,28 +1113,38 @@ async function startAuraCamera() {
   }
 }
 
-function takeAuraPhoto() {
+function drawLiveScannerLoop() {
   const video = document.getElementById('auraRawVideo');
   const canvas = document.getElementById('auraCanvasView');
-  const img = document.getElementById('auraCapturedImg');
+  if (!canvas || !video || video.paused || video.ended) return;
 
+  const ctx = canvas.getContext('2d');
   canvas.width = video.videoWidth || 480;
   canvas.height = video.videoHeight || 480;
-  const ctx = canvas.getContext('2d');
 
-  // Renderizar la foto capturada con el filtro espejado
   ctx.save();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Render de cámara limpio en vivo espejada
   ctx.translate(canvas.width, 0);
   ctx.scale(-1, 1);
   ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
   ctx.restore();
+
+  auraAnimFrame = requestAnimationFrame(drawLiveScannerLoop);
+}
+
+function takeAuraPhoto() {
+  if (auraAnimFrame) cancelAnimationFrame(auraAnimFrame);
+  const canvas = document.getElementById('auraCanvasView');
+  const img = document.getElementById('auraCapturedImg');
 
   // Apagar la animación del scanner al capturar
   document.getElementById('auraScannerOverlay').style.display = 'none';
 
   img.src = canvas.toDataURL('image/png');
   img.style.display = 'block';
-  video.style.display = 'none';
+  canvas.style.display = 'none';
 
   if (auraCamStream) {
     auraCamStream.getTracks().forEach(t => t.stop());
@@ -1206,7 +1183,6 @@ async function processGalleryAura(img) {
   canvas.width = 480;
   canvas.height = 480;
   canvas.style.display = 'block';
-  document.getElementById('auraRawVideo').style.display = 'none';
   document.getElementById('auraCapturedImg').style.display = 'none';
   document.getElementById('auraScannerOverlay').style.display = 'none';
 
@@ -1220,6 +1196,7 @@ async function processGalleryAura(img) {
       });
     }
 
+    // Detección HD de la persona
     const segmentation = await bodyPixNet.segmentPerson(img, {
       internalResolution: 'medium',
       segmentationThreshold: 0.7
@@ -1227,22 +1204,25 @@ async function processGalleryAura(img) {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // 1. Crear máscara de la silueta
     const maskCanvas = document.createElement('canvas');
     maskCanvas.width = canvas.width;
     maskCanvas.height = canvas.height;
     const maskCtx = maskCanvas.getContext('2d');
 
+    // Escalar la imagen al canvas cuadrado
     maskCtx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
     const imgData = maskCtx.getImageData(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < segmentation.data.length; i++) {
       const isBody = segmentation.data[i];
       if (!isBody) {
-        imgData.data[i * 4 + 3] = 0; 
+        imgData.data[i * 4 + 3] = 0; // Transparente fuera del cuerpo
       }
     }
     maskCtx.putImageData(imgData, 0, 0);
 
+    // 2. Dibujar el resplandor / Ki multicolor proyectado desde el contorno
     ctx.save();
     if (auraStyleMode === 'rainbow') {
       ctx.filter = 'drop-shadow(0px 0px 18px rgba(168, 85, 247, 0.9)) drop-shadow(0px 0px 35px rgba(59, 130, 246, 0.7))';
@@ -1256,8 +1236,10 @@ async function processGalleryAura(img) {
     ctx.drawImage(maskCanvas, 0, 0);
     ctx.restore();
 
+    // 3. Dibujar la imagen original nítida por delante
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
+    // Convertir a captura estática lista para exportar
     const resultImg = document.getElementById('auraCapturedImg');
     resultImg.src = canvas.toDataURL('image/png');
     resultImg.style.display = 'block';
@@ -1267,6 +1249,7 @@ async function processGalleryAura(img) {
     document.getElementById('btnExportAuraCard').style.display = 'block';
     document.getElementById('btnCancelAuraCam').style.display = 'block';
   } catch (e) {
+    // Si falla la detección pesada, proyecta la foto nítida con el halo neón en el marco
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     const resultImg = document.getElementById('auraCapturedImg');
     resultImg.src = canvas.toDataURL('image/png');
@@ -1292,11 +1275,11 @@ function resetAuraCamera() {
 }
 
 function cancelAuraCamera() {
+  if (auraAnimFrame) cancelAnimationFrame(auraAnimFrame);
   if (auraCamStream) {
     auraCamStream.getTracks().forEach(t => t.stop());
     auraCamStream = null;
   }
-  document.getElementById('auraRawVideo').style.display = 'none';
   document.getElementById('auraCanvasView').style.display = 'none';
   document.getElementById('auraCapturedImg').style.display = 'none';
   document.getElementById('auraScannerOverlay').style.display = 'none';
