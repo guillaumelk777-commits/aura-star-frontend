@@ -26,6 +26,35 @@
 .chrome-tab.active{background:linear-gradient(135deg,rgba(139,92,246,.25),rgba(246,196,83,.12));color:#ffe7a0;border:1px solid rgba(246,196,83,.22);box-shadow:0 6px 18px rgba(0,0,0,.35)}
 
 .local-card{border:1px solid rgba(246,196,83,.32);background:linear-gradient(145deg,rgba(246,196,83,.06),rgba(14,17,27,.98));box-shadow:0 18px 42px rgba(0,0,0,.45)}
+.local-card{overflow:hidden;position:relative}
+.local-card .local-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid rgba(246,196,83,.12)}
+.local-card .local-live{display:inline-flex;align-items:center;gap:6px;color:#ffe7a0;font-size:.72rem;font-weight:900;letter-spacing:.04em}
+.local-card .local-live-dot{width:7px;height:7px;border-radius:50%;background:#64e572;box-shadow:0 0 10px rgba(100,229,114,.75)}
+.local-card .local-place{font-size:.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.local-card .local-title{font-size:1.08rem;font-weight:950;line-height:1.2;margin:13px 0 7px;color:#fff}
+.local-card .local-theme{display:inline-flex;align-items:center;gap:5px;margin-bottom:13px;padding:5px 9px;border-radius:999px;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.24);color:#ddd0ff;font-size:.72rem;font-weight:800}
+.local-card .local-matchup{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:8px;margin:4px 0 10px}
+.local-card .local-contestant{text-align:center;min-width:0}
+.local-card .local-contestant-name{font-size:.84rem;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.local-card .local-score{font-size:2rem;font-weight:950;line-height:1.05;margin-top:5px}
+.local-card .local-vs{font-size:.72rem;font-weight:950;color:#ffe7a0;letter-spacing:.08em;padding:7px 6px;border-radius:10px;border:1px solid rgba(246,196,83,.2);background:rgba(246,196,83,.06)}
+.local-card .local-bar{height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin:8px 0 12px}
+.local-card .local-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#8b5cf6,#f6c453);transition:width .3s ease}
+.local-card .local-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 0 13px}
+.local-card .local-stat{padding:8px 5px;text-align:center;border-radius:11px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.055)}
+.local-card .local-stat strong{display:block;color:#fff;font-size:.78rem}
+.local-card .local-stat span{display:block;color:var(--muted);font-size:.64rem;margin-top:2px}
+.local-card .local-votes{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.local-card .local-vote{min-width:0;padding:12px 7px!important;font-size:.76rem!important;font-weight:900!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.local-card .local-footer{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:11px}
+.local-card .local-footer .muted{font-size:.68rem}
+.local-card .local-detail{border:0;background:none;color:#ffe7a0;font-size:.72rem;font-weight:850;padding:5px 0}
+@media(max-width:380px){
+  .local-card .local-stats{grid-template-columns:1fr 1fr}
+  .local-card .local-stat:last-child{grid-column:1/-1}
+  .local-card .local-score{font-size:1.75rem}
+}
+
 .local-badge{background:linear-gradient(135deg,rgba(246,196,83,.25),rgba(139,92,246,.15));color:#ffe7a0;border:1px solid rgba(246,196,83,.4);font-weight:900}
 .event-card{border:1px solid rgba(246,196,83,.22);background:linear-gradient(145deg,rgba(246,196,83,.04),rgba(14,17,27,.98));padding:18px;border-radius:20px;margin:12px 0}
 .event-title{font-size:1.2rem;font-weight:900;color:#fff;margin:8px 0 6px}
@@ -423,7 +452,7 @@ function show(v){
 }
 
 function battlePeople(b){return b.mode==='local'?[b.local_a_name||b.local_participant_a,b.local_b_name||b.local_participant_b]:[b.creator_name||b.creator_id,b.opponent_name||b.opponent_id||'Esperando…']}
-function feedMedia(url,mode,name){if(!url)return `<div class="feed-media"><div style="aspect-ratio:9/14;border-radius:16px;background:#090c14;display:grid;place-items:center;color:var(--muted);border:1px solid var(--border)">Esperando…</div><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='photo')return `<div class="feed-media"><img src="${esc(url)}" alt="Participación de ${esc(name)}" loading="lazy" oncontextmenu="return false;"><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='audio')return `<div class="feed-media"><div class="feed-audio"><div style="font-size:1.6rem;text-align:center;margin-bottom:6px">🎙️</div><audio controls controlsList="nodownload" preload="metadata" src="${esc(url)}"></audio></div><small class="feed-media-name">${esc(name)}</small></div>`;return `<div class="feed-media" data-feed-video><video playsinline controlsList="nodownload" disablePictureInPicture preload="metadata" src="${esc(url)}" onclick="toggleFeedVideo(this)" oncontextmenu="return false;"></video><div class="feed-play">▶</div><small class="feed-media-name">${esc(name)}</small></div>`}
+function feedMedia(url,mode,name){if(!url)return `<div class="feed-media"><div style="aspect-ratio:9/14;border-radius:16px;background:#090c14;display:grid;place-items:center;color:var(--muted);border:1px solid var(--border)">Esperando…</div><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='photo')return `<div class="feed-media"><img src="${esc(url)}" alt="Participación de ${esc(name)}" loading="lazy" oncontextmenu="return false;"><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='audio')return `<div class="feed-media"><div class="feed-audio"><div style="font-size:1.6rem;text-align:center;margin-bottom:6px">🎙️</div><audio controls controlsList="nodownload" preload="metadata" src="${esc(url)}"></audio></div><small class="feed-media-name">${esc(name)}</small></div>`;return `<div class="feed-media" data-feed-video><video playsinline disablePictureInPicture preload="metadata" src="${esc(url)}" onclick="toggleFeedVideo(this)" oncontextmenu="return false;"></video><div class="feed-play">▶</div><small class="feed-media-name">${esc(name)}</small></div>`}
 function toggleFeedVideo(video){event?.stopPropagation?.();const wrap=video.closest('.feed-media');if(!wrap)return;if(video.paused){document.querySelectorAll('.feed-media[data-feed-video] video').forEach(v=>{if(v!==video){v.pause();v.closest('.feed-media')?.classList.remove('playing')}});video.play().then(()=>wrap.classList.add('playing')).catch(()=>{});}else{video.pause();wrap.classList.remove('playing');}} 
 
 function battleCard(b){
@@ -441,38 +470,51 @@ function battleCard(b){
   const disableVoting = !hasOpponent || b.status !== 'active';
 
   if (local) {
+    const theme = b.theme || b.category || '';
+    const diff = Math.abs(a-o);
+    const statusText = b.status === 'active' ? 'EN VIVO' : (b.status === 'completed' ? 'FINALIZADA' : 'CERRADA');
+    const closeText = b.local_closes_at ? timeLeft(b.local_closes_at) : '—';
+    const targetAJson = JSON.stringify(String(targetA || ''));
+    const targetBJson = JSON.stringify(String(targetB || ''));
+
     return `
       <div class="card battle-card local-card" id="card-${b.id}">
-        <div style="display:flex;justify-content:space-between;align-items:center" onclick="openBattle('${b.id}')">
-          <span class="badge local-badge">🏟️ EN VIVO · ${esc(b.city||'Trelew')}</span>
-          <span class="muted" style="font-size:.72rem">Ver detalles →</span>
+        <div class="local-head">
+          <span class="local-live"><span class="local-live-dot"></span> 🏟️ ${statusText}</span>
+          <span class="local-place">📍 ${esc(b.city || 'Localidad')}</span>
         </div>
-        
-        <div class="battle-title" onclick="openBattle('${b.id}')" style="cursor:pointer;margin:12px 0 6px">${esc(b.title)}</div>
 
-        <div class="players">
-          <div class="player" onclick="openBattle('${b.id}')" style="cursor:pointer">
-            <div style="font-size:.88rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(aName)}</div>
-            <div class="score" id="score-a-${b.id}">${a}</div>
+        <div class="local-title" onclick="openBattle('${b.id}')" style="cursor:pointer">${esc(b.title)}</div>
+        ${theme ? `<div class="local-theme">🎯 ${esc(theme)}</div>` : ''}
+
+        <div class="local-matchup">
+          <div class="local-contestant">
+            <div class="local-contestant-name">${esc(aName)}</div>
+            <div class="local-score" id="score-a-${b.id}">${a}</div>
           </div>
-
-          <div class="vs">VS</div>
-
-          <div class="player" onclick="openBattle('${b.id}')" style="cursor:pointer">
-            <div style="font-size:.88rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(oName)}</div>
-            <div class="score" id="score-b-${b.id}">${o}</div>
+          <div class="local-vs">VS</div>
+          <div class="local-contestant">
+            <div class="local-contestant-name">${esc(oName)}</div>
+            <div class="local-score" id="score-b-${b.id}">${o}</div>
           </div>
         </div>
 
-        <div class="bar"><i id="bar-${b.id}" style="width:${p}%"></i></div>
+        <div class="local-bar"><i id="bar-${b.id}" style="width:${p}%"></i></div>
 
-        <div class="vote-grid" style="margin-top:14px">
-          <button class="vote a" style="padding:12px;font-size:.82rem" onclick="voteDirect(event, '${b.id}', '${esc(targetA)}')" ${disableVoting ? 'disabled' : ''}>⚡ Votar ${esc(aName)}</button>
-          <button class="vote b" style="padding:12px;font-size:.82rem" onclick="voteDirect(event, '${b.id}', '${esc(targetB || '')}')" ${disableVoting ? 'disabled' : ''}>⚡ Votar ${esc(oName)}</button>
+        <div class="local-stats">
+          <div class="local-stat"><strong id="total-${b.id}">${total}</strong><span>votos</span></div>
+          <div class="local-stat"><strong>${diff}</strong><span>diferencia</span></div>
+          <div class="local-stat"><strong>⏱️ ${esc(closeText)}</strong><span>para cerrar</span></div>
         </div>
 
-        <div class="meta" style="margin-top:10px">
-          <span id="total-${b.id}">${total} votos presenciales · ⏱️ ${timeLeft(b.local_closes_at)}</span>
+        <div class="local-votes">
+          <button class="vote a local-vote" onclick="voteDirect(event,'${b.id}',${targetAJson})" ${disableVoting ? 'disabled' : ''}>🟢 Votar ${esc(aName)}</button>
+          <button class="vote b local-vote" onclick="voteDirect(event,'${b.id}',${targetBJson})" ${disableVoting ? 'disabled' : ''}>🟣 Votar ${esc(oName)}</button>
+        </div>
+
+        <div class="local-footer">
+          <span class="muted">${hasOpponent ? 'Elegí a tu favorito' : 'Esperando participantes'}</span>
+          <button class="local-detail" onclick="openBattle('${b.id}')">Ver batalla →</button>
         </div>
       </div>
     `;
