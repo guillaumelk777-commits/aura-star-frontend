@@ -7,7 +7,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
-<!-- MEDIAPIPE SELFIE SEGMENTATION PARA RECORTAR SILUETA EN ALTA DEFINICIÓN -->
+<!-- MEDIAPIPE SELFIE SEGMENTATION -->
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
 
@@ -228,7 +228,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
   </div>
 </div>
 
-<!-- TARJETA DE AURA: CÁMARA O GALERÍA CON EFECTO DE RESPLANDOR ETÉREO -->
+<!-- TARJETA DE AURA EN EL MODAL -->
 <div id="auraCardModal" class="aura-card-modal">
   <div id="auraCardStage"></div>
 </div>
@@ -676,7 +676,7 @@ function renderCreate(){
         <input id="battleTitle" maxlength="80" placeholder="Nombre de la batalla" required>
         <div style="display:flex;gap:8px;align-items:center;margin:6px 0">
           <input id="battleCity" maxlength="100" placeholder="Ciudad / Localidad" value="${esc(currentCity)}" required>
-          <button type="button" class="secondary" style="width:auto;margin:0;padding:9px 12px" onclick="autoDetectCurrentCity('battleCity', true)">📍 GPS</button>
+          <button type="button" class="secondary" style="width:auto;margin:0;padding:12px 14px" onclick="autoDetectCurrentCity('battleCity', true)">📍 GPS</button>
         </div>
         <select id="battleCategory">
           <option value="freestyle">🎤 Freestyle</option>
@@ -1077,9 +1077,9 @@ async function calculateAndSubmitAuraTest(){
 }
 async function maybeShowAuraTest(u){ if(!auraTestCompleted(u)) setTimeout(openAuraTest, 400); }
 
-// MÓDULO AURA ETÉREA (ONDA DE PLASMA Y LUZ DORADA/MÍSTICA)
+// MÓDULO AURA ETÉREA (FALLBACK AUTOMÁTICO DE SEGMENTACIÓN A CANVAS NATIVO)
 let auraCamStream=null, cameraUtil=null, selfieSegmentation=null, auraStyleMode='gold', auraCapturedDataUrl=null, auraInputSource='camera', loadedAuraImage=null;
-let auraWaveTime = 0;
+let auraWaveTime = 0, isMediaPipeReady = false, lastFrameProcessedTime = 0, fallbackAnimFrame = null;
 
 function openAuraCardCamera(){
   document.getElementById('auraCardModal').classList.add('active');
@@ -1090,6 +1090,8 @@ function closeAuraCardModal(){
   document.getElementById('auraCardModal').classList.remove('active');
 }
 function stopAuraCamStream(){
+  if(fallbackAnimFrame) cancelAnimationFrame(fallbackAnimFrame);
+  fallbackAnimFrame = null;
   if(cameraUtil){ cameraUtil.stop(); cameraUtil=null; }
   if(auraCamStream){ auraCamStream.getTracks().forEach(t=>t.stop()); auraCamStream=null; }
 }
@@ -1099,6 +1101,7 @@ function renderAuraCardCameraStage(){
   auraCapturedDataUrl=null;
   loadedAuraImage=null;
   auraInputSource='camera';
+  isMediaPipeReady=false;
   
   const stage=document.getElementById('auraCardStage');
   stage.innerHTML=`
@@ -1162,40 +1165,118 @@ function handleAuraImageFile(e){
 }
 
 function initSegmentationIfNeeded(){
-  if(!selfieSegmentation){
-    selfieSegmentation = new SelfieSegmentation({
-      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/${file}`
-    });
-    selfieSegmentation.setOptions({ modelSelection: 1 });
+  if(!selfieSegmentation && typeof SelfieSegmentation !== 'undefined'){
+    try {
+      selfieSegmentation = new SelfieSegmentation({
+        locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/${file}`
+      });
+      selfieSegmentation.setOptions({ modelSelection: 1 });
+    } catch(err) { console.error('Error inicializando MediaPipe', err); }
   }
 }
 
 async function startAuraCamera(){
-  toast('Cargando detector de Aura…');
+  toast('Activando cámara…');
   initSegmentationIfNeeded();
   
   const video=document.getElementById('auraRawVideo');
   const canvas=document.getElementById('auraLiveCanvas');
   const ctx=canvas.getContext('2d');
 
-  selfieSegmentation.onResults((results) => drawEtherealAuraResults(results, ctx, canvas));
+  if(selfieSegmentation) {
+    selfieSegmentation.onResults((results) => {
+      isMediaPipeReady = true;
+      lastFrameProcessedTime = Date.now();
+      drawEtherealAuraResults(results, ctx, canvas);
+    });
+  }
 
   try{
     if(!navigator.mediaDevices?.getUserMedia) throw Error('Cámara no disponible.');
+    auraCamStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}});
+    video.srcObject=auraCamStream;
     
-    cameraUtil = new Camera(video, {
-      onFrame: async () => {
-        if(auraInputSource==='camera') {
-          await selfieSegmentation.send({ image: video });
-        }
-      },
-      width: 480,
-      height: 480
-    });
+    video.onloadedmetadata=()=>{
+      video.play();
+      document.getElementById('btnSnapAura').disabled=false;
 
-    await cameraUtil.start();
-    document.getElementById('btnSnapAura').disabled=false;
+      // Iniciar el fallback nativo de Canvas de forma paralela por si MediaPipe no responde
+      startNativeCanvasLoop(video, ctx, canvas);
+
+      if(selfieSegmentation && typeof Camera !== 'undefined') {
+        try {
+          cameraUtil = new Camera(video, {
+            onFrame: async () => {
+              if(auraInputSource==='camera' && selfieSegmentation) {
+                await selfieSegmentation.send({ image: video });
+              }
+            },
+            width: 480,
+            height: 480
+          });
+          cameraUtil.start();
+        } catch(e) {}
+      }
+    };
   }catch(e){ toast('No se pudo acceder a la cámara.'); }
+}
+
+function startNativeCanvasLoop(video, ctx, canvas) {
+  function nativeLoop() {
+    if(auraInputSource === 'camera' && video && !video.paused && !video.ended) {
+      // Si MediaPipe no entregó cuadros en el último segundo, dibuja mediante el motor nativo de Canvas
+      if(!isMediaPipeReady || (Date.now() - lastFrameProcessedTime > 1200)) {
+        drawNativeEtherealLoop(video, ctx, canvas);
+      }
+    }
+    fallbackAnimFrame = requestAnimationFrame(nativeLoop);
+  }
+  fallbackAnimFrame = requestAnimationFrame(nativeLoop);
+}
+
+// RENDERIZADO NATIVO DIRECTO (GARANTIZA 60 FPS SI MEDIAPIPE NO RESPONDE)
+function drawNativeEtherealLoop(video, ctx, canvas) {
+  const w = video.videoWidth || 480;
+  const h = video.videoHeight || 480;
+  canvas.width = w; canvas.height = h;
+
+  auraWaveTime += 0.06;
+  ctx.save();
+  ctx.clearRect(0, 0, w, h);
+
+  // 1. Capa de resplandor
+  ctx.save();
+  ctx.translate(w, 0); ctx.scale(-1, 1);
+  const pulseScale = 1.04 + Math.sin(auraWaveTime) * 0.03;
+  ctx.translate(w/2, h/2); ctx.scale(pulseScale, pulseScale); ctx.translate(-w/2, -h/2);
+  ctx.filter = 'blur(16px) brightness(1.5)';
+  ctx.globalAlpha = 0.8;
+  ctx.drawImage(video, 0, 0, w, h);
+  ctx.restore();
+
+  // Colorizar resplandor
+  ctx.save();
+  ctx.globalCompositeOperation = 'source-atop';
+  if (auraStyleMode === 'rainbow') {
+    const g = ctx.createLinearGradient(0, 0, 0, h);
+    g.addColorStop(0, '#a855f7'); g.addColorStop(0.3, '#3b82f6');
+    g.addColorStop(0.6, '#22c55e'); g.addColorStop(0.85, '#fbbf24');
+    g.addColorStop(1, '#ef4444');
+    ctx.fillStyle = g;
+  } else if (auraStyleMode === 'cyan') { ctx.fillStyle = '#06b6d4'; }
+  else if (auraStyleMode === 'purple') { ctx.fillStyle = '#a855f7'; }
+  else { ctx.fillStyle = '#fbbf24'; }
+  ctx.fillRect(0, 0, w, h);
+  ctx.restore();
+
+  // 2. Video nítido frontal
+  ctx.save();
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.translate(w, 0); ctx.scale(-1, 1);
+  ctx.drawImage(video, 0, 0, w, h);
+  ctx.restore();
+
+  ctx.restore();
 }
 
 async function processImageWithSegmentation(img){
@@ -1203,8 +1284,40 @@ async function processImageWithSegmentation(img){
   const canvas=document.getElementById('auraLiveCanvas');
   const ctx=canvas.getContext('2d');
 
-  selfieSegmentation.onResults((results) => drawEtherealAuraResults(results, ctx, canvas));
-  await selfieSegmentation.send({ image: img });
+  if(selfieSegmentation) {
+    selfieSegmentation.onResults((results) => drawEtherealAuraResults(results, ctx, canvas));
+    try {
+      await selfieSegmentation.send({ image: img });
+      return;
+    } catch(e) {}
+  }
+  // Fallback para imágenes si falla MediaPipe
+  drawNativeImageFallback(img, ctx, canvas);
+}
+
+function drawNativeImageFallback(img, ctx, canvas) {
+  const w = img.width || 480, h = img.height || 480;
+  canvas.width = w; canvas.height = h;
+  ctx.clearRect(0, 0, w, h);
+
+  ctx.save();
+  ctx.filter = 'blur(20px) brightness(1.5)';
+  ctx.drawImage(img, -10, -10, w + 20, h + 20);
+  ctx.restore();
+
+  ctx.save();
+  ctx.globalCompositeOperation = 'source-atop';
+  if (auraStyleMode === 'rainbow') {
+    const g = ctx.createLinearGradient(0, 0, 0, h);
+    g.addColorStop(0, '#a855f7'); g.addColorStop(0.5, '#fbbf24'); g.addColorStop(1, '#ef4444');
+    ctx.fillStyle = g;
+  } else if (auraStyleMode === 'cyan') { ctx.fillStyle = '#06b6d4'; }
+  else if (auraStyleMode === 'purple') { ctx.fillStyle = '#a855f7'; }
+  else { ctx.fillStyle = '#fbbf24'; }
+  ctx.fillRect(0, 0, w, h);
+  ctx.restore();
+
+  ctx.drawImage(img, 0, 0, w, h);
 }
 
 function setAuraStyle(style){
@@ -1215,7 +1328,7 @@ function setAuraStyle(style){
   }
 }
 
-// ALGORITMO DE AURA ETÉREA (ONDAS DE LUZ + POLVO DE ESTRELLAS)
+// ALGORITMO DE AURA ETÉREA MEDIAPIPE (SILUETA Y ONDAS)
 function drawEtherealAuraResults(results, ctx, canvas) {
   canvas.width = results.image.width || 480;
   canvas.height = results.image.height || 480;
@@ -1227,7 +1340,7 @@ function drawEtherealAuraResults(results, ctx, canvas) {
   ctx.save();
   ctx.clearRect(0, 0, w, h);
 
-  // Fondo oscuro espacial para destacar las llamaradas de luz
+  // Fondo oscuro espacial para destacar las llamaradas
   ctx.fillStyle = '#06070d';
   ctx.fillRect(0, 0, w, h);
 
@@ -1249,7 +1362,6 @@ function drawEtherealAuraResults(results, ctx, canvas) {
   auraLayer.height = h;
   const auraCtx = auraLayer.getContext('2d');
 
-  // Colorear el relleno de las capas
   let mainColor = '#f6c453', outerColor = '#ffe7a0';
   if (auraStyleMode === 'rainbow') {
     const rainbowGrad = auraCtx.createLinearGradient(0, 0, 0, h);
@@ -1266,33 +1378,29 @@ function drawEtherealAuraResults(results, ctx, canvas) {
     mainColor = '#a855f7'; outerColor = '#f0abfc';
     auraCtx.fillStyle = mainColor;
   } else {
-    auraCtx.fillStyle = mainColor; // Dorado por defecto
+    auraCtx.fillStyle = mainColor;
   }
 
   auraCtx.drawImage(maskCanvas, 0, 0);
   auraCtx.globalCompositeOperation = 'source-in';
   auraCtx.fillRect(0, 0, w, h);
 
-  // Proyectar el resplandor con combinación de capas aditivas ('screen' / 'lighter')
   ctx.save();
   ctx.globalCompositeOperation = 'screen';
 
-  // Capa 1: Resplandor base profundo
   ctx.filter = 'blur(28px) brightness(1.5)';
   ctx.drawImage(auraLayer, 0, -10);
 
-  // Capa 2: Llamarada vibrante desplazada hacia arriba (Onda de energía)
   const shiftY = Math.sin(auraWaveTime) * 12 - 15;
   const shiftX = Math.cos(auraWaveTime * 0.8) * 8;
   ctx.filter = 'blur(16px) brightness(1.8)';
   ctx.drawImage(auraLayer, shiftX, shiftY, w, h);
 
-  // Capa 3: Borde de luz fina y brillante
   ctx.filter = 'blur(6px) brightness(2.2)';
   ctx.drawImage(auraLayer, 0, -5);
   ctx.restore();
 
-  // 3. Renderizar destellos / Polvo de estrellas alrededor del contorno
+  // 3. Renderizar destellos / Polvo de estrellas
   ctx.save();
   ctx.globalCompositeOperation = 'lighter';
   ctx.fillStyle = outerColor;
