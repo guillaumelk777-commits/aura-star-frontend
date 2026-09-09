@@ -71,7 +71,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .aura-test-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
 .aura-test-step{font-size:.7rem;color:#e8c96f;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
 .aura-test-progress{height:5px;background:#0b0e17;border-radius:99px;overflow:hidden;border:1px solid rgba(246,196,83,.12);margin-bottom:22px}
-.aura-test-progress i{display:block;height:100%;width:20%;background:linear-gradient(90deg,#8b5cf6,#f6c453,#ffe7a0);border-radius:99px;transition:width .35s ease}
+.aura-test-progress i{display:block;height:100%;width:20%;background:linear-gradient(90deg,#8b5cf6,#f6c453,#ffe7a0);border-radius:99px;transition:width .3s ease}
 .aura-test-title{font-size:1.75rem;line-height:1.08;font-weight:900;margin:0 0 8px;letter-spacing:-.5px}
 .aura-test-subtitle{color:var(--muted);font-size:.82rem;line-height:1.5;margin:0 0 18px}
 .aura-test-card{background:linear-gradient(145deg,rgba(20,25,39,.94),rgba(8,11,19,.97));border:1px solid rgba(246,196,83,.18);border-radius:24px;padding:18px;box-shadow:0 22px 55px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.03);position:relative;overflow:hidden}
@@ -181,6 +181,8 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
   </div>
 </div>
 
+<div id="onboard" class="scan" style="background:rgba(3,5,10,.94)"><div class="card" style="width:min(92vw,380px)"><h2 style="margin-top:0">Bienvenido a AURA STAR</h2><p class="hint">Elegí tu nombre y rango de edad. Tu perfil quedará vinculado a tu cuenta.</p><p id="onboardEmail" class="hint" style="margin-top:-6px;font-weight:700"></p><input id="onboardUsername" class="search" placeholder="Nombre de usuario" maxlength="40"><select id="onboardAge" class="search"><option value="18_plus">18 años o más</option><option value="13_17">13 a 17 años</option></select><button class="primary" onclick="createProfile()">Continuar</button><button class="linkbtn" style="width:100%;margin-top:8px" onclick="signOut()">¿No es tu cuenta? Cerrar sesión</button></div></div>
+
 <div id="giftModal" class="scan" style="background:rgba(3,5,10,.95)">
   <div class="card" style="width:min(92vw,400px)">
     <h3 style="margin-top:0;display:flex;align-items:center;gap:8px">✦ Regalar Estrellas Aura</h3>
@@ -230,13 +232,16 @@ async function api(path,opt={}){
   const d=await r.json().catch(()=>({}));
   if(!r.ok){
     const err=Object.assign(new Error(d.error||`Error de API (${r.status})`),{status:r.status,code:d.code});
-    if(r.status===401){ CURRENT_USER=null; }
+    if(r.status===401){ 
+      CURRENT_USER=null;
+      document.getElementById('login').classList.add('active');
+    }
     throw err;
   }
   return d;
 }
 
-// NAVEGACIÓN POR PESTAÑAS (GLOBAL VS PRESENCIAL LOCAL)
+// NAVEGACIÓN POR PESTAÑAS
 function switchFeedTab(tab) {
   currentFeedTab = tab;
   document.getElementById('tabFeedGlobal').classList.toggle('active', tab === 'global');
@@ -271,7 +276,7 @@ function autoDetectCurrentCity(targetInputId, notify = false) {
 async function signInWith(provider){
   const hint=document.getElementById('loginHint');
   if(provider!=='google')return;
-  hint.textContent='Abriendo Google…';
+  if(hint) hint.textContent='Abriendo Google…';
   try{
     const {data,error}=await sb.auth.signInWithOAuth({
       provider:'google',
@@ -280,8 +285,8 @@ async function signInWith(provider){
     if(error)throw error;
     if(data?.url) window.location.assign(data.url);
   }catch(e){
-    hint.textContent='No se pudo iniciar sesión: '+(e.message||'Error de Google');
-    toast(hint.textContent);
+    if(hint) hint.textContent='No se pudo iniciar sesión: '+(e.message||'Error de Google');
+    toast(hint?.textContent || 'Error al iniciar sesión');
   }
 }
 
@@ -290,30 +295,51 @@ async function signInWithEmail(){
   const hint=document.getElementById('loginHint');
   if(!email || !/\S+@\S+\.\S+/.test(email)) return toast('Ingresá un email válido.');
   
-  hint.textContent='Enviando enlace mágico a '+email+'…';
+  if(hint) hint.textContent='Enviando enlace mágico a '+email+'…';
   try{
     const {error}=await sb.auth.signInWithOtp({
       email,
       options:{ emailRedirectTo: OAUTH_REDIRECT }
     });
     if(error) throw error;
-    hint.textContent='¡Enlace enviado! Revisá tu casilla de correo para entrar.';
+    if(hint) hint.textContent='¡Enlace enviado! Revisá tu casilla de correo para entrar.';
     toast('✉️ Enlace enviado a tu email');
   }catch(e){
-    hint.textContent='Error al enviar email: '+(e.message||'');
+    if(hint) hint.textContent='Error al enviar email: '+(e.message||'');
     toast('No se pudo enviar el email');
   }
 }
 
-async function createProfile(){const name=document.getElementById('onboardUsername').value.trim(),age=document.getElementById('onboardAge').value;if(!CURRENT_USER)return toast('Primero iniciá sesión.');if(!name)return toast('Ingresá un nombre.');const btn=document.querySelector('#onboard button.primary');btn.disabled=true;btn.textContent='Creando perfil…';try{const r=await api('/users',{method:'POST',body:JSON.stringify({username:name,age_bracket:age})});if(!r?.id)throw Error('El backend no confirmó la creación del perfil.');document.getElementById('onboard').classList.remove('active');await initUser()}catch(e){console.error('createProfile',e);toast(e.message)}finally{btn.disabled=false;btn.textContent='Continuar'}}
+async function createProfile(){
+  const name=document.getElementById('onboardUsername').value.trim(),age=document.getElementById('onboardAge').value;
+  if(!CURRENT_USER)return toast('Primero iniciá sesión.');
+  if(!name)return toast('Ingresá un nombre.');
+  const btn=document.querySelector('#onboard button.primary');
+  btn.disabled=true;btn.textContent='Creando perfil…';
+  try{
+    const r=await api('/users',{method:'POST',body:JSON.stringify({username:name,age_bracket:age})});
+    if(!r?.id)throw Error('El backend no confirmó la creación del perfil.');
+    document.getElementById('onboard').classList.remove('active');
+    document.getElementById('login').classList.remove('active');
+    await initUser();
+  }catch(e){console.error('createProfile',e);toast(e.message)}finally{btn.disabled=false;btn.textContent='Continuar'}
+}
 
+// INICIALIZACIÓN DE USUARIO CON OCULTACIÓN DIRECTA DE MODAL DE LOGIN
 async function initUser(){
-  if(!CURRENT_USER){ document.getElementById('login').classList.add('active'); document.getElementById('onboard').classList.remove('active'); return; }
+  if(!CURRENT_USER){
+    document.getElementById('login').classList.add('active');
+    document.getElementById('onboard').classList.remove('active');
+    return;
+  }
+  
+  // Si hay usuario autenticado en Supabase, ocultar inmediatamente la pantalla de login
+  document.getElementById('login').classList.remove('active');
+  
   try{
     const u=await api('/users/'+encodeURIComponent(CURRENT_USER.id));
     IS_ADMIN=!!(u.is_admin||u.moderation_role==='admin');
     document.getElementById('avatar').textContent=(u.username||'✦')[0].toUpperCase();
-    document.getElementById('login').classList.remove('active');
     document.getElementById('onboard').classList.remove('active');
     await claimPendingReferral();
     checkPaymentReturn();
@@ -330,11 +356,9 @@ async function initUser(){
     }else if(e.status===401||e.code==='NO_SESSION'){
       document.getElementById('login').classList.add('active');
       document.getElementById('onboard').classList.remove('active');
-      document.getElementById('loginHint').textContent='La sesión no pudo validarse. Volvé a ingresar.';
     }else{
-      document.getElementById('login').classList.add('active');
-      document.getElementById('onboard').classList.remove('active');
-      document.getElementById('loginHint').textContent='No pudimos conectar con AURA STAR. '+(e.message||'Intentá nuevamente.');
+      // En caso de fallos de red/servidor mantendremos la sesión activa para reintentar
+      toast('Conectando con AURA STAR…');
     }
   }
 }
@@ -357,7 +381,6 @@ async function handleAuth(){
     const desc=params.get('error_description')||params.get('error');
     history.replaceState({},document.title,location.pathname);
     document.getElementById('login').classList.add('active');
-    document.getElementById('loginHint').textContent='Error de acceso: '+decodeURIComponent(desc);
     return;
   }
   const {data,error}=await sb.auth.getSession();
@@ -368,9 +391,14 @@ async function handleAuth(){
 
 sb.auth.onAuthStateChange((event,session)=>{
   CURRENT_USER=session?.user||null;
-  if(event==='SIGNED_IN'&&CURRENT_USER)setTimeout(()=>initUser(),50);
-  if(event==='TOKEN_REFRESHED'&&CURRENT_USER)setTimeout(()=>initUser(),50);
-  if(event==='SIGNED_OUT'){CURRENT_USER=null;IS_ADMIN=false;document.getElementById('login').classList.add('active');document.getElementById('onboard').classList.remove('active');}
+  if(event==='SIGNED_IN'&&CURRENT_USER) setTimeout(()=>initUser(),50);
+  if(event==='TOKEN_REFRESHED'&&CURRENT_USER) setTimeout(()=>initUser(),50);
+  if(event==='SIGNED_OUT'){
+    CURRENT_USER=null;
+    IS_ADMIN=false;
+    document.getElementById('login').classList.add('active');
+    document.getElementById('onboard').classList.remove('active');
+  }
 });
 
 function show(v){
@@ -388,7 +416,7 @@ function battlePeople(b){return b.mode==='local'?[b.local_a_name||b.local_partic
 function feedMedia(url,mode,name){if(!url)return `<div class="feed-media"><div style="aspect-ratio:9/14;border-radius:16px;background:#090c14;display:grid;place-items:center;color:var(--muted);border:1px solid var(--border)">Esperando…</div><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='photo')return `<div class="feed-media"><img src="${esc(url)}" alt="Participación de ${esc(name)}" loading="lazy" oncontextmenu="return false;"><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='audio')return `<div class="feed-media"><div class="feed-audio"><div style="font-size:1.6rem;text-align:center;margin-bottom:6px">🎙️</div><audio controls controlsList="nodownload" preload="metadata" src="${esc(url)}"></audio></div><small class="feed-media-name">${esc(name)}</small></div>`;return `<div class="feed-media" data-feed-video><video playsinline controlsList="nodownload" disablePictureInPicture preload="metadata" src="${esc(url)}" onclick="toggleFeedVideo(this)" oncontextmenu="return false;"></video><div class="feed-play">▶</div><small class="feed-media-name">${esc(name)}</small></div>`}
 function toggleFeedVideo(video){event?.stopPropagation?.();const wrap=video.closest('.feed-media');if(!wrap)return;if(video.paused){document.querySelectorAll('.feed-media[data-feed-video] video').forEach(v=>{if(v!==video){v.pause();v.closest('.feed-media')?.classList.remove('playing')}});video.play().then(()=>wrap.classList.add('playing')).catch(()=>{});}else{video.pause();wrap.classList.remove('playing');}} 
 
-// TARJETA DE BATALLA (MULTIMEDIA VS LOCAL PRESENCIAL)
+// TARJETA DE BATALLA
 function battleCard(b){
   const [aName, oName] = battlePeople(b);
   const a = +b.votes_creator || 0;
@@ -403,7 +431,6 @@ function battleCard(b){
   const hasOpponent = local ? Boolean(targetB) : Boolean(b.opponent_id && b.media_url_opponent);
   const disableVoting = !hasOpponent || b.status !== 'active';
 
-  // TARJETA EXCLUSIVA PARA BATALLAS PRESENCIALES LOCALES (SIN VIDEO NI FOTOS)
   if (local) {
     return `
       <div class="card battle-card local-card" id="card-${b.id}">
@@ -442,7 +469,6 @@ function battleCard(b){
     `;
   }
 
-  // TARJETA MULTIMEDIA (VIDEO / AUDIO / FOTO)
   const media = `<div class="feed-media-grid">${feedMedia(b.media_url_creator, b.mode, aName)}${feedMedia(b.media_url_opponent, b.mode, oName)}</div>`;
 
   return `
@@ -590,7 +616,7 @@ function renderCreate(){
   const c = document.getElementById('createCard');
   if(currentMode==='local'){
     c.innerHTML = `
-      <div class="mode-info"><b>FC Batalla presencial</b><br>Aparece automáticamente en el feed de tu ciudad. La creación es <b>gratuita</b>.</div>
+      <div class="mode-info"><b>🏟️ Batalla presencial</b><br>Aparece automáticamente en el feed de tu ciudad. La creación es <b>gratuita</b>.</div>
       <form id="localForm">
         <input id="battleTitle" maxlength="80" placeholder="Nombre de la batalla" required>
         
