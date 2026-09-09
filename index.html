@@ -7,11 +7,14 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
+<!-- MEDIAPIPE PARA SEGMENTACIÓN DE SILUETA REAL -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
+
 <style>
 :root{--bg:#06070d;--surface:#0e111b;--surface2:#151a28;--purple:#8b5cf6;--purple2:#a78bfa;--gold:#fbbf24;--green:#22c55e;--red:#ef4444;--text:#f8fafc;--muted:#94a3b8;--border:rgba(255,255,255,.09);--glow:rgba(139,92,246,.3);--goldglow:rgba(251,191,36,.24)}
 *{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:radial-gradient(circle at 50% 0,rgba(139,92,246,.22),transparent 42%),radial-gradient(circle at 100% 50%,rgba(139,92,246,.08),transparent 35%),var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button{border:0;cursor:pointer}.app{max-width:480px;margin:auto;min-height:100vh;padding-bottom:92px}header{padding:15px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:rgba(6,7,13,.82);backdrop-filter:blur(18px);z-index:20;border-bottom:1px solid var(--border)}.brand{display:flex;align-items:center;gap:10px}.brand-icon{width:32px;height:32px;background:linear-gradient(135deg,#fff,var(--purple));clip-path:polygon(50% 0,65% 35%,100% 50%,65% 65%,50% 100%,35% 65%,0 50%,35% 35%);filter:drop-shadow(0 0 9px var(--glow))}.logo{font-weight:900;font-size:1.38rem;letter-spacing:.6px;background:linear-gradient(135deg,#fff,var(--purple2));-webkit-background-clip:text;color:transparent}.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--surface2),#24164a);border:1px solid rgba(167,139,250,.6);font-weight:900;color:#fff}.view{display:none;animation:in .25s ease}.view.active{display:block}@keyframes in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}main{padding:10px 16px}.hero{padding:22px 3px 16px}.hero h1{font-size:2rem;line-height:1.06;margin:0 0 8px;font-weight:900;letter-spacing:-.8px}.hero p{margin:0;color:var(--muted);font-size:.9rem}.section-title{display:flex;justify-content:space-between;align-items:center;margin:23px 2px 12px}.section-title h2{font-size:1rem;margin:0;font-weight:800}.muted{color:var(--muted);font-size:.78rem}.card{background:linear-gradient(145deg,rgba(20,25,39,.9),rgba(10,13,22,.94));border:1px solid var(--border);border-radius:22px;padding:17px;margin:12px 0;box-shadow:0 18px 38px rgba(0,0,0,.28);position:relative;overflow:hidden}.card:before{content:"";position:absolute;left:10%;right:10%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent)}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.action{padding:17px 15px;border-radius:18px;background:var(--surface);border:1px solid var(--border);color:var(--text);text-align:left}.action:active,.battle-card:active{transform:scale(.98)}.action strong{display:block;margin-bottom:5px}.action span{color:var(--muted);font-size:.72rem}.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(139,92,246,.13);color:#c4b5fd;border:1px solid rgba(139,92,246,.2);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.4px}.battle-title{font-size:1.08rem;font-weight:850;margin:10px 0}
 
-/* MEDIOS NORMALIZADOS */
 .feed-media-grid, .media-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
 .feed-media, .media-grid > div{position:relative;min-width:0;text-align:center}
 .feed-media video, .feed-media img, .media-grid video, .media-grid img{width:100%;aspect-ratio:9/14;object-fit:cover;border-radius:16px;background:#000;border:1px solid var(--border);display:block}
@@ -22,7 +25,6 @@
 .feed-audio, .audio-box{background:#090c14;border:1px solid var(--border);border-radius:16px;padding:12px;text-align:center}
 .feed-audio audio, .audio-box audio{width:100%}
 
-/* PESTAÑAS CHROME */
 .chrome-tabs{display:flex;background:#090c14;padding:4px;border-radius:16px;border:1px solid rgba(246,196,83,.15);margin:12px 0 16px;gap:4px}
 .chrome-tab{flex:1;padding:12px 8px;text-align:center;background:none;color:var(--muted);border-radius:12px;font-weight:800;font-size:.82rem;display:flex;align-items:center;justify-content:center;gap:6px;transition:.2s}
 .chrome-tab.active{background:linear-gradient(135deg,rgba(139,92,246,.25),rgba(246,196,83,.12));color:#ffe7a0;border:1px solid rgba(246,196,83,.22);box-shadow:0 6px 18px rgba(0,0,0,.35)}
@@ -84,7 +86,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .admin-actions button{width:auto;padding:8px 10px}
 .admin-meta{font-size:.72rem;color:var(--muted);margin-top:3px}
 
-/* TARJETA Y VISTA DE HALO MULTICOLOR CONCÉNTRICO */
+/* TARJETA Y VISTA DE SILUETA AURA MEDIAPIPE */
 .aura-filter-card {
   background: linear-gradient(145deg, rgba(20,25,39,.95), rgba(8,11,19,.98));
   border: 1px solid rgba(246,196,83,.22);
@@ -184,10 +186,10 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
   <div class="hero"><h1>Mi perfil</h1><p id="profileSubtitle">Tu identidad dentro de AURA STAR.</p></div>
   <div class="card" id="profileCard"></div>
 
-  <!-- MÓDULO AURA CON HALOS CONCÉNTRICOS MULTICOLOR -->
+  <!-- MÓDULO AURA CON CONTORNO DE SILUETA EXPANSIVA -->
   <div class="card" id="auraFilterSection">
-    <h3 style="margin:0 0 6px">✨ Capturar mi Aura Energética</h3>
-    <p class="hint" style="margin-top:0">Halo de energía expansiva contorneando tu silueta frontal.</p>
+    <h3 style="margin:0 0 6px">✨ Capturar mi Aura de Silueta</h3>
+    <p class="hint" style="margin-top:0">Resplandor de energía proyectado directamente desde los bordes de tu cuerpo.</p>
     
     <div class="aura-filter-card" id="auraFilterCardBox">
       <div class="aura-filter-view" id="auraFrameBox">
@@ -200,11 +202,12 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
       <div class="aura-card-brand">✦ AURA STAR ✦</div>
     </div>
 
-    <!-- Modos de Halo de Energía -->
+    <!-- Estilos de Color para el Contorno -->
     <div class="tabs" style="margin-top:12px">
-      <button type="button" class="tab active" id="fBtnSpectrum" onclick="setAuraHaloTheme('spectrum')">🌈 Espectro</button>
-      <button type="button" class="tab" id="fBtnGold" onclick="setAuraHaloTheme('gold')">🟡 Dorado</button>
-      <button type="button" class="tab" id="fBtnCosmic" onclick="setAuraHaloTheme('cosmic')">🟣 Cósmico</button>
+      <button type="button" class="tab active" id="fBtnRainbow" onclick="setAuraSilhouetteStyle('rainbow')">🌈 Arcoíris</button>
+      <button type="button" class="tab" id="fBtnGold" onclick="setAuraSilhouetteStyle('gold')">🟡 Dorado</button>
+      <button type="button" class="tab" id="fBtnCyan" onclick="setAuraSilhouetteStyle('cyan')">🔵 Neón</button>
+      <button type="button" class="tab" id="fBtnPurple" onclick="setAuraSilhouetteStyle('purple')">🟣 Púrpura</button>
     </div>
 
     <div class="grid" style="margin-top:10px">
@@ -275,9 +278,8 @@ const OAUTH_REDIRECT='https://guillaumelk777-commits.github.io/aura-star-fronten
 const sb=supabase.createClient(CONFIG.SUPABASE_URL,CONFIG.SUPABASE_ANON_KEY);
 let CURRENT_USER=null,IS_ADMIN=false,cache=[],pendingNewBattles=[],currentMode='video',scanStream=null,scanTimer=null,currentGiftMethod='username',currentCity='Trelew',currentFeedTab='global';
 
-let auraCamStream = null, auraAnimFrame = null;
-let auraHaloTheme = 'spectrum'; // spectrum, gold, cosmic
-let auraPulseAngle = 0;
+let selfieSegmentation = null, cameraUtil = null;
+let auraSilhouetteStyle = 'rainbow';
 
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 function getUserId(){return CURRENT_USER?.id||''}
@@ -1004,117 +1006,113 @@ async function loadProfile(){
   }catch(e){box.innerHTML='<div class="empty">No se pudo cargar el perfil.</div>'}
 }
 
-/* RENDERING DE AURA MULTICOLOR CONCÉNTRICA NATIVA */
-function setAuraHaloTheme(theme) {
-  auraHaloTheme = theme;
-  document.getElementById('fBtnSpectrum').classList.toggle('active', theme === 'spectrum');
-  document.getElementById('fBtnGold').classList.toggle('active', theme === 'gold');
-  document.getElementById('fBtnCosmic').classList.toggle('active', theme === 'cosmic');
+/* RENDERING DE RESPLANDOR DE SILUETA MEDIAPIPE CON CONTORNO LIMPIO */
+function setAuraSilhouetteStyle(style) {
+  auraSilhouetteStyle = style;
+  document.getElementById('fBtnRainbow').classList.toggle('active', style === 'rainbow');
+  document.getElementById('fBtnGold').classList.toggle('active', style === 'gold');
+  document.getElementById('fBtnCyan').classList.toggle('active', style === 'cyan');
+  document.getElementById('fBtnPurple').classList.toggle('active', style === 'purple');
 }
 
 async function startAuraCamera() {
-  toast('Activando cámara…');
+  toast('Iniciando escáner de silueta…');
   const video = document.getElementById('auraRawVideo');
   const canvas = document.getElementById('auraCanvasView');
+  const ctx = canvas.getContext('2d');
 
   document.getElementById('auraCapturedImg').style.display = 'none';
   canvas.style.display = 'block';
 
-  try {
-    if (!navigator.mediaDevices?.getUserMedia) throw Error('Cámara no soportada.');
-    auraCamStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: 480, height: 480 } });
-    video.srcObject = auraCamStream;
-    video.style.display = 'none';
-
-    video.onloadedmetadata = () => {
-      video.play();
-      drawConcentricAuraLoop();
-    };
-
-    document.getElementById('btnStartAuraCam').style.display = 'none';
-    document.getElementById('btnSnapAuraCam').style.display = 'block';
-    document.getElementById('btnCancelAuraCam').style.display = 'block';
-    document.getElementById('btnRetakeAuraCam').style.display = 'none';
-    document.getElementById('btnExportAuraCard').style.display = 'none';
-  } catch (e) {
-    toast('No se pudo acceder a la cámara.');
+  if (!selfieSegmentation) {
+    selfieSegmentation = new SelfieSegmentation({
+      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/${file}`
+    });
+    selfieSegmentation.setOptions({ modelSelection: 1 });
+    selfieSegmentation.onResults((results) => drawSilhouetteGlowResults(results, ctx, canvas));
   }
+
+  if (!cameraUtil) {
+    cameraUtil = new Camera(video, {
+      onFrame: async () => {
+        await selfieSegmentation.send({ image: video });
+      },
+      width: 480,
+      height: 480
+    });
+  }
+
+  cameraUtil.start();
+
+  document.getElementById('btnStartAuraCam').style.display = 'none';
+  document.getElementById('btnSnapAuraCam').style.display = 'block';
+  document.getElementById('btnCancelAuraCam').style.display = 'block';
+  document.getElementById('btnRetakeAuraCam').style.display = 'none';
+  document.getElementById('btnExportAuraCard').style.display = 'none';
 }
 
-function drawConcentricAuraLoop() {
-  const video = document.getElementById('auraRawVideo');
-  const canvas = document.getElementById('auraCanvasView');
-  if (!canvas || !video || video.paused || video.ended) return;
-
-  const ctx = canvas.getContext('2d');
-  canvas.width = video.videoWidth || 480;
-  canvas.height = video.videoHeight || 480;
-
-  auraPulseAngle += 0.04;
-  const pulseOffset = Math.sin(auraPulseAngle) * 12;
+function drawSilhouetteGlowResults(results, ctx, canvas) {
+  canvas.width = results.image.width;
+  canvas.height = results.image.height;
 
   ctx.save();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // 1. Render del video de la cámara en vivo limpia y espejada
+  // 1. Crear un lienzo auxiliar en memoria para la máscara de la silueta humana
+  const maskCanvas = document.createElement('canvas');
+  maskCanvas.width = canvas.width;
+  maskCanvas.height = canvas.height;
+  const maskCtx = maskCanvas.getContext('2d');
+
+  // Espejar la máscara
+  maskCtx.translate(canvas.width, 0);
+  maskCtx.scale(-1, 1);
+  maskCtx.drawImage(results.segmentationMask, 0, 0, canvas.width, canvas.height);
+
+  // Colorear la máscara según el estilo seleccionado
+  maskCtx.globalCompositeOperation = 'source-in';
+  if (auraSilhouetteStyle === 'rainbow') {
+    const rainbowGrad = maskCtx.createLinearGradient(0, 0, 0, canvas.height);
+    rainbowGrad.addColorStop(0, '#a855f7');  // Violeta arriba
+    rainbowGrad.addColorStop(0.25, '#3b82f6'); // Azul
+    rainbowGrad.addColorStop(0.5, '#22c55e');  // Verde
+    rainbowGrad.addColorStop(0.75, '#fbbf24'); // Amarillo
+    rainbowGrad.addColorStop(1, '#ef4444');    // Rojo abajo
+    maskCtx.fillStyle = rainbowGrad;
+  } else if (auraSilhouetteStyle === 'gold') {
+    maskCtx.fillStyle = '#fbbf24';
+  } else if (auraSilhouetteStyle === 'cyan') {
+    maskCtx.fillStyle = '#06b6d4';
+  } else {
+    maskCtx.fillStyle = '#a855f7';
+  }
+  maskCtx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // 2. Proyectar el resplandor de contorno (drop-shadow expansivo) detrás
+  ctx.save();
+  if (auraSilhouetteStyle === 'rainbow') {
+    ctx.filter = 'drop-shadow(0px 0px 18px rgba(168, 85, 247, 0.9)) drop-shadow(0px 0px 35px rgba(59, 130, 246, 0.7))';
+  } else if (auraSilhouetteStyle === 'gold') {
+    ctx.filter = 'drop-shadow(0px 0px 22px rgba(251, 191, 36, 0.95)) drop-shadow(0px 0px 40px rgba(245, 158, 11, 0.7))';
+  } else if (auraSilhouetteStyle === 'cyan') {
+    ctx.filter = 'drop-shadow(0px 0px 22px rgba(6, 182, 212, 0.95)) drop-shadow(0px 0px 40px rgba(14, 165, 233, 0.7))';
+  } else {
+    ctx.filter = 'drop-shadow(0px 0px 22px rgba(168, 85, 247, 0.95)) drop-shadow(0px 0px 40px rgba(126, 34, 206, 0.7))';
+  }
+  ctx.drawImage(maskCanvas, 0, 0);
+  ctx.restore();
+
+  // 3. Superponer la imagen real nítida del usuario por delante
+  ctx.save();
   ctx.translate(canvas.width, 0);
   ctx.scale(-1, 1);
-  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);
   ctx.restore();
 
-  // 2. Dibujar las capas del halo de energía emanando desde el centro/cabeza hacia afuera
-  ctx.save();
-  const centerX = canvas.width / 2;
-  const centerY = canvas.height * 0.58; // Posición de cabeza/hombros
-
-  let colorStops = [];
-  if (auraHaloTheme === 'spectrum') {
-    // Espectro Arcoíris exacto (de rojo interno a amarillo, verde, azul y violeta externo)
-    colorStops = [
-      { p: 0.15, c: 'rgba(239, 68, 68, 0.0)' },  // Centro limpio
-      { p: 0.28, c: 'rgba(239, 68, 68, 0.75)' }, // Rojo
-      { p: 0.38, c: 'rgba(251, 191, 36, 0.75)' }, // Amarillo / Naranja
-      { p: 0.48, c: 'rgba(34, 197, 94, 0.70)' },  // Verde
-      { p: 0.58, c: 'rgba(59, 130, 246, 0.65)' }, // Azul
-      { p: 0.72, c: 'rgba(168, 85, 247, 0.60)' }, // Púrpura
-      { p: 0.90, c: 'rgba(168, 85, 247, 0.0)' }  // Transparente exterior
-    ];
-  } else if (auraHaloTheme === 'gold') {
-    // Halo Dorado de Leyenda
-    colorStops = [
-      { p: 0.18, c: 'rgba(255, 255, 255, 0.0)' },
-      { p: 0.32, c: 'rgba(254, 240, 138, 0.8)' },
-      { p: 0.48, c: 'rgba(251, 191, 36, 0.75)' },
-      { p: 0.68, c: 'rgba(217, 119, 6, 0.55)' },
-      { p: 0.88, c: 'rgba(180, 83, 9, 0.0)' }
-    ];
-  } else {
-    // Halo Cósmico / Místico
-    colorStops = [
-      { p: 0.18, c: 'rgba(255, 255, 255, 0.0)' },
-      { p: 0.32, c: 'rgba(233, 213, 255, 0.8)' },
-      { p: 0.50, c: 'rgba(168, 85, 247, 0.75)' },
-      { p: 0.70, c: 'rgba(99, 102, 241, 0.6)' },
-      { p: 0.90, c: 'rgba(67, 56, 202, 0.0)' }
-    ];
-  }
-
-  const baseRadius = canvas.width * 0.18 + pulseOffset;
-  const maxRadius = canvas.width * 0.62 + pulseOffset;
-
-  const grad = ctx.createRadialGradient(centerX, centerY, baseRadius, centerX, centerY, maxRadius);
-  colorStops.forEach(stop => grad.addColorStop(stop.p, stop.c));
-
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
   ctx.restore();
-
-  auraAnimFrame = requestAnimationFrame(drawConcentricAuraLoop);
 }
 
 function takeAuraPhoto() {
-  if (auraAnimFrame) cancelAnimationFrame(auraAnimFrame);
   const canvas = document.getElementById('auraCanvasView');
   const img = document.getElementById('auraCapturedImg');
 
@@ -1122,10 +1120,7 @@ function takeAuraPhoto() {
   img.style.display = 'block';
   canvas.style.display = 'none';
 
-  if (auraCamStream) {
-    auraCamStream.getTracks().forEach(t => t.stop());
-    auraCamStream = null;
-  }
+  if (cameraUtil) { cameraUtil.stop(); }
 
   document.getElementById('btnSnapAuraCam').style.display = 'none';
   document.getElementById('btnRetakeAuraCam').style.display = 'block';
@@ -1142,11 +1137,7 @@ function resetAuraCamera() {
 }
 
 function cancelAuraCamera() {
-  if (auraAnimFrame) cancelAnimationFrame(auraAnimFrame);
-  if (auraCamStream) {
-    auraCamStream.getTracks().forEach(t => t.stop());
-    auraCamStream = null;
-  }
+  if (cameraUtil) { cameraUtil.stop(); }
   document.getElementById('auraCanvasView').style.display = 'none';
   document.getElementById('auraCapturedImg').style.display = 'none';
 
