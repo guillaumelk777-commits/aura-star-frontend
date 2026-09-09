@@ -84,7 +84,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .admin-actions button{width:auto;padding:8px 10px}
 .admin-meta{font-size:.72rem;color:var(--muted);margin-top:3px}
 
-/* ESTILOS DE FILTRO ESTILO TEST DE AURA */
+/* ESTILOS DE FILTRO ESTILO TEST DE AURA (TONALIDAD NEUTRA) */
 .aura-filter-card {
   background: linear-gradient(145deg, rgba(20,25,39,.95), rgba(8,11,19,.98));
   border: 1px solid rgba(246,196,83,.22);
@@ -96,7 +96,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
   max-width: 380px;
 }
 
-/* MARCO CÁPSULA TIPO SCANNER */
+/* MARCO CÁPSULA TIPO SCANNER NEUTRO */
 .aura-scanner-frame {
   position: relative;
   width: 100%;
@@ -123,7 +123,6 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
   border-radius: 46% 46% 40% 40%;
   box-shadow: 0 0 0 999px rgba(0,0,0,.08), inset 0 0 25px rgba(246,196,83,.1);
   pointer-events: none;
-  transition: border-color .3s ease;
 }
 
 /* LÍNEA DE SCANNER ANIMADA EN TIEMPO REAL */
@@ -220,10 +219,10 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
   <div class="hero"><h1>Mi perfil</h1><p id="profileSubtitle">Tu identidad dentro de AURA STAR.</p></div>
   <div class="card" id="profileCard"></div>
 
-  <!-- MÓDULO SCANNER DE AURA (ESTILO TEST) -->
+  <!-- MÓDULO SCANNER DE AURA (ESTILO TEST NEUTRO) -->
   <div class="card" id="auraFilterSection">
     <h3 style="margin:0 0 6px">✨ Capturar mi Tarjeta con Scanner Aura</h3>
-    <p class="hint" style="margin-top:0">Proyectá el campo de energía sobre tu rostro para generar la tarjeta oficial de perfil.</p>
+    <p class="hint" style="margin-top:0">Proyectá el campo energético sobre tu rostro para generar la tarjeta oficial de perfil.</p>
     
     <div class="aura-filter-card" id="auraFilterCardBox">
       <div class="aura-scanner-frame" id="auraFrameBox">
@@ -234,13 +233,6 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
       <div class="aura-card-username" id="auraCardUsername">@usuario</div>
       <div class="aura-card-badge" id="auraCardBadge">★ 0 Aura</div>
       <div class="aura-card-brand">✦ AURA STAR ✦</div>
-    </div>
-
-    <!-- Pestañas para elegir Estilo de Scanner -->
-    <div class="tabs" style="margin-top:12px">
-      <button type="button" class="tab active" id="fBtnGold" onclick="setAuraTheme('#fbbf24', 'rgba(251,191,36,.9)')">🟡 Dorado</button>
-      <button type="button" class="tab" id="fBtnNeon" onclick="setAuraTheme('#8b5cf6', 'rgba(139,92,246,.9)')">🟣 Mística</button>
-      <button type="button" class="tab" id="fBtnCyber" onclick="setAuraTheme('#ef4444', 'rgba(239,68,68,.9)')">🔴 Fuego</button>
     </div>
 
     <div class="grid" style="margin-top:10px">
@@ -1039,18 +1031,7 @@ async function loadProfile(){
   }catch(e){box.innerHTML='<div class="empty">No se pudo cargar el perfil.</div>'}
 }
 
-/* LÓGICA DE SCANNER Y FILTRO ESTILO TEST DE AURA */
-function setAuraTheme(borderColor, glowColor) {
-  const frame = document.getElementById('auraFrameBox');
-  if (frame) {
-    frame.style.borderColor = borderColor;
-    frame.style.boxShadow = `0 0 30px ${glowColor}`;
-  }
-  document.getElementById('fBtnGold').classList.toggle('active', borderColor === '#fbbf24');
-  document.getElementById('fBtnNeon').classList.toggle('active', borderColor === '#8b5cf6');
-  document.getElementById('fBtnCyber').classList.toggle('active', borderColor === '#ef4444');
-}
-
+/* LÓGICA DE SCANNER AURA NEUTRO */
 async function startAuraCamera() {
   try {
     if (!navigator.mediaDevices?.getUserMedia) throw Error('Cámara no soportada.');
