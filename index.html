@@ -195,7 +195,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
   <div class="hero"><h1>Mi perfil</h1><p id="profileSubtitle">Tu identidad dentro de AURA STAR.</p></div>
   <div class="card" id="profileCard"></div>
 
-  <!-- NUEVO: MÓDULO FILTRO FOTO Y TARJETA AURA -->
+  <!-- MÓDULO FILTRO FOTO Y TARJETA AURA -->
   <div class="card" id="auraFilterSection">
     <h3 style="margin:0 0 6px">📸 Crear Tarjeta Aura con Filtro</h3>
     <p class="hint" style="margin-top:0">Sacate una foto con filtro de cámara en vivo para compartir en Instagram, WhatsApp o Facebook.</p>
@@ -225,6 +225,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
     </div>
 
     <button type="button" class="primary share-btn" id="btnExportAuraCard" onclick="exportAuraCard()" style="display:none;margin-top:10px">📤 Compartir Mi Tarjeta Aura</button>
+    <button type="button" class="danger" id="btnCancelAuraCam" onclick="cancelAuraCamera()" style="display:none;margin-top:8px">✖ Cancelar</button>
   </div>
 
   <div class="card share-card">
@@ -327,7 +328,7 @@ function switchFeedTab(tab) {
   document.getElementById('tabFeedGlobal').classList.toggle('active', tab === 'global');
   document.getElementById('tabFeedLocal').classList.toggle('active', tab === 'local');
   document.getElementById('sectionFeedGlobal').style.display = tab === 'global' ? 'block' : 'none';
-  document.getElementById('sectionFeedLocal').style.display = tab === 'local' ? 'block' : 'none';
+  document.getElementById('sectionFeedLocal').style.display = tab === 'local' ? 'none' : 'none';
   
   if (tab === 'global') { loadBattles(); }
   else { loadLocalFeed(); }
@@ -1038,6 +1039,7 @@ async function startAuraCamera() {
 
     document.getElementById('btnStartAuraCam').style.display = 'none';
     document.getElementById('btnSnapAuraCam').style.display = 'block';
+    document.getElementById('btnCancelAuraCam').style.display = 'block';
     document.getElementById('btnRetakeAuraCam').style.display = 'none';
     document.getElementById('btnExportAuraCard').style.display = 'none';
   } catch (e) {
@@ -1071,6 +1073,7 @@ function takeAuraPhoto() {
   document.getElementById('btnSnapAuraCam').style.display = 'none';
   document.getElementById('btnRetakeAuraCam').style.display = 'block';
   document.getElementById('btnExportAuraCard').style.display = 'block';
+  document.getElementById('btnCancelAuraCam').style.display = 'block';
 }
 
 function resetAuraCamera() {
@@ -1079,6 +1082,21 @@ function resetAuraCamera() {
   document.getElementById('btnRetakeAuraCam').style.display = 'none';
   document.getElementById('btnExportAuraCard').style.display = 'none';
   startAuraCamera();
+}
+
+function cancelAuraCamera() {
+  if (auraCamStream) {
+    auraCamStream.getTracks().forEach(t => t.stop());
+    auraCamStream = null;
+  }
+  document.getElementById('auraCameraVideo').style.display = 'none';
+  document.getElementById('auraCapturedImg').style.display = 'none';
+
+  document.getElementById('btnStartAuraCam').style.display = 'block';
+  document.getElementById('btnSnapAuraCam').style.display = 'none';
+  document.getElementById('btnRetakeAuraCam').style.display = 'none';
+  document.getElementById('btnExportAuraCard').style.display = 'none';
+  document.getElementById('btnCancelAuraCam').style.display = 'none';
 }
 
 async function exportAuraCard() {
