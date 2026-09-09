@@ -447,9 +447,15 @@ function battleCard(b){
     const closeText = b.local_closes_at ? timeLeft(b.local_closes_at) : 'finalizando';
     const targetAJson = JSON.stringify(String(targetA || ''));
     const targetBJson = JSON.stringify(String(targetB || ''));
+    const adminDeleteBtn = IS_ADMIN ? `<button class="danger" style="margin-top:10px" onclick="adminDeleteBattle('${b.id}')">🗑️ Eliminar batalla (Admin)</button>` : '';
 
     return `
       <div class="card battle-card local-card" id="card-${b.id}">
+        <div style="margin-bottom:12px">
+          <span class="badge">🏟️ EN VIVO - ${esc(b.city || 'LOCAL')}</span>
+          <div class="battle-title" style="margin:10px 0 0;font-size:1.3rem">${esc(b.title)}</div>
+        </div>
+
         <div class="players">
           <div class="player">
             <div style="font-size:.85rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(aName)}</div>
@@ -467,7 +473,7 @@ function battleCard(b){
         <div class="bar"><i id="bar-${b.id}" style="width:${p}%"></i></div>
 
         <div class="meta" style="margin-top:10px">
-          <span id="total-${b.id}">${total} votos - diferencia ${diff}</span>
+          <span id="total-${b.id}">${total} votos · diferencia ${diff}</span>
           <div class="timer">⏱️ ${esc(closeText)} restantes</div>
         </div>
 
@@ -475,6 +481,7 @@ function battleCard(b){
           <button class="vote a" onclick="voteDirect(event,'${b.id}',${targetAJson})" ${disableVoting ? 'disabled' : ''}>Votar ${esc(aName)}</button>
           <button class="vote b" onclick="voteDirect(event,'${b.id}',${targetBJson})" ${disableVoting ? 'disabled' : ''}>Votar ${esc(oName)}</button>
         </div>
+        ${adminDeleteBtn}
       </div>
     `;
   }
@@ -1051,7 +1058,7 @@ async function openTournament(id){
 // TEST DE AURA INICIAL
 const AURA_TEST_QUESTIONS=[
   {q:'Cuando aparece un desafío inesperado, ¿qué hacés primero?',o:[['Voy de frente.','Me gusta actuar rápido.'],['Observo y pienso.','Prefiero entender antes de moverme.'],['Busco una alternativa.','Siempre intento encontrar otro camino.'],['Me adapto sobre la marcha.','La presión me activa.']]},
-  {q:'¿Qué situacion te representa más?',o:[['Ser el centro de atención.','Disfruto mostrar lo que hago.'],['Sorprender sin avisar.','Me gusta lo inesperado.'],['Ayudar a alguien a destacar.','Prefiero potenciar a otros.'],['Competir hasta el final.','No me gusta rendirme.']]},
+  {q:'¿Qué situación te representa más?',o:[['Ser el centro de atención.','Disfruto mostrar lo que hago.'],['Sorprender sin avisar.','Me gusta lo inesperado.'],['Ayudar a alguien a destacar.','Prefiero potenciar a otros.'],['Competir hasta el final.','No me gusta rendirme.']]},
   {q:'Si tenés que elegir una energía para tu día, ¿cuál preferís?',o:[['Intensa.','Mucho movimiento y acción.'],['Tranquila.','Calma, foco y control.'],['Creativa.','Ideas, música y cosas nuevas.'],['Social.','Personas, risas y conexión.']]},
   {q:'¿Qué hacés cuando algo no sale como esperabas?',o:[['Lo intento de nuevo.','No me gusta dejarlo a medias.'],['Cambio de estrategia.','Si no funciona, pruebo otra cosa.'],['Me tomo un momento.','Prefiero recuperar el foco.'],['Me río y sigo.','No dejo que me corte la energía.']]},
   {q:'Elegí la frase que más se parece a vos.',o:[['“Voy a intentarlo.”','Aunque no sepa cómo todavía.'],['“Tengo una idea.”','Siempre se me ocurre algo.'],['“Vamos juntos.”','La energía compartida es mejor.'],['“Mirá esto.”','Me gusta sorprender.']]}
