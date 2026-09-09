@@ -442,12 +442,14 @@ function battleCard(b){
   const hasOpponent = local ? Boolean(targetB) : Boolean(b.opponent_id && b.media_url_opponent);
   const disableVoting = !hasOpponent || b.status !== 'active';
 
+  // Solo incluir el botón de eliminar si el usuario autenticado tiene rol de Administrador
+  const adminDeleteBtn = IS_ADMIN ? `<button class="danger" style="margin-top:12px" onclick="adminDeleteBattle('${b.id}')">🗑️ Eliminar batalla (Admin)</button>` : '';
+
   if (local) {
     const diff = Math.abs(a - o);
     const closeText = b.local_closes_at ? timeLeft(b.local_closes_at) : 'finalizando';
     const targetAJson = JSON.stringify(String(targetA || ''));
     const targetBJson = JSON.stringify(String(targetB || ''));
-    const adminDeleteBtn = IS_ADMIN ? `<button class="danger" style="margin-top:12px" onclick="adminDeleteBattle('${b.id}')">🗑️ Eliminar batalla (Admin)</button>` : '';
 
     return `
       <div class="card battle-card local-card" id="card-${b.id}">
@@ -519,6 +521,7 @@ function battleCard(b){
       <div class="meta" style="margin-top:8px">
         <span id="total-${b.id}">${total} votos</span>
       </div>
+      ${adminDeleteBtn}
     </div>
   `;
 }
