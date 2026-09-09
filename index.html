@@ -7,10 +7,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
-<!-- MEDIAPIPE AI PARA SEGMENTACIÓN CORPORAL PROFESIONAL -->
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
-
 <style>
 :root{--bg:#06070d;--surface:#0e111b;--surface2:#151a28;--purple:#8b5cf6;--purple2:#a78bfa;--gold:#fbbf24;--green:#22c55e;--red:#ef4444;--text:#f8fafc;--muted:#94a3b8;--border:rgba(255,255,255,.09);--glow:rgba(139,92,246,.3);--goldglow:rgba(251,191,36,.24)}
 *{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:radial-gradient(circle at 50% 0,rgba(139,92,246,.22),transparent 42%),radial-gradient(circle at 100% 50%,rgba(139,92,246,.08),transparent 35%),var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button{border:0;cursor:pointer}.app{max-width:480px;margin:auto;min-height:100vh;padding-bottom:92px}header{padding:15px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:rgba(6,7,13,.82);backdrop-filter:blur(18px);z-index:20;border-bottom:1px solid var(--border)}.brand{display:flex;align-items:center;gap:10px}.brand-icon{width:32px;height:32px;background:linear-gradient(135deg,#fff,var(--purple));clip-path:polygon(50% 0,65% 35%,100% 50%,65% 65%,50% 100%,35% 65%,0 50%,35% 35%);filter:drop-shadow(0 0 9px var(--glow))}.logo{font-weight:900;font-size:1.38rem;letter-spacing:.6px;background:linear-gradient(135deg,#fff,var(--purple2));-webkit-background-clip:text;color:transparent}.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--surface2),#24164a);border:1px solid rgba(167,139,250,.6);font-weight:900;color:#fff}.view{display:none;animation:in .25s ease}.view.active{display:block}@keyframes in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}main{padding:10px 16px}.hero{padding:22px 3px 16px}.hero h1{font-size:2rem;line-height:1.06;margin:0 0 8px;font-weight:900;letter-spacing:-.8px}.hero p{margin:0;color:var(--muted);font-size:.9rem}.section-title{display:flex;justify-content:space-between;align-items:center;margin:23px 2px 12px}.section-title h2{font-size:1rem;margin:0;font-weight:800}.muted{color:var(--muted);font-size:.78rem}.card{background:linear-gradient(145deg,rgba(20,25,39,.9),rgba(10,13,22,.94));border:1px solid var(--border);border-radius:22px;padding:17px;margin:12px 0;box-shadow:0 18px 38px rgba(0,0,0,.28);position:relative;overflow:hidden}.card:before{content:"";position:absolute;left:10%;right:10%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent)}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.action{padding:17px 15px;border-radius:18px;background:var(--surface);border:1px solid var(--border);color:var(--text);text-align:left}.action:active,.battle-card:active{transform:scale(.98)}.action strong{display:block;margin-bottom:5px}.action span{color:var(--muted);font-size:.72rem}.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(139,92,246,.13);color:#c4b5fd;border:1px solid rgba(139,92,246,.2);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.4px}.battle-title{font-size:1.08rem;font-weight:850;margin:10px 0}
@@ -88,7 +84,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .admin-actions button{width:auto;padding:8px 10px}
 .admin-meta{font-size:.72rem;color:var(--muted);margin-top:3px}
 
-/* TARJETA DE EXPORTACIÓN Y CANVAS DE SEGMENTACIÓN */
+/* TARJETA DE EXPORTACIÓN Y CANVAS DE RESPLANDOR NATIVO */
 .aura-filter-card {
   background: linear-gradient(145deg, rgba(20,25,39,.95), rgba(8,11,19,.98));
   border: 1px solid rgba(246,196,83,.22);
@@ -134,8 +130,8 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .aura-test.active{display:block}
 .aura-test-inner{width:min(100%,480px);min-height:100%;margin:auto;padding:22px 16px 34px;display:flex;flex-direction:column}
 .aura-test-step{font-size:.7rem;color:#e8c96f;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
-.aura-test-progress{height:5px;background:#0b0e17;border-radius:99px;overflow:hidden;border:1px solid rgba(246,196,83,.12);margin-bottom:22px}
-.aura-test-progress i{display:block;height:100%;width:20%;background:linear-gradient(90deg,#8b5cf6,#f6c453,#ffe7a0);border-radius:99px;transition:width .35s ease}
+.aura-test-progress{height:5px;background:#0b0e17;border-radius:999px;overflow:hidden;border:1px solid rgba(246,196,83,.12);margin-bottom:22px}
+.aura-test-progress i{display:block;height:100%;width:20%;background:linear-gradient(90deg,#8b5cf6,#f6c453,#ffe7a0);border-radius:999px;transition:width .35s ease}
 .aura-test-title{font-size:1.75rem;line-height:1.08;font-weight:900;margin:0 0 8px;letter-spacing:-.5px}
 .aura-test-card{background:linear-gradient(145deg,rgba(20,25,39,.94),rgba(8,11,19,.97));border:1px solid rgba(246,196,83,.18);border-radius:24px;padding:18px;box-shadow:0 22px 55px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.03);position:relative;overflow:hidden}
 .aura-test-card:before{content:"";position:absolute;left:8%;right:8%;top:0;height:1px;background:linear-gradient(90deg,transparent,#f6c453,transparent);opacity:.65}
@@ -191,10 +187,10 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
   <div class="hero"><h1>Mi perfil</h1><p id="profileSubtitle">Tu identidad dentro de AURA STAR.</p></div>
   <div class="card" id="profileCard"></div>
 
-  <!-- MÓDULO RESPLANDOR IA DE AURA (MEDIAPIPE SEGMENTATION) -->
+  <!-- MÓDULO RESPLANDOR NATIVO DE AURA -->
   <div class="card" id="auraFilterSection">
-    <h3 style="margin:0 0 6px">✨ Capturar mi Aura con Resplandor IA</h3>
-    <p class="hint" style="margin-top:0">La Inteligencia Artificial detecta tu silueta en vivo y proyecta un mapa de calor/resplandor energético contorneando tu cuerpo.</p>
+    <h3 style="margin:0 0 6px">✨ Capturar mi Aura en Vivo</h3>
+    <p class="hint" style="margin-top:0">Ajustá la intensidad del campo energético alrededor de tu silueta.</p>
     
     <div class="aura-filter-card" id="auraFilterCardBox">
       <div class="aura-filter-view" id="auraFrameBox">
@@ -283,8 +279,8 @@ const OAUTH_REDIRECT='https://guillaumelk777-commits.github.io/aura-star-fronten
 const sb=supabase.createClient(CONFIG.SUPABASE_URL,CONFIG.SUPABASE_ANON_KEY);
 let CURRENT_USER=null,IS_ADMIN=false,cache=[],pendingNewBattles=[],currentMode='video',scanStream=null,scanTimer=null,currentGiftMethod='username',currentCity='Trelew',currentFeedTab='global';
 
-let selfieSegmentation = null, cameraUtil = null;
-let auraLevel = 'light'; // light, med, strong, saiyan
+let auraCamStream = null, auraAnimFrame = null;
+let auraLevel = 'light';
 let saiyanParticles = [];
 
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
@@ -1013,7 +1009,7 @@ async function loadProfile(){
   }catch(e){box.innerHTML='<div class="empty">No se pudo cargar el perfil.</div>'}
 }
 
-/* LÓGICA DE RESPLANDOR Y MAPA DE CALOR CON MEDIAPIPE SELFIE SEGMENTATION CORREGIDA */
+/* LÓGICA DE RESPLANDOR IA CORREGIDA */
 function setAuraLevel(lvl) {
   auraLevel = lvl;
   document.getElementById('fBtnLight').classList.toggle('active', lvl === 'light');
@@ -1023,83 +1019,88 @@ function setAuraLevel(lvl) {
 }
 
 async function startAuraCamera() {
-  toast('Iniciando Inteligencia Artificial…');
+  toast('Activando cámara…');
   const video = document.getElementById('auraRawVideo');
   const canvas = document.getElementById('auraCanvasView');
-  const ctx = canvas.getContext('2d');
 
   document.getElementById('auraCapturedImg').style.display = 'none';
   canvas.style.display = 'block';
 
-  if (!selfieSegmentation) {
-    selfieSegmentation = new SelfieSegmentation({
-      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/${file}`
-    });
-    selfieSegmentation.setOptions({ modelSelection: 1 });
-    selfieSegmentation.onResults((results) => drawAuraGlow(results, ctx, canvas));
+  try {
+    if (!navigator.mediaDevices?.getUserMedia) throw Error('Cámara no soportada.');
+    auraCamStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: 480, height: 480 } });
+    video.srcObject = auraCamStream;
+    video.style.display = 'none';
+
+    video.onloadedmetadata = () => {
+      video.play();
+      drawNativeAuraLoop();
+    };
+
+    document.getElementById('btnStartAuraCam').style.display = 'none';
+    document.getElementById('btnSnapAuraCam').style.display = 'block';
+    document.getElementById('btnCancelAuraCam').style.display = 'block';
+    document.getElementById('btnRetakeAuraCam').style.display = 'none';
+    document.getElementById('btnExportAuraCard').style.display = 'none';
+  } catch (e) {
+    toast('No se pudo acceder a la cámara.');
   }
-
-  if (!cameraUtil) {
-    cameraUtil = new Camera(video, {
-      onFrame: async () => {
-        await selfieSegmentation.send({ image: video });
-      },
-      width: 480,
-      height: 480
-    });
-  }
-
-  cameraUtil.start();
-
-  document.getElementById('btnStartAuraCam').style.display = 'none';
-  document.getElementById('btnSnapAuraCam').style.display = 'block';
-  document.getElementById('btnCancelAuraCam').style.display = 'block';
-  document.getElementById('btnRetakeAuraCam').style.display = 'none';
-  document.getElementById('btnExportAuraCard').style.display = 'none';
 }
 
-function drawAuraGlow(results, ctx, canvas) {
-  canvas.width = results.image.width;
-  canvas.height = results.image.height;
+function drawNativeAuraLoop() {
+  const video = document.getElementById('auraRawVideo');
+  const canvas = document.getElementById('auraCanvasView');
+  if (!canvas || !video || video.paused || video.ended) return;
+
+  const ctx = canvas.getContext('2d');
+  canvas.width = video.videoWidth || 480;
+  canvas.height = video.videoHeight || 480;
 
   ctx.save();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Parámetros dinámicos según el Nivel de Aura seleccionado
-  let blurVal = 14, glowColor1 = '#22c55e', glowColor2 = '#10b981';
+  // 1. Dibujar cámara espejada nativa
+  ctx.translate(canvas.width, 0);
+  ctx.scale(-1, 1);
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  // 2. Parámetros de nivel de Aura
+  let glowColor1 = 'rgba(34, 197, 94, 0.45)', glowColor2 = 'rgba(16, 185, 129, 0.8)';
+  let blurRadius = 25;
+
   if (auraLevel === 'med') {
-    blurVal = 24; glowColor1 = '#3b82f6'; glowColor2 = '#1d4ed8';
+    glowColor1 = 'rgba(59, 130, 246, 0.5)'; glowColor2 = 'rgba(29, 78, 216, 0.85)'; blurRadius = 38;
   } else if (auraLevel === 'strong') {
-    blurVal = 34; glowColor1 = '#a855f7'; glowColor2 = '#7e22ce';
+    glowColor1 = 'rgba(168, 85, 247, 0.6)'; glowColor2 = 'rgba(126, 34, 206, 0.9)'; blurRadius = 50;
   } else if (auraLevel === 'saiyan') {
-    blurVal = 44; glowColor1 = '#fbbf24'; glowColor2 = '#f59e0b';
+    glowColor1 = 'rgba(251, 191, 36, 0.7)'; glowColor2 = 'rgba(245, 158, 11, 0.95)'; blurRadius = 65;
   }
 
-  // 1. Dibujar el resplandor / Aura primero detrás
-  ctx.save();
-  ctx.filter = `blur(${blurVal}px) brightness(1.2)`;
-  ctx.drawImage(results.segmentationMask, 0, 0, canvas.width, canvas.height);
-
-  ctx.globalCompositeOperation = 'source-in';
-  const grad = ctx.createRadialGradient(
-    canvas.width / 2, canvas.height / 2, 10,
-    canvas.width / 2, canvas.height / 2, canvas.width / 1.4
-  );
-  grad.addColorStop(0, glowColor1);
-  grad.addColorStop(1, glowColor2);
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // 3. Generar halo resplandeciente contorneado
   ctx.restore();
+  ctx.save();
+  
+  const radGrad = ctx.createRadialGradient(
+    canvas.width / 2, canvas.height / 2, canvas.width * 0.15,
+    canvas.width / 2, canvas.height / 2, canvas.width * 0.5
+  );
+  radGrad.addColorStop(0, glowColor1);
+  radGrad.addColorStop(1, 'transparent');
 
-  // 2. Chispas/Partículas para el modo Super Saiyan
+  ctx.fillStyle = radGrad;
+  ctx.filter = `blur(${blurRadius}px)`;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // 4. Chispas doradas para el modo Super Saiyan
   if (auraLevel === 'saiyan') {
+    ctx.filter = 'none';
     ctx.fillStyle = '#ffe7a0';
-    if (saiyanParticles.length < 25) {
+    if (saiyanParticles.length < 20) {
       saiyanParticles.push({
         x: Math.random() * canvas.width,
         y: canvas.height + Math.random() * 20,
-        r: Math.random() * 4 + 2,
-        v: Math.random() * 6 + 3
+        r: Math.random() * 3 + 2,
+        v: Math.random() * 5 + 3
       });
     }
     for (let i = 0; i < saiyanParticles.length; i++) {
@@ -1112,18 +1113,13 @@ function drawAuraGlow(results, ctx, canvas) {
     }
   }
 
-  // 3. Dibujar la persona real nítida encima para mantener la cámara clara con el halo por detrás
-  ctx.save();
-  ctx.translate(canvas.width, 0);
-  ctx.scale(-1, 1);
-  ctx.globalCompositeOperation = 'source-over';
-  ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);
   ctx.restore();
 
-  ctx.restore();
+  auraAnimFrame = requestAnimationFrame(drawNativeAuraLoop);
 }
 
 function takeAuraPhoto() {
+  if (auraAnimFrame) cancelAnimationFrame(auraAnimFrame);
   const canvas = document.getElementById('auraCanvasView');
   const img = document.getElementById('auraCapturedImg');
 
@@ -1131,7 +1127,10 @@ function takeAuraPhoto() {
   img.style.display = 'block';
   canvas.style.display = 'none';
 
-  if (cameraUtil) { cameraUtil.stop(); }
+  if (auraCamStream) {
+    auraCamStream.getTracks().forEach(t => t.stop());
+    auraCamStream = null;
+  }
 
   document.getElementById('btnSnapAuraCam').style.display = 'none';
   document.getElementById('btnRetakeAuraCam').style.display = 'block';
@@ -1148,7 +1147,11 @@ function resetAuraCamera() {
 }
 
 function cancelAuraCamera() {
-  if (cameraUtil) { cameraUtil.stop(); }
+  if (auraAnimFrame) cancelAnimationFrame(auraAnimFrame);
+  if (auraCamStream) {
+    auraCamStream.getTracks().forEach(t => t.stop());
+    auraCamStream = null;
+  }
   document.getElementById('auraCanvasView').style.display = 'none';
   document.getElementById('auraCapturedImg').style.display = 'none';
 
