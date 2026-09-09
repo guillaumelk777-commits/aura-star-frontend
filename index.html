@@ -27,33 +27,6 @@
 
 .local-card{border:1px solid rgba(246,196,83,.32);background:linear-gradient(145deg,rgba(246,196,83,.06),rgba(14,17,27,.98));box-shadow:0 18px 42px rgba(0,0,0,.45)}
 .local-card{overflow:hidden;position:relative}
-.local-card .local-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid rgba(246,196,83,.12)}
-.local-card .local-live{display:inline-flex;align-items:center;gap:6px;color:#ffe7a0;font-size:.72rem;font-weight:900;letter-spacing:.04em}
-.local-card .local-live-dot{width:7px;height:7px;border-radius:50%;background:#64e572;box-shadow:0 0 10px rgba(100,229,114,.75)}
-.local-card .local-place{font-size:.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.local-card .local-title{font-size:1.08rem;font-weight:950;line-height:1.2;margin:13px 0 7px;color:#fff}
-.local-card .local-theme{display:inline-flex;align-items:center;gap:5px;margin-bottom:13px;padding:5px 9px;border-radius:999px;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.24);color:#ddd0ff;font-size:.72rem;font-weight:800}
-.local-card .local-matchup{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:8px;margin:4px 0 10px}
-.local-card .local-contestant{text-align:center;min-width:0}
-.local-card .local-contestant-name{font-size:.84rem;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.local-card .local-score{font-size:2rem;font-weight:950;line-height:1.05;margin-top:5px}
-.local-card .local-vs{font-size:.72rem;font-weight:950;color:#ffe7a0;letter-spacing:.08em;padding:7px 6px;border-radius:10px;border:1px solid rgba(246,196,83,.2);background:rgba(246,196,83,.06)}
-.local-card .local-bar{height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin:8px 0 12px}
-.local-card .local-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#8b5cf6,#f6c453);transition:width .3s ease}
-.local-card .local-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 0 13px}
-.local-card .local-stat{padding:8px 5px;text-align:center;border-radius:11px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.055)}
-.local-card .local-stat strong{display:block;color:#fff;font-size:.78rem}
-.local-card .local-stat span{display:block;color:var(--muted);font-size:.64rem;margin-top:2px}
-.local-card .local-votes{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.local-card .local-vote{min-width:0;padding:12px 7px!important;font-size:.76rem!important;font-weight:900!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.local-card .local-footer{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:11px}
-.local-card .local-footer .muted{font-size:.68rem}
-.local-card .local-detail{border:0;background:none;color:#ffe7a0;font-size:.72rem;font-weight:850;padding:5px 0}
-@media(max-width:380px){
-  .local-card .local-stats{grid-template-columns:1fr 1fr}
-  .local-card .local-stat:last-child{grid-column:1/-1}
-  .local-card .local-score{font-size:1.75rem}
-}
 
 .local-badge{background:linear-gradient(135deg,rgba(246,196,83,.25),rgba(139,92,246,.15));color:#ffe7a0;border:1px solid rgba(246,196,83,.4);font-weight:900}
 .event-card{border:1px solid rgba(246,196,83,.22);background:linear-gradient(145deg,rgba(246,196,83,.04),rgba(14,17,27,.98));padding:18px;border-radius:20px;margin:12px 0}
@@ -470,51 +443,37 @@ function battleCard(b){
   const disableVoting = !hasOpponent || b.status !== 'active';
 
   if (local) {
-    const theme = b.theme || b.category || '';
-    const diff = Math.abs(a-o);
-    const statusText = b.status === 'active' ? 'EN VIVO' : (b.status === 'completed' ? 'FINALIZADA' : 'CERRADA');
-    const closeText = b.local_closes_at ? timeLeft(b.local_closes_at) : '—';
+    const diff = Math.abs(a - o);
+    const closeText = b.local_closes_at ? timeLeft(b.local_closes_at) : 'finalizando';
     const targetAJson = JSON.stringify(String(targetA || ''));
     const targetBJson = JSON.stringify(String(targetB || ''));
 
     return `
       <div class="card battle-card local-card" id="card-${b.id}">
-        <div class="local-head">
-          <span class="local-live"><span class="local-live-dot"></span> 🏟️ ${statusText}</span>
-          <span class="local-place">📍 ${esc(b.city || 'Localidad')}</span>
-        </div>
-
-        <div class="local-title" onclick="openBattle('${b.id}')" style="cursor:pointer">${esc(b.title)}</div>
-        ${theme ? `<div class="local-theme">🎯 ${esc(theme)}</div>` : ''}
-
-        <div class="local-matchup">
-          <div class="local-contestant">
-            <div class="local-contestant-name">${esc(aName)}</div>
-            <div class="local-score" id="score-a-${b.id}">${a}</div>
+        <div class="players">
+          <div class="player">
+            <div style="font-size:.85rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(aName)}</div>
+            <div class="score" id="score-a-${b.id}">${a}</div>
           </div>
-          <div class="local-vs">VS</div>
-          <div class="local-contestant">
-            <div class="local-contestant-name">${esc(oName)}</div>
-            <div class="local-score" id="score-b-${b.id}">${o}</div>
+
+          <div class="vs">VS</div>
+
+          <div class="player">
+            <div style="font-size:.85rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(oName)}</div>
+            <div class="score" id="score-b-${b.id}">${o}</div>
           </div>
         </div>
 
-        <div class="local-bar"><i id="bar-${b.id}" style="width:${p}%"></i></div>
+        <div class="bar"><i id="bar-${b.id}" style="width:${p}%"></i></div>
 
-        <div class="local-stats">
-          <div class="local-stat"><strong id="total-${b.id}">${total}</strong><span>votos</span></div>
-          <div class="local-stat"><strong>${diff}</strong><span>diferencia</span></div>
-          <div class="local-stat"><strong>⏱️ ${esc(closeText)}</strong><span>para cerrar</span></div>
+        <div class="meta" style="margin-top:10px">
+          <span id="total-${b.id}">${total} votos - diferencia ${diff}</span>
+          <div class="timer">⏱️ ${esc(closeText)} restantes</div>
         </div>
 
-        <div class="local-votes">
-          <button class="vote a local-vote" onclick="voteDirect(event,'${b.id}',${targetAJson})" ${disableVoting ? 'disabled' : ''}>🟢 Votar ${esc(aName)}</button>
-          <button class="vote b local-vote" onclick="voteDirect(event,'${b.id}',${targetBJson})" ${disableVoting ? 'disabled' : ''}>🟣 Votar ${esc(oName)}</button>
-        </div>
-
-        <div class="local-footer">
-          <span class="muted">${hasOpponent ? 'Elegí a tu favorito' : 'Esperando participantes'}</span>
-          <button class="local-detail" onclick="openBattle('${b.id}')">Ver batalla →</button>
+        <div class="vote-grid" style="margin-top:14px">
+          <button class="vote a" onclick="voteDirect(event,'${b.id}',${targetAJson})" ${disableVoting ? 'disabled' : ''}>Votar ${esc(aName)}</button>
+          <button class="vote b" onclick="voteDirect(event,'${b.id}',${targetBJson})" ${disableVoting ? 'disabled' : ''}>Votar ${esc(oName)}</button>
         </div>
       </div>
     `;
@@ -1092,7 +1051,7 @@ async function openTournament(id){
 // TEST DE AURA INICIAL
 const AURA_TEST_QUESTIONS=[
   {q:'Cuando aparece un desafío inesperado, ¿qué hacés primero?',o:[['Voy de frente.','Me gusta actuar rápido.'],['Observo y pienso.','Prefiero entender antes de moverme.'],['Busco una alternativa.','Siempre intento encontrar otro camino.'],['Me adapto sobre la marcha.','La presión me activa.']]},
-  {q:'¿Qué situación te representa más?',o:[['Ser el centro de atención.','Disfruto mostrar lo que hago.'],['Sorprender sin avisar.','Me gusta lo inesperado.'],['Ayudar a alguien a destacar.','Prefiero potenciar a otros.'],['Competir hasta el final.','No me gusta rendirme.']]},
+  {q:'¿Qué situacion te representa más?',o:[['Ser el centro de atención.','Disfruto mostrar lo que hago.'],['Sorprender sin avisar.','Me gusta lo inesperado.'],['Ayudar a alguien a destacar.','Prefiero potenciar a otros.'],['Competir hasta el final.','No me gusta rendirme.']]},
   {q:'Si tenés que elegir una energía para tu día, ¿cuál preferís?',o:[['Intensa.','Mucho movimiento y acción.'],['Tranquila.','Calma, foco y control.'],['Creativa.','Ideas, música y cosas nuevas.'],['Social.','Personas, risas y conexión.']]},
   {q:'¿Qué hacés cuando algo no sale como esperabas?',o:[['Lo intento de nuevo.','No me gusta dejarlo a medias.'],['Cambio de estrategia.','Si no funciona, pruebo otra cosa.'],['Me tomo un momento.','Prefiero recuperar el foco.'],['Me río y sigo.','No dejo que me corte la energía.']]},
   {q:'Elegí la frase que más se parece a vos.',o:[['“Voy a intentarlo.”','Aunque no sepa cómo todavía.'],['“Tengo una idea.”','Siempre se me ocurre algo.'],['“Vamos juntos.”','La energía compartida es mejor.'],['“Mirá esto.”','Me gusta sorprender.']]}
