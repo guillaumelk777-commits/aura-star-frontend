@@ -84,7 +84,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .admin-actions button{width:auto;padding:8px 10px}
 .admin-meta{font-size:.72rem;color:var(--muted);margin-top:3px}
 
-/* TARJETA DE EXPORTACIÓN Y CANVAS DE RESPLANDOR NATIVO */
+/* TARJETA DE EXPORTACIÓN Y CANVAS DE OVERLAY RESPLANDECIENTE */
 .aura-filter-card {
   background: linear-gradient(145deg, rgba(20,25,39,.95), rgba(8,11,19,.98));
   border: 1px solid rgba(246,196,83,.22);
@@ -131,7 +131,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .aura-test-inner{width:min(100%,480px);min-height:100%;margin:auto;padding:22px 16px 34px;display:flex;flex-direction:column}
 .aura-test-step{font-size:.7rem;color:#e8c96f;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
 .aura-test-progress{height:5px;background:#0b0e17;border-radius:999px;overflow:hidden;border:1px solid rgba(246,196,83,.12);margin-bottom:22px}
-.aura-test-progress i{display:block;height:100%;width:20%;background:linear-gradient(90deg,#8b5cf6,#f6c453,#ffe7a0);border-radius:999px;transition:width .35s ease}
+.aura-test-progress i{display:block;height:100%;width:20%;background:linear-gradient(90deg,#8b5cf6,#f6c453,#ffe7a0);border-radius:99px;transition:width .35s ease}
 .aura-test-title{font-size:1.75rem;line-height:1.08;font-weight:900;margin:0 0 8px;letter-spacing:-.5px}
 .aura-test-card{background:linear-gradient(145deg,rgba(20,25,39,.94),rgba(8,11,19,.97));border:1px solid rgba(246,196,83,.18);border-radius:24px;padding:18px;box-shadow:0 22px 55px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.03);position:relative;overflow:hidden}
 .aura-test-card:before{content:"";position:absolute;left:8%;right:8%;top:0;height:1px;background:linear-gradient(90deg,transparent,#f6c453,transparent);opacity:.65}
@@ -187,10 +187,10 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
   <div class="hero"><h1>Mi perfil</h1><p id="profileSubtitle">Tu identidad dentro de AURA STAR.</p></div>
   <div class="card" id="profileCard"></div>
 
-  <!-- MÓDULO RESPLANDOR NATIVO DE AURA -->
+  <!-- MÓDULO RESPLANDOR AURA DE ALTA PRECISIÓN -->
   <div class="card" id="auraFilterSection">
     <h3 style="margin:0 0 6px">✨ Capturar mi Aura en Vivo</h3>
-    <p class="hint" style="margin-top:0">Ajustá la intensidad del campo energético alrededor de tu silueta.</p>
+    <p class="hint" style="margin-top:0">Ajustá la intensidad del campo energético que rodea tu imagen.</p>
     
     <div class="aura-filter-card" id="auraFilterCardBox">
       <div class="aura-filter-view" id="auraFrameBox">
@@ -1009,7 +1009,7 @@ async function loadProfile(){
   }catch(e){box.innerHTML='<div class="empty">No se pudo cargar el perfil.</div>'}
 }
 
-/* LÓGICA DE RESPLANDOR IA CORREGIDA */
+/* LÓGICA DE RESPLANDOR CON OVERLAY DE ENERGÍA */
 function setAuraLevel(lvl) {
   auraLevel = lvl;
   document.getElementById('fBtnLight').classList.toggle('active', lvl === 'light');
@@ -1059,41 +1059,32 @@ function drawNativeAuraLoop() {
   ctx.save();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // 1. Dibujar cámara espejada nativa
+  // 1. Dibujar cámara limpia espejada
   ctx.translate(canvas.width, 0);
   ctx.scale(-1, 1);
   ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-  // 2. Parámetros de nivel de Aura
-  let glowColor1 = 'rgba(34, 197, 94, 0.45)', glowColor2 = 'rgba(16, 185, 129, 0.8)';
-  let blurRadius = 25;
-
-  if (auraLevel === 'med') {
-    glowColor1 = 'rgba(59, 130, 246, 0.5)'; glowColor2 = 'rgba(29, 78, 216, 0.85)'; blurRadius = 38;
-  } else if (auraLevel === 'strong') {
-    glowColor1 = 'rgba(168, 85, 247, 0.6)'; glowColor2 = 'rgba(126, 34, 206, 0.9)'; blurRadius = 50;
-  } else if (auraLevel === 'saiyan') {
-    glowColor1 = 'rgba(251, 191, 36, 0.7)'; glowColor2 = 'rgba(245, 158, 11, 0.95)'; blurRadius = 65;
-  }
-
-  // 3. Generar halo resplandeciente contorneado
   ctx.restore();
-  ctx.save();
-  
-  const radGrad = ctx.createRadialGradient(
-    canvas.width / 2, canvas.height / 2, canvas.width * 0.15,
-    canvas.width / 2, canvas.height / 2, canvas.width * 0.5
-  );
-  radGrad.addColorStop(0, glowColor1);
-  radGrad.addColorStop(1, 'transparent');
 
-  ctx.fillStyle = radGrad;
-  ctx.filter = `blur(${blurRadius}px)`;
+  // 2. Parámetros de nivel de Aura (Overlay en los bordes para mantener la cara despejada)
+  ctx.save();
+  let glowColor = 'rgba(34, 197, 94, 0.4)';
+  if (auraLevel === 'med') { glowColor = 'rgba(59, 130, 246, 0.5)'; }
+  else if (auraLevel === 'strong') { glowColor = 'rgba(168, 85, 247, 0.6)'; }
+  else if (auraLevel === 'saiyan') { glowColor = 'rgba(251, 191, 36, 0.7)'; }
+
+  // Crear vineta de luz periférica (deja el rostro al centro 100% visible)
+  const grad = ctx.createRadialGradient(
+    canvas.width / 2, canvas.height / 2, canvas.width * 0.28,
+    canvas.width / 2, canvas.height / 2, canvas.width * 0.52
+  );
+  grad.addColorStop(0, 'transparent');
+  grad.addColorStop(1, glowColor);
+
+  ctx.fillStyle = grad;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // 4. Chispas doradas para el modo Super Saiyan
+  // 3. Destellos flotantes para el modo Super Saiyan
   if (auraLevel === 'saiyan') {
-    ctx.filter = 'none';
     ctx.fillStyle = '#ffe7a0';
     if (saiyanParticles.length < 20) {
       saiyanParticles.push({
