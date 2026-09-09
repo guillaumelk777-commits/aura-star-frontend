@@ -7,6 +7,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
+<!-- SNAPCHAT CAMERA KIT WEB SDK -->
+<script src="https://unpkg.com/@snap/camera-kit/dist/index.js"></script>
+
 <style>
 :root{--bg:#06070d;--surface:#0e111b;--surface2:#151a28;--purple:#8b5cf6;--purple2:#a78bfa;--gold:#fbbf24;--green:#22c55e;--red:#ef4444;--text:#f8fafc;--muted:#94a3b8;--border:rgba(255,255,255,.09);--glow:rgba(139,92,246,.3);--goldglow:rgba(251,191,36,.24)}
 *{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:radial-gradient(circle at 50% 0,rgba(139,92,246,.22),transparent 42%),radial-gradient(circle at 100% 50%,rgba(139,92,246,.08),transparent 35%),var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button{border:0;cursor:pointer}.app{max-width:480px;margin:auto;min-height:100vh;padding-bottom:92px}header{padding:15px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:rgba(6,7,13,.82);backdrop-filter:blur(18px);z-index:20;border-bottom:1px solid var(--border)}.brand{display:flex;align-items:center;gap:10px}.brand-icon{width:32px;height:32px;background:linear-gradient(135deg,#fff,var(--purple));clip-path:polygon(50% 0,65% 35%,100% 50%,65% 65%,50% 100%,35% 65%,0 50%,35% 35%);filter:drop-shadow(0 0 9px var(--glow))}.logo{font-weight:900;font-size:1.38rem;letter-spacing:.6px;background:linear-gradient(135deg,#fff,var(--purple2));-webkit-background-clip:text;color:transparent}.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--surface2),#24164a);border:1px solid rgba(167,139,250,.6);font-weight:900;color:#fff}.view{display:none;animation:in .25s ease}.view.active{display:block}@keyframes in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}main{padding:10px 16px}.hero{padding:22px 3px 16px}.hero h1{font-size:2rem;line-height:1.06;margin:0 0 8px;font-weight:900;letter-spacing:-.8px}.hero p{margin:0;color:var(--muted);font-size:.9rem}.section-title{display:flex;justify-content:space-between;align-items:center;margin:23px 2px 12px}.section-title h2{font-size:1rem;margin:0;font-weight:800}.muted{color:var(--muted);font-size:.78rem}.card{background:linear-gradient(145deg,rgba(20,25,39,.9),rgba(10,13,22,.94));border:1px solid var(--border);border-radius:22px;padding:17px;margin:12px 0;box-shadow:0 18px 38px rgba(0,0,0,.28);position:relative;overflow:hidden}.card:before{content:"";position:absolute;left:10%;right:10%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent)}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.action{padding:17px 15px;border-radius:18px;background:var(--surface);border:1px solid var(--border);color:var(--text);text-align:left}.action:active,.battle-card:active{transform:scale(.98)}.action strong{display:block;margin-bottom:5px}.action span{color:var(--muted);font-size:.72rem}.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(139,92,246,.13);color:#c4b5fd;border:1px solid rgba(139,92,246,.2);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.4px}.battle-title{font-size:1.08rem;font-weight:850;margin:10px 0}
@@ -84,7 +87,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .admin-actions button{width:auto;padding:8px 10px}
 .admin-meta{font-size:.72rem;color:var(--muted);margin-top:3px}
 
-/* TARJETA DE EXPORTACIÓN Y CANVAS DE OVERLAY RESPLANDECIENTE */
+/* TARJETA DE EXPORTACIÓN Y CONTENEDOR SNAP CAMERA KIT */
 .aura-filter-card {
   background: linear-gradient(145deg, rgba(20,25,39,.95), rgba(8,11,19,.98));
   border: 1px solid rgba(246,196,83,.22);
@@ -130,7 +133,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .aura-test.active{display:block}
 .aura-test-inner{width:min(100%,480px);min-height:100%;margin:auto;padding:22px 16px 34px;display:flex;flex-direction:column}
 .aura-test-step{font-size:.7rem;color:#e8c96f;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
-.aura-test-progress{height:5px;background:#0b0e17;border-radius:999px;overflow:hidden;border:1px solid rgba(246,196,83,.12);margin-bottom:22px}
+.aura-test-progress{height:5px;background:#0b0e17;border-radius:99px;overflow:hidden;border:1px solid rgba(246,196,83,.12);margin-bottom:22px}
 .aura-test-progress i{display:block;height:100%;width:20%;background:linear-gradient(90deg,#8b5cf6,#f6c453,#ffe7a0);border-radius:99px;transition:width .35s ease}
 .aura-test-title{font-size:1.75rem;line-height:1.08;font-weight:900;margin:0 0 8px;letter-spacing:-.5px}
 .aura-test-card{background:linear-gradient(145deg,rgba(20,25,39,.94),rgba(8,11,19,.97));border:1px solid rgba(246,196,83,.18);border-radius:24px;padding:18px;box-shadow:0 22px 55px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.03);position:relative;overflow:hidden}
@@ -187,15 +190,14 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
   <div class="hero"><h1>Mi perfil</h1><p id="profileSubtitle">Tu identidad dentro de AURA STAR.</p></div>
   <div class="card" id="profileCard"></div>
 
-  <!-- MÓDULO RESPLANDOR AURA DE ALTA PRECISIÓN -->
+  <!-- MÓDULO SNAPCHAT CAMERA KIT SDK DE AURA 3D -->
   <div class="card" id="auraFilterSection">
-    <h3 style="margin:0 0 6px">✨ Capturar mi Aura en Vivo</h3>
-    <p class="hint" style="margin-top:0">Ajustá la intensidad del campo energético que rodea tu imagen.</p>
+    <h3 style="margin:0 0 6px">🔥 Capturar mi Ki / Aura en 3D (Snapchat Kit)</h3>
+    <p class="hint" style="margin-top:0">Filtro de realidad aumentada con física de partículas en tiempo real.</p>
     
     <div class="aura-filter-card" id="auraFilterCardBox">
       <div class="aura-filter-view" id="auraFrameBox">
-        <video id="auraRawVideo" playsinline style="display:none;"></video>
-        <canvas id="auraCanvasView"></canvas>
+        <canvas id="snapCanvasView"></canvas>
         <img id="auraCapturedImg" style="display:none;" alt="Foto capturada">
       </div>
       <div class="aura-card-username" id="auraCardUsername">@usuario</div>
@@ -203,16 +205,15 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
       <div class="aura-card-brand">✦ AURA STAR ✦</div>
     </div>
 
-    <!-- Pestañas de Nivel de Aura -->
+    <!-- Pestañas de Auras Dragon Ball 3D -->
     <div class="tabs" style="margin-top:12px">
-      <button type="button" class="tab active" id="fBtnLight" onclick="setAuraLevel('light')">🟢 Leve</button>
-      <button type="button" class="tab" id="fBtnMed" onclick="setAuraLevel('med')">🔵 Medio</button>
-      <button type="button" class="tab" id="fBtnStrong" onclick="setAuraLevel('strong')">🟣 Fuerte</button>
-      <button type="button" class="tab" id="fBtnSaiyan" onclick="setAuraLevel('saiyan')">🔥 Super Saiyan</button>
+      <button type="button" class="tab active" id="fBtnSaiyan" onclick="switchSnapLens('LENS_ID_SAIYAN')">🔥 Super Saiyan</button>
+      <button type="button" class="tab" id="fBtnGod" onclick="switchSnapLens('LENS_ID_GOD')">🔵 Saiyan God</button>
+      <button type="button" class="tab" id="fBtnHakkai" onclick="switchSnapLens('LENS_ID_HAKKAI')">🟣 Hakkaishin</button>
     </div>
 
     <div class="grid" style="margin-top:10px">
-      <button type="button" class="secondary" id="btnStartAuraCam" onclick="startAuraCamera()">📷 Activar Cámara Aura</button>
+      <button type="button" class="secondary" id="btnStartAuraCam" onclick="startSnapCamera()">📷 Activar Cámara Ki 3D</button>
       <button type="button" class="primary" id="btnSnapAuraCam" onclick="takeAuraPhoto()" style="display:none;margin-top:0">⚡ Capturar Foto</button>
       <button type="button" class="secondary" id="btnRetakeAuraCam" onclick="resetAuraCamera()" style="display:none">🔄 Repetir</button>
     </div>
@@ -279,9 +280,13 @@ const OAUTH_REDIRECT='https://guillaumelk777-commits.github.io/aura-star-fronten
 const sb=supabase.createClient(CONFIG.SUPABASE_URL,CONFIG.SUPABASE_ANON_KEY);
 let CURRENT_USER=null,IS_ADMIN=false,cache=[],pendingNewBattles=[],currentMode='video',scanStream=null,scanTimer=null,currentGiftMethod='username',currentCity='Trelew',currentFeedTab='global';
 
-let auraCamStream = null, auraAnimFrame = null;
-let auraLevel = 'light';
-let saiyanParticles = [];
+// CONFIGURACIÓN CLIENTE SNAPCHAT CAMERA KIT SDK
+const SNAP_CONFIG = {
+  apiToken: 'TU_PRODUCTION_API_TOKEN', // Reemplazar con el Production API Token del panel
+  groupId: '71d6072c-132c-472d-86a4-9d66d6497025' // ID del grupo de Lenses
+};
+
+let cameraKit = null, cameraKitSession = null, snapMediaStream = null;
 
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 function getUserId(){return CURRENT_USER?.id||''}
@@ -999,7 +1004,7 @@ async function loadProfile(){
       <button class="primary" onclick="show('store')" style="margin-top:8px">⭐ Comprar Estrellas Aura</button>
     `;
 
-    // Cargar datos en la tarjeta con Filtro Aura
+    // Cargar datos en la tarjeta con Snapchat Camera Kit
     document.getElementById('auraCardUsername').textContent = '@' + (u.username || 'Usuario');
     document.getElementById('auraCardBadge').textContent = '★ ' + (u.aura_points || 0) + ' Aura';
 
@@ -1009,33 +1014,37 @@ async function loadProfile(){
   }catch(e){box.innerHTML='<div class="empty">No se pudo cargar el perfil.</div>'}
 }
 
-/* LÓGICA DE RESPLANDOR CON OVERLAY DE ENERGÍA */
-function setAuraLevel(lvl) {
-  auraLevel = lvl;
-  document.getElementById('fBtnLight').classList.toggle('active', lvl === 'light');
-  document.getElementById('fBtnMed').classList.toggle('active', lvl === 'med');
-  document.getElementById('fBtnStrong').classList.toggle('active', lvl === 'strong');
-  document.getElementById('fBtnSaiyan').classList.toggle('active', lvl === 'saiyan');
-}
-
-async function startAuraCamera() {
-  toast('Activando cámara…');
-  const video = document.getElementById('auraRawVideo');
-  const canvas = document.getElementById('auraCanvasView');
+/* LÓGICA DE INTEGRACIÓN CON SNAPCHAT CAMERA KIT SDK WEB */
+async function startSnapCamera() {
+  toast('Cargando Snapchat Camera Kit…');
+  const canvas = document.getElementById('snapCanvasView');
 
   document.getElementById('auraCapturedImg').style.display = 'none';
   canvas.style.display = 'block';
 
   try {
-    if (!navigator.mediaDevices?.getUserMedia) throw Error('Cámara no soportada.');
-    auraCamStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: 480, height: 480 } });
-    video.srcObject = auraCamStream;
-    video.style.display = 'none';
+    if (!window.snap) throw Error('Camera Kit SDK no disponible.');
 
-    video.onloadedmetadata = () => {
-      video.play();
-      drawNativeAuraLoop();
-    };
+    // Inicialización de la sesión de Snapchat
+    if (!cameraKit) {
+      cameraKit = await snap.bootstrapCameraKit({
+        apiToken: SNAP_CONFIG.apiToken
+      });
+    }
+
+    if (!cameraKitSession) {
+      cameraKitSession = await cameraKit.createSession({
+        liveRenderTarget: canvas
+      });
+
+      // Captura de video frontal para el motor 3D
+      snapMediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+      await cameraKitSession.setSource(snapMediaStream);
+      await cameraKitSession.play();
+    }
+
+    // Cargar el Lens por defecto (Super Saiyan)
+    await switchSnapLens('LENS_ID_SAIYAN');
 
     document.getElementById('btnStartAuraCam').style.display = 'none';
     document.getElementById('btnSnapAuraCam').style.display = 'block';
@@ -1043,84 +1052,37 @@ async function startAuraCamera() {
     document.getElementById('btnRetakeAuraCam').style.display = 'none';
     document.getElementById('btnExportAuraCard').style.display = 'none';
   } catch (e) {
-    toast('No se pudo acceder a la cámara.');
+    toast('Configurá tu API Key de Snap Kit para activar el Ki 3D.');
   }
 }
 
-function drawNativeAuraLoop() {
-  const video = document.getElementById('auraRawVideo');
-  const canvas = document.getElementById('auraCanvasView');
-  if (!canvas || !video || video.paused || video.ended) return;
+async function switchSnapLens(lensKey) {
+  if (!cameraKitSession) return;
+  toast('Aplicando Aura Ki 3D…');
+  
+  document.getElementById('fBtnSaiyan').classList.toggle('active', lensKey === 'LENS_ID_SAIYAN');
+  document.getElementById('fBtnGod').classList.toggle('active', lensKey === 'LENS_ID_GOD');
+  document.getElementById('fBtnHakkai').classList.toggle('active', lensKey === 'LENS_ID_HAKKAI');
 
-  const ctx = canvas.getContext('2d');
-  canvas.width = video.videoWidth || 480;
-  canvas.height = video.videoHeight || 480;
-
-  ctx.save();
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // 1. Dibujar cámara limpia espejada
-  ctx.translate(canvas.width, 0);
-  ctx.scale(-1, 1);
-  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-  ctx.restore();
-
-  // 2. Parámetros de nivel de Aura (Overlay en los bordes para mantener la cara despejada)
-  ctx.save();
-  let glowColor = 'rgba(34, 197, 94, 0.4)';
-  if (auraLevel === 'med') { glowColor = 'rgba(59, 130, 246, 0.5)'; }
-  else if (auraLevel === 'strong') { glowColor = 'rgba(168, 85, 247, 0.6)'; }
-  else if (auraLevel === 'saiyan') { glowColor = 'rgba(251, 191, 36, 0.7)'; }
-
-  // Crear vineta de luz periférica (deja el rostro al centro 100% visible)
-  const grad = ctx.createRadialGradient(
-    canvas.width / 2, canvas.height / 2, canvas.width * 0.28,
-    canvas.width / 2, canvas.height / 2, canvas.width * 0.52
-  );
-  grad.addColorStop(0, 'transparent');
-  grad.addColorStop(1, glowColor);
-
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  // 3. Destellos flotantes para el modo Super Saiyan
-  if (auraLevel === 'saiyan') {
-    ctx.fillStyle = '#ffe7a0';
-    if (saiyanParticles.length < 20) {
-      saiyanParticles.push({
-        x: Math.random() * canvas.width,
-        y: canvas.height + Math.random() * 20,
-        r: Math.random() * 3 + 2,
-        v: Math.random() * 5 + 3
-      });
-    }
-    for (let i = 0; i < saiyanParticles.length; i++) {
-      let p = saiyanParticles[i];
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fill();
-      p.y -= p.v;
-      if (p.y < 0) { p.y = canvas.height; p.x = Math.random() * canvas.width; }
-    }
+  try {
+    // Reemplazar lensKey por el ID real de la plantilla seleccionada en Snap Kit Portal
+    const lens = await cameraKit.lensRepository.loadLens(lensKey, SNAP_CONFIG.groupId);
+    await cameraKitSession.applyLens(lens);
+  } catch (e) {
+    console.error('Error al aplicar el Lens:', e);
   }
-
-  ctx.restore();
-
-  auraAnimFrame = requestAnimationFrame(drawNativeAuraLoop);
 }
 
 function takeAuraPhoto() {
-  if (auraAnimFrame) cancelAnimationFrame(auraAnimFrame);
-  const canvas = document.getElementById('auraCanvasView');
+  const canvas = document.getElementById('snapCanvasView');
   const img = document.getElementById('auraCapturedImg');
 
   img.src = canvas.toDataURL('image/png');
   img.style.display = 'block';
   canvas.style.display = 'none';
 
-  if (auraCamStream) {
-    auraCamStream.getTracks().forEach(t => t.stop());
-    auraCamStream = null;
+  if (cameraKitSession) {
+    cameraKitSession.pause();
   }
 
   document.getElementById('btnSnapAuraCam').style.display = 'none';
@@ -1131,19 +1093,25 @@ function takeAuraPhoto() {
 
 function resetAuraCamera() {
   document.getElementById('auraCapturedImg').style.display = 'none';
-  document.getElementById('auraCanvasView').style.display = 'block';
+  document.getElementById('snapCanvasView').style.display = 'block';
   document.getElementById('btnRetakeAuraCam').style.display = 'none';
   document.getElementById('btnExportAuraCard').style.display = 'none';
-  startAuraCamera();
+  if (cameraKitSession) {
+    cameraKitSession.play();
+  } else {
+    startSnapCamera();
+  }
 }
 
 function cancelAuraCamera() {
-  if (auraAnimFrame) cancelAnimationFrame(auraAnimFrame);
-  if (auraCamStream) {
-    auraCamStream.getTracks().forEach(t => t.stop());
-    auraCamStream = null;
+  if (cameraKitSession) {
+    cameraKitSession.pause();
   }
-  document.getElementById('auraCanvasView').style.display = 'none';
+  if (snapMediaStream) {
+    snapMediaStream.getTracks().forEach(t => t.stop());
+    snapMediaStream = null;
+  }
+  document.getElementById('snapCanvasView').style.display = 'none';
   document.getElementById('auraCapturedImg').style.display = 'none';
 
   document.getElementById('btnStartAuraCam').style.display = 'block';
