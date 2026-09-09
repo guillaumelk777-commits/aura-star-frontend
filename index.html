@@ -424,7 +424,7 @@ function show(v){
   if(v==='events')loadEvents();
 }
 
-function battlePeople(b){return b.mode==='local'?[b.local_a_name||b.local_participant_a,b.local_b_name||b.local_participant_b]:[b.creator_name||b.creator_id,b.opponent_name||b.opponent_id||'Esperando…']}
+function battlePeople(b){return (b.mode==='local'||!b.mode)?[b.local_a_name||b.local_participant_a||b.creator_name||b.creator_id,b.local_b_name||b.local_participant_b||b.opponent_name||b.opponent_id||'Esperando…']:[b.creator_name||b.creator_id,b.opponent_name||b.opponent_id||'Esperando…']}
 function feedMedia(url,mode,name){if(!url)return `<div class="feed-media"><div style="aspect-ratio:9/14;border-radius:16px;background:#090c14;display:grid;place-items:center;color:var(--muted);border:1px solid var(--border)">Esperando…</div><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='photo')return `<div class="feed-media"><img src="${esc(url)}" alt="Participación de ${esc(name)}" loading="lazy" oncontextmenu="return false;"><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='audio')return `<div class="feed-media"><div class="feed-audio"><div style="font-size:1.6rem;text-align:center;margin-bottom:6px">🎙️</div><audio controls controlsList="nodownload" preload="metadata" src="${esc(url)}"></audio></div><small class="feed-media-name">${esc(name)}</small></div>`;return `<div class="feed-media" data-feed-video><video playsinline disablePictureInPicture preload="metadata" src="${esc(url)}" onclick="toggleFeedVideo(this)" oncontextmenu="return false;"></video><div class="feed-play">▶</div><small class="feed-media-name">${esc(name)}</small></div>`}
 function toggleFeedVideo(video){event?.stopPropagation?.();const wrap=video.closest('.feed-media');if(!wrap)return;if(video.paused){document.querySelectorAll('.feed-media[data-feed-video] video').forEach(v=>{if(v!==video){v.pause();v.closest('.feed-media')?.classList.remove('playing')}});video.play().then(()=>wrap.classList.add('playing')).catch(()=>{});}else{video.pause();wrap.classList.remove('playing');}} 
 
@@ -435,50 +435,57 @@ function battleCard(b){
   const total = a + o;
   const p = total > 0 ? Math.round((a / total) * 100) : 50;
 
-  const local = b.mode === 'local';
-  const targetA = local ? b.local_participant_a : b.creator_id;
-  const targetB = local ? b.local_participant_b : b.opponent_id;
+  const isLocalFeed = currentFeedTab === 'local' || b.mode === 'local';
+  const targetA = isLocalFeed ? (b.local_participant_a || b.creator_id) : b.creator_id;
+  const targetB = isLocalFeed ? (b.local_participant_b || b.opponent_id) : b.opponent_id;
   
-  const hasOpponent = local ? Boolean(targetB) : Boolean(b.opponent_id && b.media_url_opponent);
+  const hasOpponent = isLocalFeed ? Boolean(targetB) : Boolean(b.opponent_id && b.media_url_opponent);
   const disableVoting = !hasOpponent || b.status !== 'active';
 
-  // Solo incluir el botón de eliminar si el usuario autenticado tiene rol de Administrador
   const adminDeleteBtn = IS_ADMIN ? `<button class="danger" style="margin-top:12px" onclick="adminDeleteBattle('${b.id}')">🗑️ Eliminar batalla (Admin)</button>` : '';
 
-  if (local) {
+  if (isLocalFeed) {
     const diff = Math.abs(a - o);
     const closeText = b.local_closes_at ? timeLeft(b.local_closes_at) : 'finalizando';
     const targetAJson = JSON.stringify(String(targetA || ''));
     const targetBJson = JSON.stringify(String(targetB || ''));
+    const cityName = (b.city || currentCity || 'TRELEW').toUpperCase();
 
     return `
-      <div class="card battle-card local-card" id="card-${b.id}">
-        <div class="players">
-          <div class="player">
-            <div style="font-size:.85rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(aName)}</div>
-            <div class="score" id="score-a-${b.id}">${a}</div>
+      <div style="margin: 16px 0 20px;">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+          <span class="badge" style="background:rgba(246,196,83,.12);border:1px solid rgba(246,196,83,.3);color:#ffe7a0;font-size:.7rem">🏟️ EN VIVO · ${esc(cityName)}</span>
+        </div>
+        <h1 style="font-size:1.8rem;font-weight:900;margin:0 0 12px;color:#fff;letter-spacing:-.5px">${esc(b.title || 'Batalla épica')}</h1>
+
+        <div class="card local-card" id="card-${b.id}" style="margin:0">
+          <div class="players">
+            <div class="player">
+              <div style="font-size:.85rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(aName)}</div>
+              <div class="score" id="score-a-${b.id}">${a}</div>
+            </div>
+
+            <div class="vs">VS</div>
+
+            <div class="player">
+              <div style="font-size:.85rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(oName)}</div>
+              <div class="score" id="score-b-${b.id}">${o}</div>
+            </div>
           </div>
 
-          <div class="vs">VS</div>
+          <div class="bar"><i id="bar-${b.id}" style="width:${p}%"></i></div>
 
-          <div class="player">
-            <div style="font-size:.85rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(oName)}</div>
-            <div class="score" id="score-b-${b.id}">${o}</div>
+          <div class="meta" style="margin-top:10px">
+            <span id="total-${b.id}">${total} votos · diferencia ${diff}</span>
+            <div class="timer">⏱️ ${esc(closeText)} restantes</div>
           </div>
-        </div>
 
-        <div class="bar"><i id="bar-${b.id}" style="width:${p}%"></i></div>
-
-        <div class="meta" style="margin-top:10px">
-          <span id="total-${b.id}">${total} votos - diferencia ${diff}</span>
-          <div class="timer">⏱️ ${esc(closeText)} restantes</div>
+          <div class="vote-grid" style="margin-top:14px">
+            <button class="vote a" onclick="voteDirect(event,'${b.id}',${targetAJson})" ${disableVoting ? 'disabled' : ''}>Votar ${esc(aName)}</button>
+            <button class="vote b" onclick="voteDirect(event,'${b.id}',${targetBJson})" ${disableVoting ? 'disabled' : ''}>Votar ${esc(oName)}</button>
+          </div>
+          ${adminDeleteBtn}
         </div>
-
-        <div class="vote-grid" style="margin-top:14px">
-          <button class="vote a" onclick="voteDirect(event,'${b.id}',${targetAJson})" ${disableVoting ? 'disabled' : ''}>Votar ${esc(aName)}</button>
-          <button class="vote b" onclick="voteDirect(event,'${b.id}',${targetBJson})" ${disableVoting ? 'disabled' : ''}>Votar ${esc(oName)}</button>
-        </div>
-        ${adminDeleteBtn}
       </div>
     `;
   }
