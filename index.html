@@ -92,12 +92,14 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .aura-result-number{font-size:4.8rem;line-height:1;font-weight:900;letter-spacing:-3px;background:linear-gradient(135deg,#fff,#ffe7a0,#f6c453);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 35px rgba(246,196,83,.18)}
 .aura-result-label{font-size:.72rem;color:#e8c96f;text-transform:uppercase;letter-spacing:.18em;font-weight:900}
 .aura-result-copy{color:var(--muted);font-size:.78rem;line-height:1.5;max-width:310px;margin:0 auto 18px}
+
+/* ESTILOS DEL MODAL Y VISTA DE TARJETA DE AURA */
 .aura-card-modal{position:fixed;inset:0;background:rgba(3,5,10,.97);z-index:80;display:none;flex-direction:column;align-items:center;justify-content:center;padding:18px;overflow:auto}
 .aura-card-modal.active{display:flex}
 .aura-card-camera{position:relative;width:min(92vw,380px);aspect-ratio:3/4;border-radius:24px;overflow:hidden;background:#000;border:1px solid rgba(246,196,83,.35);box-shadow:0 0 45px rgba(246,196,83,.1)}
 .aura-card-camera video,.aura-card-camera canvas{width:100%;height:100%;object-fit:cover;display:block}
 .aura-card-canvas-wrap{width:min(92vw,380px);border-radius:24px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.5);border:1px solid rgba(246,196,83,.35);position:relative}
-.aura-card-canvas-wrap canvas{display:block;width:100%;height:auto}
+.aura-card-canvas-wrap canvas,.aura-card-canvas-wrap img{display:block;width:100%;height:auto}
 .aura-card-overlay{position:absolute;left:0;right:0;bottom:0;padding:16px;text-align:center;background:linear-gradient(0deg,rgba(6,7,13,.92),rgba(6,7,13,.35) 70%,transparent)}
 .aura-card-username{font-size:1.15rem;font-weight:900;color:#fff}
 .aura-card-city{font-size:.72rem;color:#e8c96f;font-weight:700;letter-spacing:.06em;margin-top:2px}
@@ -112,6 +114,9 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .aura-style-row{display:flex;gap:8px;width:min(92vw,380px);margin-top:12px}
 .aura-style-row button{flex:1;padding:9px 4px;border-radius:11px;font-size:.7rem;font-weight:800;background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--border)}
 .aura-style-row button.active{border-color:rgba(246,196,83,.5);background:rgba(246,196,83,.12)}
+.aura-mode-selector{display:flex;gap:8px;width:min(92vw,380px);margin-bottom:10px}
+.aura-mode-selector button{flex:1;padding:10px;border-radius:12px;font-size:.75rem;font-weight:800;background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--border)}
+.aura-mode-selector button.active{background:var(--surface2);border-color:var(--gold)}
 </style></head>
 <body>
 <div class="app"><header><div class="brand"><span class="brand-icon"></span><div class="logo">AURA STAR</div></div><button class="avatar" id="avatar" onclick="show('profile')">★</button></header>
@@ -135,15 +140,15 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
     <div id="localBattlesFeed"></div>
   </div>
 </section>
- 
+
 <section id="create" class="view"><div class="hero"><h1>Crear batalla</h1><p>Elegí el formato que mejor representa tu desafío.</p></div><div class="tabs"><button class="tab active" data-mode="video" onclick="setMode('video')">🎥 Video</button><button class="tab" data-mode="audio" onclick="setMode('audio')">🎙️ Audio</button><button class="tab" data-mode="photo" onclick="setMode('photo')">📸 Foto</button><button class="tab" data-mode="local" onclick="setMode('local')">🏟️ Local</button></div><div id="createCard" class="card"></div></section>
- 
+
 <section id="battle" class="view"><div id="battleDetail"></div></section>
- 
+
 <section id="events" class="view"><div class="hero"><h1>🎪 Eventos</h1><p>Torneos locales de 4 u 8 participantes, con bracket automático y QR para el público.</p></div><div class="grid"><button class="action" onclick="openTournamentCreate()"><strong>🏆 Crear torneo</strong><span>Organizá un evento presencial</span></button><button class="action" onclick="loadEvents()"><strong>📍 Eventos cercanos</strong><span>Descubrí torneos</span></button><button class="action" onclick="startEventScanner()"><strong>📷 Escanear QR</strong><span>Entrá directamente al evento</span></button></div><div class="mode-info" style="margin-top:12px"><b>🛡️ Seguridad</b><br>Los torneos están separados por rango de edad. AURA STAR no publica coordenadas exactas ni organiza físicamente el evento.</div><div id="eventCreate" class="card" style="display:none;margin-top:12px"></div><div id="eventsList"></div><div id="tournamentDetail"></div></section>
- 
+
 <section id="rank" class="view"><div class="hero"><h1>🏆 Ranking</h1><p>Las estrellas con más Aura.</p></div><div id="ranking"></div></section>
- 
+
 <section id="profile" class="view">
   <div class="hero"><h1>Mi perfil</h1><p id="profileSubtitle">Tu identidad dentro de AURA STAR.</p></div>
   <div class="card" id="profileCard"></div>
@@ -161,13 +166,13 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
     <div id="adminUserResults"><div class="empty">Escribí al menos 2 caracteres.</div></div>
   </div>
 </section>
- 
+
 <section id="store" class="view"><div class="hero"><h1>⭐ Tienda Aura</h1><p>Comprá Estrellas Aura para regalar a creadores o habilitar batallas locales.</p></div><div class="card"><div class="mode-info"><b>💳 Compras seguras con Mercado Pago</b><br>Elegí tu paquete para obtener Estrellas Aura de forma instantánea.</div><div id="storePackages" class="store-grid"></div></div></section>
 </main>
 <nav class="bottom"><button class="nav active" data-view="home" onclick="show('home')"><b>⌂</b>Inicio</button><button class="nav" data-view="create" onclick="show('create')"><b>＋</b>Crear</button><button class="nav" data-view="events" onclick="show('events');loadEvents()"><b>♜</b>Eventos</button><button class="nav" data-view="rank" onclick="show('rank')"><b>♛</b>Ranking</button><button class="nav" data-view="profile" onclick="show('profile')"><b>●</b>Perfil</button></nav><div class="toast" id="toast"></div></div>
- 
+
 <div class="scan" id="scanner"><div id="scannerTitle" style="font-weight:900;font-size:1.1rem;margin-bottom:12px">Escanear QR de usuario</div><video id="scanVideo" autoplay playsinline></video><canvas id="scanCanvas"></canvas><div class="hint" style="margin-top:10px;text-align:center">Apuntá al QR de AURA STAR. Si tu navegador no permite cámara, podés ingresar el ID manualmente.</div><button class="secondary close" onclick="stopScanner()">Cerrar</button></div>
- 
+
 <div id="login" class="scan" style="background:rgba(3,5,10,.97)">
   <div class="card" style="width:min(92vw,390px);text-align:center">
     <div class="brand" style="justify-content:center;margin-bottom:18px"><span class="brand-icon"></span><div class="logo">AURA STAR</div></div>
@@ -180,9 +185,9 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
     <p id="loginHint" class="hint" style="margin:14px 0 0"></p>
   </div>
 </div>
- 
+
 <div id="onboard" class="scan" style="background:rgba(3,5,10,.94)"><div class="card" style="width:min(92vw,380px)"><h2 style="margin-top:0">Bienvenido a AURA STAR</h2><p class="hint">Elegí tu nombre y rango de edad. Tu perfil quedará vinculado a tu cuenta.</p><p id="onboardEmail" class="hint" style="margin-top:-6px;font-weight:700"></p><input id="onboardUsername" class="search" placeholder="Nombre de usuario" maxlength="40"><select id="onboardAge" class="search"><option value="18_plus">18 años o más</option><option value="13_17">13 a 17 años</option></select><button class="primary" onclick="createProfile()">Continuar</button><button class="linkbtn" style="width:100%;margin-top:8px" onclick="signOut()">¿No es tu cuenta? Cerrar sesión</button></div></div>
- 
+
 <div id="giftModal" class="scan" style="background:rgba(3,5,10,.95)">
   <div class="card" style="width:min(92vw,400px)">
     <h3 style="margin-top:0;display:flex;align-items:center;gap:8px">✦ Regalar Estrellas Aura</h3>
@@ -199,7 +204,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
     </form>
   </div>
 </div>
- 
+
 <div id="auraTest" class="aura-test" aria-modal="true" role="dialog">
   <div class="aura-test-inner">
     <div id="auraTestIntro">
@@ -219,22 +224,22 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
     </div>
   </div>
 </div>
- 
-<!-- TARJETA DE AURA: cámara con contorno + tarjeta para compartir -->
+
+<!-- TARJETA DE AURA -->
 <div id="auraCardModal" class="aura-card-modal">
   <div id="auraCardStage"></div>
 </div>
- 
+
 <script>
 const CONFIG={API:'https://aura-backend-oflg.onrender.com/api',SUPABASE_URL:'https://saqhaofycdjlwdauzhtv.supabase.co',SUPABASE_ANON_KEY:'sb_publishable_itAVUVk2JCkBjqKXSgQYrw_WsweKG1H'};
 const OAUTH_REDIRECT='https://guillaumelk777-commits.github.io/aura-star-frontend/';
 const sb=supabase.createClient(CONFIG.SUPABASE_URL,CONFIG.SUPABASE_ANON_KEY);
 let CURRENT_USER=null,IS_ADMIN=false,cache=[],pendingNewBattles=[],currentMode='video',scanStream=null,scanTimer=null,currentGiftMethod='username',currentCity='Trelew',currentFeedTab='global';
- 
+
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 function getUserId(){return CURRENT_USER?.id||''}
 function toast(t){const x=document.getElementById('toast');x.textContent=t;x.style.display='block';clearTimeout(x._t);x._t=setTimeout(()=>x.style.display='none',2600)}
- 
+
 async function api(path,opt={}){
   let auth=await sb.auth.getSession();
   let sess=auth?.data?.session;
@@ -265,17 +270,17 @@ async function api(path,opt={}){
   }
   return d;
 }
- 
+
 function switchFeedTab(tab) {
   currentFeedTab = tab;
   document.getElementById('tabFeedGlobal').classList.toggle('active', tab === 'global');
   document.getElementById('tabFeedLocal').classList.toggle('active', tab === 'local');
   document.getElementById('sectionFeedGlobal').style.display = tab === 'global' ? 'block' : 'none';
-  document.getElementById('sectionFeedLocal').style.display = tab === 'local' ? 'block' : 'none';
+  document.getElementById('sectionFeedLocal').style.display = tab === 'local' ? 'none' : 'none';
   if (tab === 'global') { loadBattles(); }
   else { loadLocalFeed(); }
 }
- 
+
 function autoDetectCurrentCity(targetInputId, notify = false) {
   if (!navigator.geolocation) { if (notify) toast('Geolocalización no disponible.'); return; }
   if (notify) toast('Obteniendo ubicación...');
@@ -293,7 +298,7 @@ function autoDetectCurrentCity(targetInputId, notify = false) {
     } catch (e) { if (notify) toast('No se pudo identificar la ciudad.'); }
   }, () => { if (notify) toast('Permiso de GPS denegado.'); }, { timeout: 6000 });
 }
- 
+
 async function signInWith(provider){
   const hint=document.getElementById('loginHint');
   if(provider!=='google')return;
@@ -310,7 +315,7 @@ async function signInWith(provider){
     toast(hint?.textContent || 'Error al iniciar sesión');
   }
 }
- 
+
 async function signInWithEmail(){
   const emailInput=document.getElementById('emailInput'), email=emailInput.value.trim();
   const hint=document.getElementById('loginHint');
@@ -329,7 +334,7 @@ async function signInWithEmail(){
     toast('No se pudo enviar el email');
   }
 }
- 
+
 async function createProfile(){
   const name=document.getElementById('onboardUsername').value.trim(),age=document.getElementById('onboardAge').value;
   if(!CURRENT_USER)return toast('Primero iniciá sesión.');
@@ -344,7 +349,7 @@ async function createProfile(){
     await initUser();
   }catch(e){console.error('createProfile',e);toast(e.message)}finally{btn.disabled=false;btn.textContent='Continuar'}
 }
- 
+
 async function initUser(){
   if(!CURRENT_USER){
     document.getElementById('login').classList.add('active');
@@ -377,7 +382,7 @@ async function initUser(){
     }
   }
 }
- 
+
 function checkPaymentReturn(){
   const params = new URLSearchParams(location.search);
   if(params.get('payment')==='success'){
@@ -388,7 +393,7 @@ function checkPaymentReturn(){
     history.replaceState({}, document.title, location.pathname);
   }
 }
- 
+
 async function handleAuth(){
   captureShareToken();
   const params=new URLSearchParams(location.search);
@@ -402,7 +407,7 @@ async function handleAuth(){
   CURRENT_USER=data.session?.user||null;
   if(CURRENT_USER) await initUser(); else document.getElementById('login').classList.add('active');
 }
- 
+
 sb.auth.onAuthStateChange((event,session)=>{
   CURRENT_USER=session?.user||null;
   if(event==='SIGNED_IN'&&CURRENT_USER) setTimeout(()=>initUser(),50);
@@ -414,7 +419,7 @@ sb.auth.onAuthStateChange((event,session)=>{
     document.getElementById('onboard').classList.remove('active');
   }
 });
- 
+
 function show(v){
   document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
   document.getElementById(v).classList.add('active');
@@ -425,11 +430,11 @@ function show(v){
   if(v==='store')loadStore();
   if(v==='events')loadEvents();
 }
- 
+
 function battlePeople(b){return b.mode==='local'?[b.local_a_name||b.local_participant_a,b.local_b_name||b.local_participant_b]:[b.creator_name||b.creator_id,b.opponent_name||b.opponent_id||'Esperando…']}
 function feedMedia(url,mode,name){if(!url)return `<div class="feed-media"><div style="aspect-ratio:9/14;border-radius:16px;background:#090c14;display:grid;place-items:center;color:var(--muted);border:1px solid var(--border)">Esperando…</div><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='photo')return `<div class="feed-media"><img src="${esc(url)}" alt="Participación de ${esc(name)}" loading="lazy" oncontextmenu="return false;"><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='audio')return `<div class="feed-media"><div class="feed-audio"><div style="font-size:1.6rem;text-align:center;margin-bottom:6px">🎙️</div><audio controls controlsList="nodownload" preload="metadata" src="${esc(url)}"></audio></div><small class="feed-media-name">${esc(name)}</small></div>`;return `<div class="feed-media" data-feed-video><video playsinline controlsList="nodownload" disablePictureInPicture preload="metadata" src="${esc(url)}" onclick="toggleFeedVideo(this)" oncontextmenu="return false;"></video><div class="feed-play">▶</div><small class="feed-media-name">${esc(name)}</small></div>`}
 function toggleFeedVideo(video){event?.stopPropagation?.();const wrap=video.closest('.feed-media');if(!wrap)return;if(video.paused){document.querySelectorAll('.feed-media[data-feed-video] video').forEach(v=>{if(v!==video){v.pause();v.closest('.feed-media')?.classList.remove('playing')}});video.play().then(()=>wrap.classList.add('playing')).catch(()=>{});}else{video.pause();wrap.classList.remove('playing');}}
- 
+
 function battleCard(b){
   const [aName, oName] = battlePeople(b);
   const a = +b.votes_creator || 0;
@@ -441,7 +446,7 @@ function battleCard(b){
   const targetB = local ? b.local_participant_b : b.opponent_id;
   const hasOpponent = local ? Boolean(targetB) : Boolean(b.opponent_id && b.media_url_opponent);
   const disableVoting = !hasOpponent || b.status !== 'active';
- 
+
   if (local) {
     let action = '';
     if (b.local_neutral && b.creator_id === getUserId() && total >= 30 && Math.abs(a - o) >= 3) {
@@ -477,7 +482,7 @@ function battleCard(b){
       </div>
     `;
   }
- 
+
   const media = `<div class="feed-media-grid">${feedMedia(b.media_url_creator, b.mode, aName)}${feedMedia(b.media_url_opponent, b.mode, oName)}</div>`;
   return `
     <div class="card battle-card" id="card-${b.id}">
@@ -510,7 +515,7 @@ function battleCard(b){
     </div>
   `;
 }
- 
+
 async function voteDirect(event, battleId, targetUser) {
   if (event) event.stopPropagation();
   if (!targetUser) return;
@@ -520,7 +525,7 @@ async function voteDirect(event, battleId, targetUser) {
     if (currentFeedTab === 'global') loadBattles(true); else loadLocalFeed();
   } catch (e) { toast(e.message || 'No se pudo registrar el voto'); }
 }
- 
+
 async function arbiterClose(id){
   try{
     await api('/battles/'+id+'/arbiter-close',{method:'POST'});
@@ -528,10 +533,10 @@ async function arbiterClose(id){
     loadLocalFeed();
   }catch(e){toast(e.message)}
 }
- 
+
 function modeLabel(m){return m==='audio'?'🎙️ Audio':m==='photo'?'📸 Foto':'🎥 Video'}
 function timeLeft(d){if(!d)return'';const ms=new Date(d)-Date.now();if(ms<=0)return'finalizando';const h=Math.floor(ms/3600000),m=Math.floor(ms%3600000/60000);return h?`${h}h ${m}m`: `${m}m`}
- 
+
 async function openBattle(id){
   show('battle');
   const box=document.getElementById('battleDetail');
@@ -544,9 +549,9 @@ async function openBattle(id){
   }
 }
 function backToFeed(){show('home')}
- 
+
 function mediaHtml(url,mode){if(!url)return'<div style="aspect-ratio:9/16;border-radius:15px;background:#090c14;display:grid;place-items:center;color:var(--muted)">Sin participación</div>';if(mode==='photo')return`<img src="${esc(url)}" alt="Participación" oncontextmenu="return false;">`;if(mode==='audio')return`<div class="audio-box"><div style="font-size:2rem;margin-bottom:10px">🎙️</div><audio controls controlsList="nodownload" src="${esc(url)}"></audio></div>`;return`<video controls controlsList="nodownload" disablePictureInPicture playsinline preload="metadata" src="${esc(url)}" oncontextmenu="return false;"></video>`}
- 
+
 function renderBattle(b){
   const local=b.mode==='local';
   const [pa,pb]=battlePeople(b);
@@ -560,7 +565,7 @@ function renderBattle(b){
   const adminDeleteBtn = IS_ADMIN ? `<button class="danger" style="margin-top:10px" onclick="adminDeleteBattle('${b.id}')">🗑️ Eliminar batalla (Admin)</button>` : '';
   document.getElementById('battleDetail').innerHTML=`<button class="backbtn" onclick="backToFeed()"><span>←</span> Volver al feed</button><div class="hero"><span class="badge">${local?'🏟️ EN VIVO · '+esc(b.city||'Trelew'):modeLabel(b.mode)}</span><h1>${esc(b.title)}</h1></div><div class="card">${local?'':`<div class="media-grid"><div>${mediaHtml(b.media_url_creator,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pa)}</small></div><div>${mediaHtml(b.media_url_opponent,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pb)}</small></div></div>`}<div class="players"><div class="player">${esc(pa)}<div class="score">${a}</div></div><div class="vs">VS</div><div class="player">${esc(pb)}<div class="score">${o}</div></div></div><div class="bar"><i style="width:${Math.round(a/Math.max(1,total)*100)}%"></i></div><div class="meta"><span>${total} votos · diferencia ${diff}</span>${timer}</div><div class="vote-grid" style="margin-top:14px"><button class="vote a" onclick="vote('${b.id}','${esc(local?b.local_participant_a:b.creator_id)}')">Votar ${esc(pa)}</button><button class="vote b" onclick="vote('${b.id}','${esc(local?b.local_participant_b:b.opponent_id||'')}')" ${pb==='Esperando…'?'disabled':''}>Votar ${esc(pb)}</button></div>${action}${adminDeleteBtn}</div>`;
 }
- 
+
 async function joinMediaBattle(id){
   try{
     const b=await api('/battles/'+id);
@@ -583,9 +588,9 @@ async function joinMediaBattle(id){
     input.click();
   }catch(e){toast(e.message)}
 }
- 
+
 async function vote(id,user){if(!user)return;try{const r=await api('/battles/'+id+'/vote',{method:'POST',body:JSON.stringify({voted_user_id:user})});toast(r.completed?'🏆 ¡Batalla finalizada!':'¡Voto registrado!');openBattle(id)}catch(e){toast(e.message)}}
- 
+
 async function loadBattles(isSilent = false){
   const box = document.getElementById('battles');
   if(!box) return;
@@ -615,7 +620,7 @@ async function loadBattles(isSilent = false){
     }
   }
 }
- 
+
 async function loadLocalFeed() {
   const container = document.getElementById('localBattlesFeed');
   if(!container) return;
@@ -631,13 +636,13 @@ async function loadLocalFeed() {
     container.innerHTML = `<div class="empty">No se pudieron cargar las batallas de ${esc(currentCity)}.</div>`;
   }
 }
- 
+
 function changeLocalCity(newCity) {
   if(!newCity.trim()) return;
   currentCity = newCity.trim();
   loadLocalFeed();
 }
- 
+
 function showNewBattlesBanner(count){
   const banner = document.getElementById('newBattlesBanner');
   if(banner){
@@ -658,7 +663,7 @@ function applyNewBattles(){
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
- 
+
 function renderCreate(){
   const c = document.getElementById('createCard');
   if(currentMode==='local'){
@@ -712,7 +717,7 @@ function renderCreate(){
     document.getElementById('mediaForm').onsubmit = createMediaBattle;
   }
 }
- 
+
 function setMode(m){currentMode=m;document.querySelectorAll('.tab[data-mode]').forEach(x=>x.classList.toggle('active',x.dataset.mode===m));renderCreate()}
 let localNeutral=false;
 function toggleLocalNeutral(v){
@@ -721,7 +726,7 @@ function toggleLocalNeutral(v){
   document.getElementById('neutralMode').classList.toggle('active',v);
   document.getElementById('localParticipants').innerHTML=v?`<div class="mode-info">Vos serás el árbitro. Escaneá o ingresá los QR de <b>los dos competidores</b>.</div><div class="grid"><button type="button" class="secondary" onclick="scanFor('localA')">📷 QR Competidor A</button><button type="button" class="secondary" onclick="scanFor('localB')">📷 QR Competidor B</button></div><input id="localA" placeholder="ID competidor A" required><input id="localB" placeholder="ID competidor B" required>`:`<div class="mode-info">Vos sos el competidor A. Escaneá el QR del rival.</div><button type="button" class="secondary" onclick="scanFor('localB')">📷 Escanear QR del rival</button><input id="localA" value="${esc(getUserId())}" readonly><input id="localB" placeholder="ID del rival" required>`;
 }
- 
+
 async function createLocalBattle(e){
   e.preventDefault();
   const a=document.getElementById('localA').value.trim(), b=document.getElementById('localB').value.trim(), city=document.getElementById('battleCity').value.trim();
@@ -733,7 +738,7 @@ async function createLocalBattle(e){
     openBattle(x.id);
   }catch(err){toast(err.message)}
 }
- 
+
 async function createMediaBattle(e){
   e.preventDefault();
   const btn=document.getElementById('createBtn'), file=document.getElementById('mediaFile').files[0];
@@ -747,7 +752,7 @@ async function createMediaBattle(e){
     openBattle(x.id);
   }catch(err){toast(err.message)}finally{btn.disabled=false;btn.textContent='Lanzar '+modeLabel(currentMode)}
 }
- 
+
 const STORAGE_BUCKET='aura-media';
 async function uploadFile(file){
   const {data:{session}}=await sb.auth.getSession();
@@ -759,10 +764,10 @@ async function uploadFile(file){
   const {data:pub}=sb.storage.from(STORAGE_BUCKET).getPublicUrl(path);
   return pub.publicUrl;
 }
- 
+
 function scanFor(target){window.scanTarget=target;document.getElementById('scannerTitle').textContent='Escanear QR de usuario';startScanner()}
 function startEventScanner(){window.scanTarget=null;document.getElementById('scannerTitle').textContent='Escanear QR de evento';startScanner()}
- 
+
 async function startScanner(){
   const el=document.getElementById('scanner');el.classList.add('active');
   try{
@@ -778,7 +783,7 @@ async function startScanner(){
     }
   }
 }
- 
+
 function scanFrame(){
   const v=document.getElementById('scanVideo'),c=document.getElementById('scanCanvas');
   if(v.readyState<2)return;
@@ -796,9 +801,9 @@ function scanFrame(){
     }
   }
 }
- 
+
 function stopScanner(){clearInterval(scanTimer);scanTimer=null;if(scanStream)scanStream.getTracks().forEach(t=>t.stop());scanStream=null;document.getElementById('scanner').classList.remove('active')}
- 
+
 let pendingShareToken='';
 function captureShareToken(){
   const token=new URLSearchParams(location.search).get('ref');
@@ -810,7 +815,7 @@ function captureShareToken(){
     pendingShareToken=localStorage.getItem('aura_pending_ref')||'';
   }
 }
- 
+
 async function claimPendingReferral(){
   const token=pendingShareToken||localStorage.getItem('aura_pending_ref')||'';
   if(!token)return;
@@ -822,7 +827,7 @@ async function claimPendingReferral(){
     if(e.status===400) localStorage.removeItem('aura_pending_ref');
   }
 }
- 
+
 async function loadShareStatus(){
   const profile=document.getElementById('shareProfileData');
   if(!profile)return;
@@ -832,7 +837,7 @@ async function loadShareStatus(){
     profile.innerHTML=`<b>${count} usuarios verificados</b> · ${d.total_aura_awarded||0} Aura obtenidos por invitaciones.`;
   }catch(e){ profile.textContent='Compartí tu enlace con amigos para sumar Aura extra.'; }
 }
- 
+
 async function shareApp(){
   try{
     const d=await api('/share');
@@ -842,10 +847,10 @@ async function shareApp(){
     else if(navigator.clipboard){ await navigator.clipboard.writeText(url); toast('Enlace copiado al portapapeles.'); }
   } catch(e){}
 }
- 
+
 function openGiftModal() { document.getElementById('giftModal').classList.add('active'); }
 function closeGiftModal() { document.getElementById('giftModal').classList.remove('active'); }
- 
+
 function setGiftTab(method) {
   currentGiftMethod = method;
   document.getElementById('tabGiftUser').classList.toggle('active', method === 'username');
@@ -860,13 +865,13 @@ function setGiftTab(method) {
     container.innerHTML = `<input id="giftTarget" class="search" placeholder="Nombre de usuario o email" required>`;
   }
 }
- 
+
 function scanGiftQR() {
   window.scanTarget = 'giftTarget';
   document.getElementById('scannerTitle').textContent = 'Escanear QR para regalar estrellas';
   startScanner();
 }
- 
+
 async function sendGiftStars(e) {
   e.preventDefault();
   const target = document.getElementById('giftTarget').value.trim();
@@ -880,7 +885,7 @@ async function sendGiftStars(e) {
     loadProfile();
   } catch (err) { toast(err.message || 'No se pudo realizar el regalo.'); }
 }
- 
+
 let LAST_PROFILE=null;
 async function loadProfile(){
   const box=document.getElementById('profileCard'), data=document.getElementById('profileData');
@@ -907,11 +912,11 @@ async function loadProfile(){
     loadAdminSection();
   }catch(e){box.innerHTML='<div class="empty">No se pudo cargar el perfil.</div>'}
 }
- 
+
 function showQr(){const q=document.getElementById('myQr');if(!q)return;q.innerHTML='';if(window.QRCode)new QRCode(q,{text:'aura:user:'+getUserId(),width:180,height:180,colorDark:'#000',colorLight:'#fff'})}
 async function signOut(){await sb.auth.signOut();location.reload()}
 async function deleteAccount(){if(!confirm('¿Eliminar tu cuenta?'))return;try{await api('/users/'+encodeURIComponent(CURRENT_USER.id),{method:'DELETE'});await sb.auth.signOut();localStorage.clear();location.reload()}catch(e){toast(e.message)}}
- 
+
 async function loadRanking(){
   const box=document.getElementById('ranking');
   if(!box)return;
@@ -921,7 +926,7 @@ async function loadRanking(){
     box.innerHTML=rows.length?rows.map((u,i)=>`<div class="card rank"><div class="ranknum">#${i+1}</div><div class="rankavatar">${esc((u.username||'?')[0]).toUpperCase()}</div><div class="rankname">${esc(u.username||'Usuario')}<small>${u.battles_won||0} victorias</small></div><div class="aura">★ ${Number(u.aura_points||0)}</div></div>`).join(''):'<div class="empty">Ranking vacío.</div>';
   }catch(e){ box.innerHTML='<div class="empty">No se pudo cargar el ranking.</div>'; }
 }
- 
+
 const STORE_PACKAGES=[
   {id:'starter',points:50,price:'$2.000 ARS'},
   {id:'plus',points:120,price:'$4.500 ARS'},
@@ -940,7 +945,7 @@ async function startPurchase(packageId){
     if(r?.init_point) window.location.href=r.init_point;
   }catch(e){ toast('Error en checkout'); }
 }
- 
+
 // ADMIN
 async function loadAdminSection(){
   const box=document.getElementById('adminSection');
@@ -973,7 +978,7 @@ async function adminDeleteBattle(battleId) {
     toast(r.message); show('home'); loadBattles(false);
   } catch (e) { toast(e.message); }
 }
- 
+
 // EVENTOS Y TORNEOS
 function openTournamentCreate(){
   const box=document.getElementById('eventCreate'); box.style.display='block';
@@ -982,7 +987,7 @@ function openTournamentCreate(){
   document.getElementById('tournamentForm').onsubmit=createTournament;
 }
 async function createTournament(e){e.preventDefault();try{const x=await api('/tournaments',{method:'POST',body:JSON.stringify({title:document.getElementById('tTitle').value,description:document.getElementById('tDesc').value,category:document.getElementById('tCat').value,size:Number(document.getElementById('tSize').value)})});toast('🏆 Torneo creado');document.getElementById('eventCreate').style.display='none';openTournament(x.id)}catch(e){toast(e.message)}}
- 
+
 async function loadEvents(){
   const box=document.getElementById('eventsList');
   if(!box)return;
@@ -1002,7 +1007,7 @@ async function loadEvents(){
     `).join(''):'<div class="empty">No hay eventos activos.</div>';
   }catch(e){ box.innerHTML='<div class="empty">No se pudieron cargar los eventos.</div>'; }
 }
- 
+
 async function joinTournament(id){
   try{
     const r=await api('/tournaments/'+id+'/join',{method:'POST'});
@@ -1010,7 +1015,7 @@ async function joinTournament(id){
     openTournament(id);
   }catch(e){toast(e.message)}
 }
- 
+
 async function openTournament(id){
   show('events');
   const box=document.getElementById('tournamentDetail');
@@ -1031,9 +1036,8 @@ async function openTournament(id){
     `;
   }catch(e){ box.innerHTML='<div class="empty">No se pudo cargar el torneo.</div>'; }
 }
- 
-// TEST DE AURA INICIAL (5 preguntas, sin cámara — el resultado es aleatorio
-// dentro de un rango que las respuestas influyen, nunca un análisis real)
+
+// TEST DE AURA INICIAL
 const AURA_TEST_QUESTIONS=[
   {q:'Cuando aparece un desafío inesperado, ¿qué hacés primero?',o:[['Voy de frente.','Me gusta actuar rápido.'],['Observo y pienso.','Prefiero entender antes de moverme.'],['Busco una alternativa.','Siempre intento encontrar otro camino.'],['Me adapto sobre la marcha.','La presión me activa.']]},
   {q:'¿Qué situación te representa más?',o:[['Ser el centro de atención.','Disfruto mostrar lo que hago.'],['Sorprender sin avisar.','Me gusta lo inesperado.'],['Ayudar a alguien a destacar.','Prefiero potenciar a otros.'],['Competir hasta el final.','No me gusta rendirme.']]},
@@ -1069,12 +1073,10 @@ async function calculateAndSubmitAuraTest(){
   }
 }
 async function maybeShowAuraTest(u){ if(!auraTestCompleted(u)) setTimeout(openAuraTest, 400); }
- 
-// TARJETA DE AURA: cámara con efecto de contorno + tarjeta compartible
-// (Es un filtro visual, no hace ningún análisis del cuerpo ni de la cara:
-// el número de Aura que muestra la tarjeta es el que ya tenía el perfil.)
-let auraCamStream=null, auraAnimFrame=null, auraStyleMode='rainbow', auraPulseAngle=0, auraCapturedDataUrl=null;
- 
+
+// MÓDULO DE TARJETA CON FILTRO DE AURA REAL DE CONTORNO (CÁMARA / GALERÍA)
+let auraCamStream=null, auraAnimFrame=null, auraStyleMode='rainbow', auraPulseAngle=0, auraCapturedDataUrl=null, auraInputSource='camera', loadedAuraImage=null;
+
 function openAuraCardCamera(){
   document.getElementById('auraCardModal').classList.add('active');
   renderAuraCardCameraStage();
@@ -1088,31 +1090,86 @@ function stopAuraCamStream(){
   auraAnimFrame=null;
   if(auraCamStream){ auraCamStream.getTracks().forEach(t=>t.stop()); auraCamStream=null; }
 }
- 
+
 function renderAuraCardCameraStage(){
   stopAuraCamStream();
   auraCapturedDataUrl=null;
+  loadedAuraImage=null;
+  auraInputSource='camera';
+  
   const stage=document.getElementById('auraCardStage');
   stage.innerHTML=`
     <button class="backbtn" onclick="closeAuraCardModal()" style="align-self:flex-start;margin-bottom:10px"><span>←</span> Cerrar</button>
-    <div class="aura-card-camera"><video id="auraRawVideo" playsinline muted></video><canvas id="auraLiveCanvas" style="position:absolute;inset:0"></canvas></div>
+    
+    <div class="aura-mode-selector">
+      <button type="button" class="active" id="btnSourceCam" onclick="switchAuraSource('camera')">📷 Cámara en Vivo</button>
+      <button type="button" id="btnSourceFile" onclick="switchAuraSource('file')">🖼️ Subir Foto</button>
+    </div>
+
+    <div class="aura-card-camera">
+      <video id="auraRawVideo" playsinline muted style="display:block"></video>
+      <img id="auraFilePreview" style="display:none;width:100%;height:100%;object-fit:cover;">
+      <canvas id="auraLiveCanvas" style="position:absolute;inset:0"></canvas>
+      <input type="file" id="auraFileInput" accept="image/*" style="display:none" onchange="handleAuraImageFile(event)">
+    </div>
+
     <div class="aura-style-row">
       <button type="button" class="active" data-style="rainbow" onclick="setAuraStyle('rainbow')">🌈 Arcoíris</button>
       <button type="button" data-style="gold" onclick="setAuraStyle('gold')">🟡 Dorado</button>
       <button type="button" data-style="cyan" onclick="setAuraStyle('cyan')">🔵 Neón</button>
       <button type="button" data-style="purple" onclick="setAuraStyle('purple')">🟣 Púrpura</button>
     </div>
+
     <div class="aura-card-actions">
-      <button class="primary" id="btnSnapAura" onclick="takeAuraPhoto()" disabled>⚡ Capturar foto</button>
+      <button class="primary" id="btnSnapAura" onclick="takeAuraPhoto()" disabled>⚡ Capturar foto con Aura</button>
     </div>
   `;
   startAuraCamera();
 }
- 
+
+function switchAuraSource(source){
+  auraInputSource=source;
+  document.getElementById('btnSourceCam').classList.toggle('active', source==='camera');
+  document.getElementById('btnSourceFile').classList.toggle('active', source==='file');
+  
+  const video=document.getElementById('auraRawVideo');
+  const img=document.getElementById('auraFilePreview');
+  const snapBtn=document.getElementById('btnSnapAura');
+
+  if(source==='camera'){
+    img.style.display='none';
+    video.style.display='block';
+    startAuraCamera();
+  } else {
+    stopAuraCamStream();
+    video.style.display='none';
+    img.style.display='block';
+    snapBtn.disabled=true;
+    document.getElementById('auraFileInput').click();
+  }
+}
+
+function handleAuraImageFile(e){
+  const file=e.target.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=(evt)=>{
+    const image=new Image();
+    image.onload=()=>{
+      loadedAuraImage=image;
+      document.getElementById('auraFilePreview').src=evt.target.result;
+      document.getElementById('btnSnapAura').disabled=false;
+      renderAuraFromSource(image);
+    };
+    image.src=evt.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
 async function startAuraCamera(){
   const video=document.getElementById('auraRawVideo');
   try{
-    if(!navigator.mediaDevices?.getUserMedia) throw Error('Cámara no disponible en este navegador.');
+    if(!navigator.mediaDevices?.getUserMedia) throw Error('Cámara no disponible.');
     auraCamStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}});
     video.srcObject=auraCamStream;
     video.onloadedmetadata=()=>{
@@ -1122,60 +1179,86 @@ async function startAuraCamera(){
     };
   }catch(e){ toast('No se pudo acceder a la cámara.'); }
 }
- 
+
 function setAuraStyle(style){
   auraStyleMode=style;
   document.querySelectorAll('.aura-style-row button').forEach(b=>b.classList.toggle('active',b.dataset.style===style));
+  if(auraInputSource==='file' && loadedAuraImage){
+    renderAuraFromSource(loadedAuraImage);
+  }
 }
- 
+
 function drawAuraContourLoop(){
   const video=document.getElementById('auraRawVideo');
   const canvas=document.getElementById('auraLiveCanvas');
-  if(!canvas||!video||video.paused||video.ended) return;
-  paintAuraFrame(video,canvas);
+  if(!canvas||!video||video.paused||video.ended||auraInputSource!=='camera') return;
+  renderAuraFromSource(video);
   auraAnimFrame=requestAnimationFrame(drawAuraContourLoop);
 }
- 
-// Dibuja el video con un halo de color detrás (efecto tipo filtro de
-// cámara). Es puramente visual/decorativo, no mide nada del usuario.
-function paintAuraFrame(source,canvas){
+
+// PROCESAMIENTO NATIVO LUMINOSO DE CONTORNO
+function renderAuraFromSource(source){
+  const canvas=document.getElementById('auraLiveCanvas');
+  if(!canvas) return;
   const ctx=canvas.getContext('2d');
-  const w=source.videoWidth||480, h=source.videoHeight||480;
+  const w=source.videoWidth || source.width || 480;
+  const h=source.videoHeight || source.height || 480;
   canvas.width=w; canvas.height=h;
+
   auraPulseAngle+=0.05;
-  const pulseScale=1+Math.sin(auraPulseAngle)*0.035;
+  const pulseScale=1.03 + Math.sin(auraPulseAngle)*0.03;
+
   ctx.clearRect(0,0,w,h);
-  ctx.save();
-  ctx.translate(w,0); ctx.scale(-1,1); // espejado, como una cámara frontal normal
-  ctx.save();
-  ctx.translate(w/2,h/2); ctx.scale(pulseScale,pulseScale); ctx.translate(-w/2,-h/2);
-  ctx.filter='blur(16px) brightness(1.35)';
-  ctx.globalAlpha=0.75;
-  ctx.drawImage(source,0,0,w,h);
-  ctx.restore();
-  ctx.save();
-  ctx.globalCompositeOperation='source-atop';
+
+  // 1. Generar la máscara de halo luminoso expandido en segundo plano
+  const haloCanvas=document.createElement('canvas');
+  haloCanvas.width=w; haloCanvas.height=h;
+  const haloCtx=haloCanvas.getContext('2d');
+
+  haloCtx.save();
+  if(auraInputSource==='camera'){
+    haloCtx.translate(w,0); haloCtx.scale(-1,1);
+  }
+  haloCtx.translate(w/2, h/2);
+  haloCtx.scale(pulseScale, pulseScale);
+  haloCtx.translate(-w/2, -h/2);
+  haloCtx.filter='blur(18px) brightness(1.6)';
+  haloCtx.drawImage(source, 0, 0, w, h);
+  haloCtx.restore();
+
+  // Colorizar el halo recortado según el tema seleccionado
+  haloCtx.globalCompositeOperation='source-atop';
   if(auraStyleMode==='rainbow'){
-    const g=ctx.createLinearGradient(0,0,0,h);
-    g.addColorStop(0,'#a855f7');g.addColorStop(.3,'#3b82f6');g.addColorStop(.6,'#22c55e');g.addColorStop(.85,'#fbbf24');g.addColorStop(1,'#ef4444');
-    ctx.fillStyle=g;
-  } else if(auraStyleMode==='gold'){ ctx.fillStyle='#fbbf24'; }
-  else if(auraStyleMode==='cyan'){ ctx.fillStyle='#06b6d4'; }
-  else { ctx.fillStyle='#a855f7'; }
-  ctx.fillRect(0,0,w,h);
-  ctx.restore();
+    const g=haloCtx.createLinearGradient(0,0,0,h);
+    g.addColorStop(0,'#a855f7'); g.addColorStop(.3,'#3b82f6');
+    g.addColorStop(.6,'#22c55e'); g.addColorStop(.85,'#fbbf24');
+    g.addColorStop(1,'#ef4444');
+    haloCtx.fillStyle=g;
+  } else if(auraStyleMode==='gold'){ haloCtx.fillStyle='#fbbf24'; }
+  else if(auraStyleMode==='cyan'){ haloCtx.fillStyle='#06b6d4'; }
+  else { haloCtx.fillStyle='#a855f7'; }
+  haloCtx.fillRect(0,0,w,h);
+
+  // 2. Proyectar primero el halo resplandeciente
+  ctx.drawImage(haloCanvas, 0, 0, w, h);
+
+  // 3. Montar la figura nítida por delante sin que sea tapada por la cámara
+  ctx.save();
+  if(auraInputSource==='camera'){
+    ctx.translate(w,0); ctx.scale(-1,1);
+  }
   ctx.globalCompositeOperation='source-over';
-  ctx.drawImage(source,0,0,w,h);
+  ctx.drawImage(source, 0, 0, w, h);
   ctx.restore();
 }
- 
+
 function takeAuraPhoto(){
   const canvas=document.getElementById('auraLiveCanvas');
   auraCapturedDataUrl=canvas.toDataURL('image/png');
   stopAuraCamStream();
   renderAuraCardPreview();
 }
- 
+
 function renderAuraCardPreview(){
   const u=LAST_PROFILE||{};
   const stage=document.getElementById('auraCardStage');
@@ -1201,22 +1284,19 @@ function renderAuraCardPreview(){
     </div>
   `;
 }
- 
+
 async function buildAuraCardFile(){
   const node=document.getElementById('auraCardBox');
   const canvas=await html2canvas(node,{scale:2,useCORS:true,backgroundColor:'#06070d'});
   const blob=await new Promise(res=>canvas.toBlob(res,'image/png'));
   return new File([blob],'aura-star-card.png',{type:'image/png'});
 }
- 
-// El botón grande usa el selector nativo del sistema (funciona directo con
-// WhatsApp/Instagram/Facebook si están instaladas, porque esas apps se
-// registran como destino de "compartir" en el celular).
+
 async function shareAuraCard(){
   try{
     toast('Generando tarjeta…');
     const file=await buildAuraCardFile();
-    if(navigator.canShare && navigator.canShare({files:[file]})){
+    if(navigator.canShare && navigator.share && navigator.canShare({files:[file]})){
       await navigator.share({files:[file],title:'AURA STAR',text:'Mirá mi Aura en AURA STAR ⚡'});
     }else{
       downloadAuraCardFile(file);
@@ -1224,17 +1304,11 @@ async function shareAuraCard(){
     }
   }catch(e){ if(e?.name!=='AbortError') toast('No se pudo compartir la tarjeta.'); }
 }
- 
-// Botones por red: en celular, todas abren el mismo selector nativo (ahí
-// se elige la app puntual). En escritorio, donde no hay selector nativo,
-// cada una cae a la alternativa que sí funciona sin subir la imagen a
-// ningún servidor: WhatsApp/Facebook comparten el enlace de la app, e
-// Instagram no tiene forma de compartir desde la web, así que se descarga
-// la imagen para subirla manualmente.
+
 async function shareAuraCardTo(network){
   try{
     const file=await buildAuraCardFile();
-    if(navigator.canShare && navigator.canShare({files:[file]})){
+    if(navigator.canShare && navigator.share && navigator.canShare({files:[file]})){
       await navigator.share({files:[file],title:'AURA STAR',text:'Mirá mi Aura en AURA STAR ⚡'});
       return;
     }
@@ -1250,7 +1324,7 @@ async function shareAuraCardTo(network){
     }
   }catch(e){ if(e?.name!=='AbortError') toast('No se pudo preparar la tarjeta.'); }
 }
- 
+
 function downloadAuraCardFile(file){
   const a=document.createElement('a');
   a.href=URL.createObjectURL(file);
@@ -1258,9 +1332,9 @@ function downloadAuraCardFile(file){
   a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),4000);
 }
- 
+
 setInterval(()=>{ if(document.getElementById('home').classList.contains('active') && CURRENT_USER) switchFeedTab(currentFeedTab); }, 30000);
- 
+
 renderCreate();
 handleAuth();
 </script>
