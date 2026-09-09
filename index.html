@@ -7,6 +7,10 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
+<!-- TENSORFLOW.JS + BODYPIX PARA DETECTAR EL BORDES Y SILUETA REAL -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.2.0/dist/body-pix.min.js"></script>
+
 <style>
 :root{--bg:#06070d;--surface:#0e111b;--surface2:#151a28;--purple:#8b5cf6;--purple2:#a78bfa;--gold:#fbbf24;--green:#22c55e;--red:#ef4444;--text:#f8fafc;--muted:#94a3b8;--border:rgba(255,255,255,.09);--glow:rgba(139,92,246,.3);--goldglow:rgba(251,191,36,.24)}
 *{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:radial-gradient(circle at 50% 0,rgba(139,92,246,.22),transparent 42%),radial-gradient(circle at 100% 50%,rgba(139,92,246,.08),transparent 35%),var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button{border:0;cursor:pointer}.app{max-width:480px;margin:auto;min-height:100vh;padding-bottom:92px}header{padding:15px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:rgba(6,7,13,.82);backdrop-filter:blur(18px);z-index:20;border-bottom:1px solid var(--border)}.brand{display:flex;align-items:center;gap:10px}.brand-icon{width:32px;height:32px;background:linear-gradient(135deg,#fff,var(--purple));clip-path:polygon(50% 0,65% 35%,100% 50%,65% 65%,50% 100%,35% 65%,0 50%,35% 35%);filter:drop-shadow(0 0 9px var(--glow))}.logo{font-weight:900;font-size:1.38rem;letter-spacing:.6px;background:linear-gradient(135deg,#fff,var(--purple2));-webkit-background-clip:text;color:transparent}.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--surface2),#24164a);border:1px solid rgba(167,139,250,.6);font-weight:900;color:#fff}.view{display:none;animation:in .25s ease}.view.active{display:block}@keyframes in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}main{padding:10px 16px}.hero{padding:22px 3px 16px}.hero h1{font-size:2rem;line-height:1.06;margin:0 0 8px;font-weight:900;letter-spacing:-.8px}.hero p{margin:0;color:var(--muted);font-size:.9rem}.section-title{display:flex;justify-content:space-between;align-items:center;margin:23px 2px 12px}.section-title h2{font-size:1rem;margin:0;font-weight:800}.muted{color:var(--muted);font-size:.78rem}.card{background:linear-gradient(145deg,rgba(20,25,39,.9),rgba(10,13,22,.94));border:1px solid var(--border);border-radius:22px;padding:17px;margin:12px 0;box-shadow:0 18px 38px rgba(0,0,0,.28);position:relative;overflow:hidden}.card:before{content:"";position:absolute;left:10%;right:10%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent)}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.action{padding:17px 15px;border-radius:18px;background:var(--surface);border:1px solid var(--border);color:var(--text);text-align:left}.action:active,.battle-card:active{transform:scale(.98)}.action strong{display:block;margin-bottom:5px}.action span{color:var(--muted);font-size:.72rem}.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(139,92,246,.13);color:#c4b5fd;border:1px solid rgba(139,92,246,.2);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.4px}.battle-title{font-size:1.08rem;font-weight:850;margin:10px 0}
@@ -84,7 +88,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .admin-actions button{width:auto;padding:8px 10px}
 .admin-meta{font-size:.72rem;color:var(--muted);margin-top:3px}
 
-/* TARJETA Y CONTENEDOR DEL AURA KI ESTILIZADO */
+/* TARJETA Y CONTENEDOR DE SILUETA DE AURA BODYPIX */
 .aura-filter-card {
   background: linear-gradient(145deg, rgba(20,25,39,.95), rgba(8,11,19,.98));
   border: 1px solid rgba(246,196,83,.22);
@@ -184,10 +188,10 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
   <div class="hero"><h1>Mi perfil</h1><p id="profileSubtitle">Tu identidad dentro de AURA STAR.</p></div>
   <div class="card" id="profileCard"></div>
 
-  <!-- MÓDULO AURA KI DBZ CON PARTÍCULAS -->
+  <!-- MÓDULO AURA SEGMENTADA POR DETECCIÓN DE BORDES -->
   <div class="card" id="auraFilterSection">
-    <h3 style="margin:0 0 6px">🔥 Capturar mi Ki / Aura en Vivo</h3>
-    <p class="hint" style="margin-top:0">Física de partículas y llamarada energética contorneando tu imagen.</p>
+    <h3 style="margin:0 0 6px">🔥 Capturar mi Aura de Contorno</h3>
+    <p class="hint" style="margin-top:0">Detección de silueta que genera un brillo neón únicamente alrededor de tus hombros y cabeza.</p>
     
     <div class="aura-filter-card" id="auraFilterCardBox">
       <div class="aura-filter-view" id="auraFrameBox">
@@ -200,16 +204,16 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
       <div class="aura-card-brand">✦ AURA STAR ✦</div>
     </div>
 
-    <!-- Pestañas de Ki Dragon Ball -->
+    <!-- Pestañas de Estilos de Contorno -->
     <div class="tabs" style="margin-top:12px">
-      <button type="button" class="tab active" id="fBtnSaiyan" onclick="setAuraKiMode('saiyan')">🟡 Super Saiyan</button>
-      <button type="button" class="tab" id="fBtnGod" onclick="setAuraKiMode('god')">🔴 Saiyan God</button>
-      <button type="button" class="tab" id="fBtnBlue" onclick="setAuraKiMode('blue')">🔵 SSJ Blue</button>
-      <button type="button" class="tab" id="fBtnHakkai" onclick="setAuraKiMode('hakkai')">🟣 Hakkaishin</button>
+      <button type="button" class="tab active" id="fBtnSaiyan" onclick="setAuraColor('#fbbf24')">🟡 Dorada</button>
+      <button type="button" class="tab" id="fBtnBlue" onclick="setAuraColor('#3b82f6')">🔵 Azul</button>
+      <button type="button" class="tab" id="fBtnHakkai" onclick="setAuraColor('#a855f7')">🟣 Púrpura</button>
+      <button type="button" class="tab" id="fBtnRed" onclick="setAuraColor('#ef4444')">🔴 Roja</button>
     </div>
 
     <div class="grid" style="margin-top:10px">
-      <button type="button" class="secondary" id="btnStartAuraCam" onclick="startAuraCamera()">📷 Activar Cámara Ki</button>
+      <button type="button" class="secondary" id="btnStartAuraCam" onclick="startAuraCamera()">📷 Activar Cámara Contorno</button>
       <button type="button" class="primary" id="btnSnapAuraCam" onclick="takeAuraPhoto()" style="display:none;margin-top:0">⚡ Capturar Foto</button>
       <button type="button" class="secondary" id="btnRetakeAuraCam" onclick="resetAuraCamera()" style="display:none">🔄 Repetir</button>
     </div>
@@ -276,9 +280,9 @@ const OAUTH_REDIRECT='https://guillaumelk777-commits.github.io/aura-star-fronten
 const sb=supabase.createClient(CONFIG.SUPABASE_URL,CONFIG.SUPABASE_ANON_KEY);
 let CURRENT_USER=null,IS_ADMIN=false,cache=[],pendingNewBattles=[],currentMode='video',scanStream=null,scanTimer=null,currentGiftMethod='username',currentCity='Trelew',currentFeedTab='global';
 
+let bodyPixNet = null;
 let auraCamStream = null, auraAnimFrame = null;
-let kiMode = 'saiyan';
-let kiParticles = [];
+let auraGlowColor = '#fbbf24';
 
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 function getUserId(){return CURRENT_USER?.id||''}
@@ -1005,17 +1009,17 @@ async function loadProfile(){
   }catch(e){box.innerHTML='<div class="empty">No se pudo cargar el perfil.</div>'}
 }
 
-/* LÓGICA DE AURA KI ESTILIZADO CON FÍSICA DE PARTÍCULAS */
-function setAuraKiMode(mode) {
-  kiMode = mode;
-  document.getElementById('fBtnSaiyan').classList.toggle('active', mode === 'saiyan');
-  document.getElementById('fBtnGod').classList.toggle('active', mode === 'god');
-  document.getElementById('fBtnBlue').classList.toggle('active', mode === 'blue');
-  document.getElementById('fBtnHakkai').classList.toggle('active', mode === 'hakkai');
+/* SEGMENTACIÓN INTELIGENTE CON BODYPIX PARA DIBUJAR AURA EN BORDES */
+function setAuraColor(colorHex) {
+  auraGlowColor = colorHex;
+  document.getElementById('fBtnSaiyan').classList.toggle('active', colorHex === '#fbbf24');
+  document.getElementById('fBtnBlue').classList.toggle('active', colorHex === '#3b82f6');
+  document.getElementById('fBtnHakkai').classList.toggle('active', colorHex === '#a855f7');
+  document.getElementById('fBtnRed').classList.toggle('active', colorHex === '#ef4444');
 }
 
 async function startAuraCamera() {
-  toast('Activando cámara…');
+  toast('Cargando modelo de segmentación…');
   const video = document.getElementById('auraRawVideo');
   const canvas = document.getElementById('auraCanvasView');
 
@@ -1023,14 +1027,23 @@ async function startAuraCamera() {
   canvas.style.display = 'block';
 
   try {
+    if (!bodyPixNet) {
+      bodyPixNet = await bodyPix.load({
+        architecture: 'MobileNetV1',
+        outputStride: 16,
+        multiplier: 0.75,
+        quantBytes: 2
+      });
+    }
+
     if (!navigator.mediaDevices?.getUserMedia) throw Error('Cámara no soportada.');
-    auraCamStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: 480, height: 480 } });
+    auraCamStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: 320, height: 320 } });
     video.srcObject = auraCamStream;
     video.style.display = 'none';
 
     video.onloadedmetadata = () => {
       video.play();
-      drawKiLoop();
+      drawBodyPixAuraLoop();
     };
 
     document.getElementById('btnStartAuraCam').style.display = 'none';
@@ -1039,102 +1052,68 @@ async function startAuraCamera() {
     document.getElementById('btnRetakeAuraCam').style.display = 'none';
     document.getElementById('btnExportAuraCard').style.display = 'none';
   } catch (e) {
-    toast('No se pudo acceder a la cámara.');
+    toast('No se pudo iniciar el scanner de contorno.');
   }
 }
 
-function drawKiLoop() {
+async function drawBodyPixAuraLoop() {
   const video = document.getElementById('auraRawVideo');
   const canvas = document.getElementById('auraCanvasView');
   if (!canvas || !video || video.paused || video.ended) return;
 
   const ctx = canvas.getContext('2d');
-  canvas.width = video.videoWidth || 480;
-  canvas.height = video.videoHeight || 480;
+  canvas.width = video.videoWidth || 320;
+  canvas.height = video.videoHeight || 320;
 
-  ctx.save();
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // 1. Render de video de cámara limpio y espejado
-  ctx.translate(canvas.width, 0);
-  ctx.scale(-1, 1);
-  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-  ctx.restore();
-
-  // 2. Colores y parámetros de energía por transformación Ki
-  let mainColor = '#f6c453', innerColor = '#ffe7a0', rayColor = '#ffffff';
-  if (kiMode === 'god') {
-    mainColor = '#ef4444'; innerColor = '#fca5a5'; rayColor = '#fef08a';
-  } else if (kiMode === 'blue') {
-    mainColor = '#3b82f6'; innerColor = '#93c5fd'; rayColor = '#60a5fa';
-  } else if (kiMode === 'hakkai') {
-    mainColor = '#a855f7'; innerColor = '#e9d5ff'; rayColor = '#c084fc';
-  }
-
-  ctx.save();
-  // 3. Aura perimetral resplandeciente (sin tapar la zona del rostro)
-  const grad = ctx.createRadialGradient(
-    canvas.width / 2, canvas.height * 0.75, canvas.width * 0.1,
-    canvas.width / 2, canvas.height * 0.5, canvas.width * 0.55
-  );
-  grad.addColorStop(0, 'transparent');
-  grad.addColorStop(0.65, mainColor + '33');
-  grad.addColorStop(1, mainColor + 'a6');
-
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  // 4. Sistema de partículas de Ki que flotan hacia arriba
-  if (kiParticles.length < 35) {
-    kiParticles.push({
-      x: canvas.width * 0.15 + Math.random() * (canvas.width * 0.7),
-      y: canvas.height + Math.random() * 30,
-      r: Math.random() * 4 + 2,
-      vY: Math.random() * 7 + 4,
-      vX: (Math.random() - 0.5) * 2,
-      alpha: Math.random() * 0.8 + 0.2
+  try {
+    // Detectar segmentación de persona en tiempo real
+    const segmentation = await bodyPixNet.segmentPerson(video, {
+      flipHorizontal: true,
+      internalResolution: 'medium',
+      segmentationThreshold: 0.7
     });
-  }
 
-  for (let i = 0; i < kiParticles.length; i++) {
-    let p = kiParticles[i];
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = innerColor;
-    ctx.shadowColor = mainColor;
-    ctx.shadowBlur = 12;
-    ctx.globalAlpha = p.alpha;
-    ctx.fill();
+    ctx.save();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    p.y -= p.vY;
-    p.x += p.vX;
-    p.alpha -= 0.008;
+    // 1. Crear la máscara del cuerpo limpia
+    const maskCanvas = document.createElement('canvas');
+    maskCanvas.width = canvas.width;
+    maskCanvas.height = canvas.height;
+    const maskCtx = maskCanvas.getContext('2d');
 
-    if (p.y < canvas.height * 0.1 || p.alpha <= 0) {
-      p.x = canvas.width * 0.15 + Math.random() * (canvas.width * 0.7);
-      p.y = canvas.height + Math.random() * 20;
-      p.alpha = Math.random() * 0.8 + 0.2;
+    const imgData = maskCtx.createImageData(canvas.width, canvas.height);
+    for (let i = 0; i < segmentation.data.length; i++) {
+      const isBody = segmentation.data[i];
+      imgData.data[i * 4 + 0] = 255;
+      imgData.data[i * 4 + 1] = 255;
+      imgData.data[i * 4 + 2] = 255;
+      imgData.data[i * 4 + 3] = isBody ? 255 : 0;
     }
+    maskCtx.putImageData(imgData, 0, 0);
+
+    // 2. Dibujar el resplandor / Aura expandido detrás de la silueta
+    ctx.filter = 'blur(16px)';
+    ctx.drawImage(maskCanvas, 0, 0);
+
+    ctx.globalCompositeOperation = 'source-in';
+    ctx.fillStyle = auraGlowColor;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // 3. Dibujar la persona real de la cámara limpia sobre su contorno luminoso
+    ctx.filter = 'none';
+    ctx.globalCompositeOperation = 'destination-over';
+    
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    ctx.restore();
+  } catch (e) {
+    console.error('Error procesando BodyPix frame', e);
   }
 
-  // 5. Destellos de energía eléctrica
-  if (Math.random() > 0.65) {
-    ctx.beginPath();
-    let startX = canvas.width * 0.2 + Math.random() * (canvas.width * 0.6);
-    let startY = canvas.height * 0.3 + Math.random() * (canvas.height * 0.5);
-    ctx.moveTo(startX, startY);
-    ctx.lineTo(startX + (Math.random() - 0.5) * 40, startY - 30);
-    ctx.lineTo(startX + (Math.random() - 0.5) * 50, startY - 60);
-    ctx.strokeStyle = rayColor;
-    ctx.lineWidth = 2.5;
-    ctx.shadowColor = mainColor;
-    ctx.shadowBlur = 10;
-    ctx.stroke();
-  }
-
-  ctx.restore();
-
-  auraAnimFrame = requestAnimationFrame(drawKiLoop);
+  auraAnimFrame = requestAnimationFrame(drawBodyPixAuraLoop);
 }
 
 function takeAuraPhoto() {
