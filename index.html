@@ -7,9 +7,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <style>
 :root{--bg:#06070d;--surface:#0e111b;--surface2:#151a28;--purple:#8b5cf6;--purple2:#a78bfa;--gold:#fbbf24;--green:#22c55e;--red:#ef4444;--text:#f8fafc;--muted:#94a3b8;--border:rgba(255,255,255,.09);--glow:rgba(139,92,246,.3);--goldglow:rgba(251,191,36,.24)}
-*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:radial-gradient(circle at 50% 0,rgba(139,92,246,.22),transparent 42%),radial-gradient(circle at 100% 50%,rgba(139,92,246,.08),transparent 35%),var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button{border:0;cursor:pointer}.app{max-width:480px;margin:auto;min-height:100vh;padding-bottom:92px}header{padding:15px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:rgba(6,7,13,.82);backdrop-filter:blur(18px);z-index:20;border-bottom:1px solid var(--border)}.brand{display:flex;align-items:center;gap:10px}.brand-icon{width:32px;height:32px;background:linear-gradient(135deg,#fff,var(--purple));clip-path:polygon(50% 0,65% 35%,100% 50%,65% 65%,50% 100%,35% 65%,0 50%,35% 35%);filter:drop-shadow(0 0 9px var(--glow))}.logo{font-weight:900;font-size:1.38rem;letter-spacing:.6px;background:linear-gradient(135deg,#fff,var(--purple2));-webkit-background-clip:text;color:transparent}.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--surface2),#24164a);border:1px solid rgba(167,139,250,.6);font-weight:900;color:#fff}.view{display:none;animation:in .25s ease}.view.active{display:block}@keyframes in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}main{padding:10px 16px}.hero{padding:22px 3px 16px}.hero h1{font-size:2rem;line-height:1.06;margin:0 0 8px;font-weight:900;letter-spacing:-.8px}.hero p{margin:0;color:var(--muted);font-size:.9rem}.section-title{display:flex;justify-content:space-between;align-items:center;margin:23px 2px 12px}.section-title h2{font-size:1rem;margin:0;font-weight:800}.muted{color:var(--muted);font-size:.78rem}.card{background:linear-gradient(145deg,rgba(20,25,39,.9),rgba(10,13,22,.94));border:1px solid var(--border);border-radius:22px;padding:17px;margin:12px 0;box-shadow:0 18px 38px rgba(0,0,0,.28);position:relative;overflow:hidden}.card:before{content:"";position:absolute;left:10%;right:10%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent)}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.action{padding:17px 15px;border-radius:18px;background:var(--surface);border:1px solid var(--border);color:var(--text);text-align:left}.action:active,.battle-card:active{transform:scale(.98)}.action strong{display:block;margin-bottom:5px}.action span{color:var(--muted);font-size:.72rem}.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(139,92,246,.13);color:#c4b5fd;border:1px solid rgba(139,92,246,.2);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.4px}.battle-title{font-size:1.08rem;font-weight:850;margin:10px 0}
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:radial-gradient(circle at 50% 0,rgba(139,92,246,.22),transparent 42%),radial-gradient(circle at 100% 50%,rgba(139,92,246,.08),transparent 35%),var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button{border:0;cursor:pointer}.app{max-width:480px;margin:auto;min-height:100vh;padding-bottom:92px}header{padding:15px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:rgba(6,7,13,.82);backdrop-filter:blur(18px);z-index:20;border-bottom:1px solid var(--border)}.brand{display:flex;align-items:center;gap:10px}.brand-icon{width:32px;height:32px;background:linear-gradient(135deg,#fff,var(--purple));clip-path:polygon(50% 0,65% 35%,100% 50%,65% 65%,50% 100%,35% 65%,0 50%,35% 35%);filter:drop-shadow(0 0 9px var(--glow))}.logo{font-weight:900;font-size:1.38rem;letter-spacing:.6px;background:linear-gradient(135deg,#fff,var(--purple2));-webkit-background-clip:text;color:transparent}.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--surface2),#24164a);border:1px solid rgba(167,139,250,.6);font-weight:900;color:#fff}.view{display:none;animation:in .25s ease}.view.active{display:block}@keyframes in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}main{padding:10px 16px}.hero{padding:22px 3px 16px}.hero h1{font-size:1.8rem;line-height:1.06;margin:0 0 8px;font-weight:900;letter-spacing:-.8px}.hero p{margin:0;color:var(--muted);font-size:.9rem}.muted{color:var(--muted);font-size:.78rem}.card{background:linear-gradient(145deg,rgba(20,25,39,.9),rgba(10,13,22,.94));border:1px solid var(--border);border-radius:22px;padding:17px;margin:12px 0;box-shadow:0 18px 38px rgba(0,0,0,.28);position:relative;overflow:hidden}.card:before{content:"";position:absolute;left:10%;right:10%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent)}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.action{padding:17px 15px;border-radius:18px;background:var(--surface);border:1px solid var(--border);color:var(--text);text-align:left}.action:active,.battle-card:active{transform:scale(.98)}.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(139,92,246,.13);color:#c4b5fd;border:1px solid rgba(139,92,246,.2);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.4px}.battle-title{font-size:1.15rem;font-weight:900;margin:10px 0;color:#fff9e8}
 
-/* MEDIOS NORMALIZADOS */
+/* MEDIOS NORMALIZADOS MULTIMEDIA */
 .feed-media-grid, .media-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
 .feed-media, .media-grid > div{position:relative;min-width:0;text-align:center}
 .feed-media video, .feed-media img, .media-grid video, .media-grid img{width:100%;aspect-ratio:9/14;object-fit:cover;border-radius:16px;background:#000;border:1px solid var(--border);display:block}
@@ -25,13 +25,14 @@
 .chrome-tab{flex:1;padding:12px 8px;text-align:center;background:none;color:var(--muted);border-radius:12px;font-weight:800;font-size:.82rem;display:flex;align-items:center;justify-content:center;gap:6px;transition:.2s}
 .chrome-tab.active{background:linear-gradient(135deg,rgba(139,92,246,.25),rgba(246,196,83,.12));color:#ffe7a0;border:1px solid rgba(246,196,83,.22);box-shadow:0 6px 18px rgba(0,0,0,.35)}
 
+/* ESTILO ARENA PARA BATALLA LOCAL DIRECTA */
 .local-card{border:1px solid rgba(246,196,83,.32);background:linear-gradient(145deg,rgba(246,196,83,.06),rgba(14,17,27,.98));box-shadow:0 18px 42px rgba(0,0,0,.45)}
 .local-badge{background:linear-gradient(135deg,rgba(246,196,83,.25),rgba(139,92,246,.15));color:#ffe7a0;border:1px solid rgba(246,196,83,.4);font-weight:900}
 .event-card{border:1px solid rgba(246,196,83,.22);background:linear-gradient(145deg,rgba(246,196,83,.04),rgba(14,17,27,.98));padding:18px;border-radius:20px;margin:12px 0}
 .event-title{font-size:1.2rem;font-weight:900;color:#fff;margin:8px 0 6px}
 .event-meta{font-size:.8rem;color:var(--muted);line-height:1.5;margin-bottom:12px}
 
-.backbtn{display:flex;align-items:center;gap:7px;background:none;color:#c4b5fd;font-weight:850;padding:4px 0;margin:2px 0 4px}.backbtn span{font-size:1.35rem;line-height:1}.players{display:grid;grid-template-columns:1fr 40px 1fr;gap:8px;align-items:center;text-align:center;margin:17px 0}.player{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);border-radius:15px;padding:10px 5px;font-weight:750}.score{font-size:1.55rem;font-weight:900;margin-top:2px}.vs{width:34px;height:34px;margin:auto;border-radius:50%;display:grid;place-items:center;color:var(--gold);background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.18);font-size:.7rem;font-weight:900}.bar{height:8px;background:linear-gradient(90deg, #ef4444, #b98218);border-radius:99px;overflow:hidden;border:1px solid var(--border)}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--purple),#22c55e);border-radius:99px;transition:width .3s ease}.meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.72rem;margin-top:10px}.linkbtn{background:none;color:#c4b5fd;font-weight:800}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:#090c14;padding:5px;border-radius:16px;margin-bottom:12px}.tab{background:none;color:var(--muted);padding:10px 4px;border-radius:12px;font-size:.7rem;font-weight:800}.tab.active{background:var(--surface2);color:#fff;box-shadow:0 5px 15px rgba(0,0,0,.25)}form input,form select,form textarea,.search{width:100%;padding:13px 14px;margin:7px 0;border-radius:13px;background:#090c14;color:#fff;border:1px solid var(--border);outline:none}form input:focus,form select:focus,form textarea:focus,.search:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(139,92,246,.1)}select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#94a3b8 50%),linear-gradient(135deg,#94a3b8 50%,transparent 50%);background-position:calc(100% - 17px) 55%,calc(100% - 12px) 55%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:34px}.primary{width:100%;padding:14px;border-radius:15px;background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;font-weight:850;box-shadow:0 9px 22px var(--glow);margin-top:8px}.primary:disabled{opacity:.45;box-shadow:none;cursor:not-allowed}.secondary{width:100%;padding:13px;border-radius:14px;background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--border);font-weight:800;margin-top:8px}.danger{width:100%;padding:13px;border-radius:14px;background:rgba(239,68,68,.1);color:#fca5a5;border:1px solid rgba(239,68,68,.25);font-weight:800}.vote-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.vote{padding:15px;border-radius:15px;color:#fff;font-weight:850}.vote.a{background:linear-gradient(135deg,#166534,#22c55e)}.vote.b{background:linear-gradient(135deg,#991b1b,#ef4444)}.vote:disabled{opacity:.3;filter:grayscale(1)}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:15px 8px;text-align:center;background:#090c14;border:1px solid var(--border);border-radius:16px}.stat b{display:block;color:var(--gold);font-size:1.35rem}.stat span{color:var(--muted);font-size:.67rem;text-transform:uppercase}.rank{display:flex;align-items:center;gap:12px}.ranknum{width:28px;color:var(--gold);font-weight:900}.rankavatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#21173e;border:1px solid rgba(139,92,246,.3);font-weight:900}.rankname{flex:1;font-weight:800}.rankname small{display:block;color:var(--muted);font-weight:500}.aura{color:var(--gold);font-weight:900}.local-search{position:relative}.local-result{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--border);border-radius:15px;background:rgba(255,255,255,.025);margin:8px 0}.local-result .grow{flex:1}.timer{color:var(--gold);font-weight:850;font-size:.8rem}.mode-info{padding:12px 13px;border-radius:15px;background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.15);color:#cbd5e1;font-size:.76rem;line-height:1.45}.qr{display:grid;place-items:center;background:#fff;border-radius:14px;padding:12px;margin:12px auto;width:max-content}.scan{position:fixed;inset:0;background:rgba(3,5,10,.96);z-index:50;display:none;flex-direction:column;align-items:center;justify-content:center;padding:18px}.scan.active{display:flex}.scan video{width:min(92vw,380px);aspect-ratio:1;border-radius:20px;object-fit:cover;background:#000}.scan canvas{display:none}.scan .close{margin-top:14px;width:min(92vw,380px)}.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(480px,100%);display:grid;grid-template-columns:repeat(5,1fr);padding:10px 8px calc(10px + env(safe-area-inset-bottom));background:rgba(6,7,13,.91);backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:20}.nav{background:none;color:var(--muted);font-size:.67rem;padding:6px;font-weight:700}.nav.active{color:#fff}.nav b{display:block;font-size:1.2rem;margin-bottom:3px}.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:#111827;color:#fff;border:1px solid var(--border);padding:12px 18px;border-radius:25px;display:none;z-index:60;font-size:.8rem;box-shadow:0 10px 30px rgba(0,0,0,.45);max-width:90%;text-align:center}.empty{text-align:center;padding:30px 15px;color:var(--muted);font-size:.82rem}.hint{font-size:.73rem;color:var(--muted);line-height:1.45}.store-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.store-item{padding:15px;border:1px solid var(--border);border-radius:17px;background:rgba(255,255,255,.025)}.store-item b{display:block;font-size:1.1rem}.store-item .price{color:var(--gold);font-weight:900;margin:5px 0 10px}.store-item button{margin-top:0}.hidden{display:none!important}@media(min-width:700px){body{padding:20px}.app{border:1px solid var(--border);border-radius:30px;overflow:hidden}.bottom{position:fixed}}
+.backbtn{display:flex;align-items:center;gap:7px;background:none;color:#c4b5fd;font-weight:850;padding:4px 0;margin:2px 0 4px}.backbtn span{font-size:1.35rem;line-height:1}.players{display:grid;grid-template-columns:1fr 40px 1fr;gap:8px;align-items:center;text-align:center;margin:17px 0}.player{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);border-radius:15px;padding:12px 6px;font-weight:750}.score{font-size:1.65rem;font-weight:900;margin-top:2px;color:var(--gold)}.vs{width:34px;height:34px;margin:auto;border-radius:50%;display:grid;place-items:center;color:var(--gold);background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.18);font-size:.7rem;font-weight:900}.bar{height:8px;background:linear-gradient(90deg, #ef4444, #b98218);border-radius:99px;overflow:hidden;border:1px solid var(--border)}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--purple),#22c55e);border-radius:99px;transition:width .3s ease}.meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.72rem;margin-top:10px}.linkbtn{background:none;color:#c4b5fd;font-weight:800}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:#090c14;padding:5px;border-radius:16px;margin-bottom:12px}.tab{background:none;color:var(--muted);padding:10px 4px;border-radius:12px;font-size:.7rem;font-weight:800}.tab.active{background:var(--surface2);color:#fff;box-shadow:0 5px 15px rgba(0,0,0,.25)}form input,form select,form textarea,.search{width:100%;padding:13px 14px;margin:7px 0;border-radius:13px;background:#090c14;color:#fff;border:1px solid var(--border);outline:none}form input:focus,form select:focus,form textarea:focus,.search:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(139,92,246,.1)}select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#94a3b8 50%),linear-gradient(135deg,#94a3b8 50%,transparent 50%);background-position:calc(100% - 17px) 55%,calc(100% - 12px) 55%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:34px}.primary{width:100%;padding:14px;border-radius:15px;background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;font-weight:850;box-shadow:0 9px 22px var(--glow);margin-top:8px}.primary:disabled{opacity:.45;box-shadow:none;cursor:not-allowed}.secondary{width:100%;padding:13px;border-radius:14px;background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--border);font-weight:800;margin-top:8px}.danger{width:100%;padding:13px;border-radius:14px;background:rgba(239,68,68,.1);color:#fca5a5;border:1px solid rgba(239,68,68,.25);font-weight:800}.vote-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.vote{padding:15px;border-radius:15px;color:#fff;font-weight:850}.vote.a{background:linear-gradient(135deg,#166534,#22c55e)}.vote.b{background:linear-gradient(135deg,#991b1b,#ef4444)}.vote:disabled{opacity:.3;filter:grayscale(1)}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:15px 8px;text-align:center;background:#090c14;border:1px solid var(--border);border-radius:16px}.stat b{display:block;color:var(--gold);font-size:1.35rem}.stat span{color:var(--muted);font-size:.67rem;text-transform:uppercase}.rank{display:flex;align-items:center;gap:12px}.ranknum{width:28px;color:var(--gold);font-weight:900}.rankavatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#21173e;border:1px solid rgba(139,92,246,.3);font-weight:900}.rankname{flex:1;font-weight:800}.rankname small{display:block;color:var(--muted);font-weight:500}.aura{color:var(--gold);font-weight:900}.timer{color:var(--gold);font-weight:850;font-size:.8rem}.mode-info{padding:12px 13px;border-radius:15px;background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.15);color:#cbd5e1;font-size:.76rem;line-height:1.45}.qr{display:grid;place-items:center;background:#fff;border-radius:14px;padding:12px;margin:12px auto;width:max-content}.scan{position:fixed;inset:0;background:rgba(3,5,10,.96);z-index:50;display:none;flex-direction:column;align-items:center;justify-content:center;padding:18px}.scan.active{display:flex}.scan video{width:min(92vw,380px);aspect-ratio:1;border-radius:20px;object-fit:cover;background:#000}.scan canvas{display:none}.scan .close{margin-top:14px;width:min(92vw,380px)}.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(480px,100%);display:grid;grid-template-columns:repeat(5,1fr);padding:10px 8px calc(10px + env(safe-area-inset-bottom));background:rgba(6,7,13,.91);backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:20}.nav{background:none;color:var(--muted);font-size:.67rem;padding:6px;font-weight:700}.nav.active{color:#fff}.nav b{display:block;font-size:1.2rem;margin-bottom:3px}.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:#111827;color:#fff;border:1px solid var(--border);padding:12px 18px;border-radius:25px;display:none;z-index:60;font-size:.8rem;box-shadow:0 10px 30px rgba(0,0,0,.45);max-width:90%;text-align:center}.empty{text-align:center;padding:30px 15px;color:var(--muted);font-size:.82rem}.hint{font-size:.73rem;color:var(--muted);line-height:1.45}.store-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.store-item{padding:15px;border:1px solid var(--border);border-radius:17px;background:rgba(255,255,255,.025)}.store-item b{display:block;font-size:1.1rem}.store-item .price{color:var(--gold);font-weight:900;margin:5px 0 10px}.store-item button{margin-top:0}.hidden{display:none!important}@media(min-width:700px){body{padding:20px}.app{border:1px solid var(--border);border-radius:30px;overflow:hidden}.bottom{position:fixed}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 
 .new-battles-banner{position:sticky;top:66px;z-index:19;margin:-10px 0 14px;text-align:center;display:none}
@@ -96,24 +97,6 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .aura-option{width:100%;padding:15px;text-align:left;border-radius:16px;background:rgba(255,255,255,.035);color:#fff;border:1px solid rgba(246,196,83,.12);transition:.2s}
 .aura-option:hover{border-color:rgba(246,196,83,.35);background:rgba(246,196,83,.055)}
 .aura-option.selected{border-color:#f6c453;background:linear-gradient(135deg,rgba(139,92,246,.18),rgba(246,196,83,.10));box-shadow:0 0 22px rgba(246,196,83,.08)}
-.aura-option b{display:block;font-size:.88rem;margin-bottom:3px}
-.aura-option span{display:block;color:var(--muted);font-size:.7rem;line-height:1.35}
-.aura-camera-choice{display:grid;gap:10px;margin-top:15px}
-.aura-camera-choice button{min-height:50px}
-.aura-camera-note{font-size:.68rem;color:var(--muted);line-height:1.45;text-align:center;margin-top:10px}
-.aura-camera{position:relative;border-radius:22px;overflow:hidden;background:#000;border:1px solid rgba(246,196,83,.3);aspect-ratio:3/4;box-shadow:0 0 35px rgba(246,196,83,.08)}
-.aura-camera video{width:100%;height:100%;object-fit:cover;display:block;transform:scaleX(-1)}
-.aura-camera:after{content:"";position:absolute;inset:12%;border:1px solid rgba(246,196,83,.5);border-radius:46% 46% 40% 40%;box-shadow:0 0 0 999px rgba(0,0,0,.08),inset 0 0 25px rgba(246,196,83,.06);pointer-events:none}
-.aura-scanline{position:absolute;left:10%;right:10%;height:2px;top:18%;background:linear-gradient(90deg,transparent,#ffe7a0,#f6c453,transparent);box-shadow:0 0 15px rgba(246,196,83,.8);animation:auraScan 2.4s ease-in-out infinite;z-index:2}
-@keyframes auraScan{0%,100%{top:18%;opacity:.25}50%{top:82%;opacity:1}}
-.aura-scan-label{position:absolute;left:0;right:0;bottom:13px;text-align:center;z-index:3;font-size:.68rem;font-weight:850;letter-spacing:.08em;text-transform:uppercase;color:#fff3bf;text-shadow:0 1px 8px #000}
-.aura-calculating{display:none;text-align:center;padding:12px 4px 2px}
-.aura-calculating.active{display:block}
-.aura-orbit{width:110px;height:110px;margin:4px auto 16px;border-radius:50%;border:1px solid rgba(246,196,83,.35);position:relative;animation:auraSpin 2s linear infinite;box-shadow:0 0 30px rgba(246,196,83,.1)}
-.aura-orbit:before,.aura-orbit:after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(139,92,246,.4)}
-.aura-orbit:before{inset:15px}
-.aura-orbit:after{inset:30px;border-color:rgba(246,196,83,.55)}
-@keyframes auraSpin{to{transform:rotate(360deg)}}
 .aura-result{display:none;text-align:center}
 .aura-result.active{display:block}
 .aura-result-glow{width:190px;height:190px;margin:4px auto 18px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,rgba(246,196,83,.22),rgba(139,92,246,.08) 45%,transparent 70%);animation:auraPulse 1.8s ease-in-out infinite}
@@ -156,7 +139,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 
 <section id="battle" class="view"><div id="battleDetail"></div></section>
 
-<section id="events" class="view"><div class="hero"><h1>🎪 Eventos</h1><p>Torneos locales de 4 u 8 participantes, con bracket automático y QR para el público.</p></div><div class="grid"><button class="action" onclick="openTournamentCreate()"><strong>🏆 Crear torneo</strong><span>Organizá un evento presencial</span></button><button class="action" onclick="loadEvents()"><strong>📍 Eventos cercanos</strong><span>Descubrí eventos sin mostrar ubicaciones exactas</span></button><button class="action" onclick="startEventScanner()"><strong>📷 Escanear QR</strong><span>Entrá directamente al evento</span></button></div><div class="mode-info" style="margin-top:12px"><b>🛡️ Seguridad</b><br>Los torneos están separados por rango de edad. AURA STAR no publica coordenadas exactas ni organiza físicamente el evento.</div><div id="eventCreate" class="card" style="display:none;margin-top:12px"></div><div id="eventsList"></div><div id="tournamentDetail"></div></section>
+<section id="events" class="view"><div class="hero"><h1>🎪 Eventos</h1><p>Torneos locales de 4 u 8 participantes, con bracket automático y QR para el público.</p></div><div class="grid"><button class="action" onclick="openTournamentCreate()"><strong>🏆 Crear torneo</strong><span>Organizá un evento presencial</span></button><button class="action" onclick="loadEvents()"><strong>📍 Eventos cercanos</strong><span>Descubrí torneos</span></button><button class="action" onclick="startEventScanner()"><strong>📷 Escanear QR</strong><span>Entrá directamente al evento</span></button></div><div class="mode-info" style="margin-top:12px"><b>🛡️ Seguridad</b><br>Los torneos están separados por rango de edad. AURA STAR no publica coordenadas exactas ni organiza físicamente el evento.</div><div id="eventCreate" class="card" style="display:none;margin-top:12px"></div><div id="eventsList"></div><div id="tournamentDetail"></div></section>
 
 <section id="rank" class="view"><div class="hero"><h1>🏆 Ranking</h1><p>Las estrellas con más Aura.</p></div><div id="ranking"></div></section>
 
@@ -182,15 +165,17 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 </main>
 <nav class="bottom"><button class="nav active" data-view="home" onclick="show('home')"><b>⌂</b>Inicio</button><button class="nav" data-view="create" onclick="show('create')"><b>＋</b>Crear</button><button class="nav" data-view="events" onclick="show('events');loadEvents()"><b>♜</b>Eventos</button><button class="nav" data-view="rank" onclick="show('rank')"><b>♛</b>Ranking</button><button class="nav" data-view="profile" onclick="show('profile')"><b>●</b>Perfil</button></nav><div class="toast" id="toast"></div></div>
 
+<!-- SCANNER DE QR -->
 <div class="scan" id="scanner"><div id="scannerTitle" style="font-weight:900;font-size:1.1rem;margin-bottom:12px">Escanear QR de usuario</div><video id="scanVideo" autoplay playsinline></video><canvas id="scanCanvas"></canvas><div class="hint" style="margin-top:10px;text-align:center">Apuntá al QR de AURA STAR. Si tu navegador no permite cámara, podés ingresar el ID manualmente.</div><button class="secondary close" onclick="stopScanner()">Cerrar</button></div>
 
+<!-- MODAL LOGIN -->
 <div id="login" class="scan" style="background:rgba(3,5,10,.97)">
   <div class="card" style="width:min(92vw,390px);text-align:center">
     <div class="brand" style="justify-content:center;margin-bottom:18px"><span class="brand-icon"></span><div class="logo">AURA STAR</div></div>
     <h2 style="margin:0 0 8px">Entrá a AURA STAR</h2>
-    <p class="hint" style="margin:0 0 16px">Iniciá sesión con Google o ingresá tu email.</p>
+    <p class="hint" style="margin:0 0 16px">Iniciá sesión con Google o ingresá tu email para recibir un enlace de acceso instantáneo.</p>
     <button class="primary" onclick="signInWith('google')" style="background:#fff;color:#111827;box-shadow:none">🌐 Continuar con Google</button>
-    <div style="display:flex;align-items:center;margin:16px 0;color:var(--muted);font-size:.75rem"><hr style="flex:1;border:0;border-top:1px solid var(--border)"><span style="padding:0 8px">O EMAIL</span><hr style="flex:1;border:0;border-top:1px solid var(--border)"></div>
+    <div style="display:flex;align-items:center;margin:16px 0;color:var(--muted);font-size:.75rem"><hr style="flex:1;border:0;border-top:1px solid var(--border)"><span style="padding:0 8px">O INGRESÁ CON EMAIL</span><hr style="flex:1;border:0;border-top:1px solid var(--border)"></div>
     <input id="emailInput" class="search" type="email" placeholder="tu@email.com" style="margin-bottom:8px">
     <button class="secondary" onclick="signInWithEmail()" style="margin-top:0">✉️ Enviar enlace mágico</button>
   </div>
@@ -198,6 +183,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 
 <div id="onboard" class="scan" style="background:rgba(3,5,10,.94)"><div class="card" style="width:min(92vw,380px)"><h2 style="margin-top:0">Bienvenido a AURA STAR</h2><p class="hint">Elegí tu nombre y rango de edad. Tu perfil quedará vinculado a tu cuenta.</p><p id="onboardEmail" class="hint" style="margin-top:-6px;font-weight:700"></p><input id="onboardUsername" class="search" placeholder="Nombre de usuario" maxlength="40"><select id="onboardAge" class="search"><option value="18_plus">18 años o más</option><option value="13_17">13 a 17 años</option></select><button class="primary" onclick="createProfile()">Continuar</button><button class="linkbtn" style="width:100%;margin-top:8px" onclick="signOut()">¿No es tu cuenta? Cerrar sesión</button></div></div>
 
+<!-- MODAL REGALAR ESTRELLAS -->
 <div id="giftModal" class="scan" style="background:rgba(3,5,10,.95)">
   <div class="card" style="width:min(92vw,400px)">
     <h3 style="margin-top:0;display:flex;align-items:center;gap:8px">✦ Regalar Estrellas Aura</h3>
@@ -212,6 +198,27 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
       <button type="submit" class="primary">✦ Enviar Regalo</button>
       <button type="button" class="secondary" onclick="closeGiftModal()">Cancelar</button>
     </form>
+  </div>
+</div>
+
+<!-- MODAL TEST DE AURA INICIAL -->
+<div id="auraTest" class="aura-test" aria-modal="true" role="dialog">
+  <div class="aura-test-inner">
+    <div id="auraTestIntro">
+      <h1 class="aura-test-title">✨ Descubrí tu Aura inicial</h1>
+      <div class="aura-test-card">
+        <p class="hint">Respondé 5 preguntas para definir tu resultado inicial entre <b>20 y 100 Aura</b>.</p>
+        <button class="primary" style="margin-top:18px" onclick="beginAuraTest()">Comenzar test</button>
+      </div>
+    </div>
+    <div id="auraTestQuestion" class="hidden"></div>
+    <div id="auraResult" class="aura-result">
+      <div class="aura-test-card">
+        <div class="aura-result-glow"><div><div id="auraResultNumber" class="aura-result-number">--</div><div class="aura-result-label">Aura</div></div></div>
+        <p class="aura-result-copy">Tu Aura inicial ha sido asignada a tu perfil.</p>
+        <button class="primary" onclick="closeAuraTest()">Entrar a AURA STAR</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -411,21 +418,11 @@ sb.auth.onAuthStateChange((event,session)=>{
   }
 });
 
-function show(v){
-  document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
-  document.getElementById(v).classList.add('active');
-  document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.view===v));
-  if(v==='home')switchFeedTab(currentFeedTab);
-  if(v==='rank')loadRanking();
-  if(v==='profile'){loadProfile();loadShareStatus();loadAdminSection();}
-  if(v==='store')loadStore();
-  if(v==='events')loadEvents();
-}
-
 function battlePeople(b){return b.mode==='local'?[b.local_a_name||b.local_participant_a,b.local_b_name||b.local_participant_b]:[b.creator_name||b.creator_id,b.opponent_name||b.opponent_id||'Esperando…']}
 function feedMedia(url,mode,name){if(!url)return `<div class="feed-media"><div style="aspect-ratio:9/14;border-radius:16px;background:#090c14;display:grid;place-items:center;color:var(--muted);border:1px solid var(--border)">Esperando…</div><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='photo')return `<div class="feed-media"><img src="${esc(url)}" alt="Participación de ${esc(name)}" loading="lazy" oncontextmenu="return false;"><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='audio')return `<div class="feed-media"><div class="feed-audio"><div style="font-size:1.6rem;text-align:center;margin-bottom:6px">🎙️</div><audio controls controlsList="nodownload" preload="metadata" src="${esc(url)}"></audio></div><small class="feed-media-name">${esc(name)}</small></div>`;return `<div class="feed-media" data-feed-video><video playsinline controlsList="nodownload" disablePictureInPicture preload="metadata" src="${esc(url)}" onclick="toggleFeedVideo(this)" oncontextmenu="return false;"></video><div class="feed-play">▶</div><small class="feed-media-name">${esc(name)}</small></div>`}
 function toggleFeedVideo(video){event?.stopPropagation?.();const wrap=video.closest('.feed-media');if(!wrap)return;if(video.paused){document.querySelectorAll('.feed-media[data-feed-video] video').forEach(v=>{if(v!==video){v.pause();v.closest('.feed-media')?.classList.remove('playing')}});video.play().then(()=>wrap.classList.add('playing')).catch(()=>{});}else{video.pause();wrap.classList.remove('playing');}} 
 
+// TARJETA DE ARENA PRESENCIAL DIRECTA Y TARJETA MULTIMEDIA
 function battleCard(b){
   const [aName, oName] = battlePeople(b);
   const a = +b.votes_creator || 0;
@@ -440,25 +437,31 @@ function battleCard(b){
   const hasOpponent = local ? Boolean(targetB) : Boolean(b.opponent_id && b.media_url_opponent);
   const disableVoting = !hasOpponent || b.status !== 'active';
 
+  // TARJETA DE ARENA DESPLEGADA DIRECTAMENTE EN EL FEED PRESENCIAL
   if (local) {
+    let action = '';
+    if (b.local_neutral && b.creator_id === getUserId() && total >= 30 && Math.abs(a - o) >= 3) {
+      action = `<button class="primary" style="margin-top:10px" onclick="arbiterClose('${b.id}')">⚖️ Cerrar batalla como árbitro</button>`;
+    }
+
     return `
       <div class="card battle-card local-card" id="card-${b.id}">
-        <div style="display:flex;justify-content:space-between;align-items:center" onclick="openBattle('${b.id}')">
+        <div style="display:flex;justify-content:space-between;align-items:center">
           <span class="badge local-badge">🏟️ EN VIVO · ${esc(b.city||'Trelew')}</span>
-          <span class="muted" style="font-size:.72rem">Ver detalles →</span>
+          <span class="timer">⏱️ ${timeLeft(b.local_closes_at)}</span>
         </div>
         
-        <div class="battle-title" onclick="openBattle('${b.id}')" style="cursor:pointer;margin:12px 0 6px">${esc(b.title)}</div>
+        <div class="battle-title" style="margin:12px 0 6px">${esc(b.title)}</div>
 
         <div class="players">
-          <div class="player" onclick="openBattle('${b.id}')" style="cursor:pointer">
+          <div class="player">
             <div style="font-size:.88rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(aName)}</div>
             <div class="score" id="score-a-${b.id}">${a}</div>
           </div>
 
           <div class="vs">VS</div>
 
-          <div class="player" onclick="openBattle('${b.id}')" style="cursor:pointer">
+          <div class="player">
             <div style="font-size:.88rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(oName)}</div>
             <div class="score" id="score-b-${b.id}">${o}</div>
           </div>
@@ -471,13 +474,16 @@ function battleCard(b){
           <button class="vote b" style="padding:12px;font-size:.82rem" onclick="voteDirect(event, '${b.id}', '${esc(targetB || '')}')" ${disableVoting ? 'disabled' : ''}>⚡ Votar ${esc(oName)}</button>
         </div>
 
+        ${action}
+
         <div class="meta" style="margin-top:10px">
-          <span id="total-${b.id}">${total} votos presenciales · ⏱️ ${timeLeft(b.local_closes_at)}</span>
+          <span id="total-${b.id}">${total} votos presenciales · diferencia ${Math.abs(a - o)}</span>
         </div>
       </div>
     `;
   }
 
+  // TARJETA MULTIMEDIA GLOBAL (VIDEO / AUDIO / FOTO)
   const media = `<div class="feed-media-grid">${feedMedia(b.media_url_creator, b.mode, aName)}${feedMedia(b.media_url_opponent, b.mode, oName)}</div>`;
 
   return `
@@ -537,8 +543,71 @@ async function voteDirect(event, battleId, targetUser) {
   }
 }
 
+async function arbiterClose(id){
+  try{
+    await api('/battles/'+id+'/arbiter-close',{method:'POST'});
+    toast('Batalla cerrada por el árbitro');
+    loadLocalFeed();
+  }catch(e){toast(e.message)}
+}
+
 function modeLabel(m){return m==='audio'?'🎙️ Audio':m==='photo'?'📸 Foto':'🎥 Video'} 
 function timeLeft(d){if(!d)return'';const ms=new Date(d)-Date.now();if(ms<=0)return'finalizando';const h=Math.floor(ms/3600000),m=Math.floor(ms%3600000/60000);return h?`${h}h ${m}m`: `${m}m`}
+
+async function openBattle(id){
+  show('battle');
+  const box=document.getElementById('battleDetail');
+  box.innerHTML='<button class="backbtn" onclick="backToFeed()"><span>←</span> Volver al feed</button><div class="empty">Cargando batalla…</div>';
+  try{
+    const b=await api('/battles/'+id);
+    renderBattle(b);
+  }catch(e){
+    box.innerHTML='<button class="backbtn" onclick="backToFeed()"><span>←</span> Volver al feed</button><div class="card empty">'+esc(e.message)+'</div>';
+  }
+}
+function backToFeed(){show('home')}
+
+function mediaHtml(url,mode){if(!url)return'<div style="aspect-ratio:9/16;border-radius:15px;background:#090c14;display:grid;place-items:center;color:var(--muted)">Sin participación</div>';if(mode==='photo')return`<img src="${esc(url)}" alt="Participación" oncontextmenu="return false;">`;if(mode==='audio')return`<div class="audio-box"><div style="font-size:2rem;margin-bottom:10px">🎙️</div><audio controls controlsList="nodownload" src="${esc(url)}"></audio></div>`;return`<video controls controlsList="nodownload" disablePictureInPicture playsinline preload="metadata" src="${esc(url)}" oncontextmenu="return false;"></video>`}
+
+function renderBattle(b){
+  const local=b.mode==='local';
+  const [pa,pb]=battlePeople(b);
+  const a=+b.votes_creator||0,o=+b.votes_opponent||0,total=a+o,diff=Math.abs(a-o);
+  let action='';
+  if(local&&b.local_neutral&&b.creator_id===getUserId()&&total>=30&&diff>=3)
+    action='<button class="primary" onclick="arbiterClose(\''+b.id+'\')">⚖️ Cerrar batalla como árbitro</button>';
+  if(!local&&!b.opponent_id)
+    action='<button class="primary" onclick="joinMediaBattle(\''+b.id+'\')">⚔️ Unirme y presentar mi '+modeLabel(b.mode).toLowerCase()+'</button>';
+  const timer=local?`<div class="timer">⏱️ ${timeLeft(b.local_closes_at)} restantes</div>`:'';
+  const adminDeleteBtn = IS_ADMIN ? `<button class="danger" style="margin-top:10px" onclick="adminDeleteBattle('${b.id}')">🗑️ Eliminar batalla (Admin)</button>` : '';
+
+  document.getElementById('battleDetail').innerHTML=`<button class="backbtn" onclick="backToFeed()"><span>←</span> Volver al feed</button><div class="hero"><span class="badge">${local?'🏟️ EN VIVO · '+esc(b.city||'Trelew'):modeLabel(b.mode)}</span><h1>${esc(b.title)}</h1></div><div class="card">${local?'':`<div class="media-grid"><div>${mediaHtml(b.media_url_creator,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pa)}</small></div><div>${mediaHtml(b.media_url_opponent,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pb)}</small></div></div>`}<div class="players"><div class="player">${esc(pa)}<div class="score">${a}</div></div><div class="vs">VS</div><div class="player">${esc(pb)}<div class="score">${o}</div></div></div><div class="bar"><i style="width:${Math.round(a/Math.max(1,total)*100)}%"></i></div><div class="meta"><span>${total} votos · diferencia ${diff}</span>${timer}</div><div class="vote-grid" style="margin-top:14px"><button class="vote a" onclick="vote('${b.id}','${esc(local?b.local_participant_a:b.creator_id)}')">Votar ${esc(pa)}</button><button class="vote b" onclick="vote('${b.id}','${esc(local?b.local_participant_b:b.opponent_id||'')}')" ${pb==='Esperando…'?'disabled':''}>Votar ${esc(pb)}</button></div>${action}${adminDeleteBtn}</div>`;
+}
+
+async function joinMediaBattle(id){
+  try{
+    const b=await api('/battles/'+id);
+    if(!b||b.status!=='active')throw Error('La batalla no está activa.');
+    const input=document.createElement('input');
+    input.type='file';
+    input.accept=b.mode==='video'?'video/*':b.mode==='audio'?'audio/*':'image/*';
+    input.onchange=async()=>{
+      const f=input.files[0];
+      if(!f)return;
+      try{
+        if(f.size>50*1024*1024)throw Error('Máximo 50 MB.');
+        toast('Subiendo respuesta…');
+        const url=await uploadFile(f);
+        await api('/battles/'+id+'/join',{method:'POST',body:JSON.stringify({media_url:url})});
+        toast('¡Te uniste a la batalla!');
+        openBattle(id);
+      }catch(e){toast(e.message)}
+    };
+    input.click();
+  }catch(e){toast(e.message)}
+}
+
+async function vote(id,user){if(!user)return;try{const r=await api('/battles/'+id+'/vote',{method:'POST',body:JSON.stringify({voted_user_id:user})});toast(r.completed?'🏆 ¡Batalla finalizada!':'¡Voto registrado!');openBattle(id)}catch(e){toast(e.message)}}
 
 async function loadBattles(isSilent = false){
   const box = document.getElementById('battles');
@@ -723,62 +792,6 @@ async function uploadFile(file){
   const {data:pub}=sb.storage.from(STORAGE_BUCKET).getPublicUrl(path);
   return pub.publicUrl;
 }
-
-// DETALLE DE BATALLA
-async function openBattle(id){
-  show('battle');
-  const box=document.getElementById('battleDetail');
-  box.innerHTML='<button class="backbtn" onclick="backToFeed()"><span>←</span> Volver al feed</button><div class="empty">Cargando batalla…</div>';
-  try{
-    const b=await api('/battles/'+id);
-    renderBattle(b);
-  }catch(e){
-    box.innerHTML='<button class="backbtn" onclick="backToFeed()"><span>←</span> Volver al feed</button><div class="card empty">'+esc(e.message)+'</div>';
-  }
-}
-function backToFeed(){show('home')}
-
-function mediaHtml(url,mode){if(!url)return'<div style="aspect-ratio:9/16;border-radius:15px;background:#090c14;display:grid;place-items:center;color:var(--muted)">Sin participación</div>';if(mode==='photo')return`<img src="${esc(url)}" alt="Participación" oncontextmenu="return false;">`;if(mode==='audio')return`<div class="audio-box"><div style="font-size:2rem;margin-bottom:10px">🎙️</div><audio controls controlsList="nodownload" src="${esc(url)}"></audio></div>`;return`<video controls controlsList="nodownload" disablePictureInPicture playsinline preload="metadata" src="${esc(url)}" oncontextmenu="return false;"></video>`}
-
-function renderBattle(b){
-  const local=b.mode==='local';
-  const [pa,pb]=local?[b.local_a_name||b.local_participant_a,b.local_b_name||b.local_participant_b]:[b.creator_name||b.creator_id,b.opponent_name||b.opponent_id||'Esperando…'];
-  const a=+b.votes_creator||0,o=+b.votes_opponent||0,total=a+o,diff=Math.abs(a-o);
-  let action='';
-  if(local&&b.local_neutral&&b.creator_id===getUserId()&&total>=CONFIG.ARBITER_CLOSE_VOTES&&diff>=CONFIG.MIN_DIFF)
-    action='<button class="primary" onclick="arbiterClose(\''+b.id+'\')">⚖️ Cerrar batalla como árbitro</button>';
-  if(!local&&!b.opponent_id)
-    action='<button class="primary" onclick="joinMediaBattle(\''+b.id+'\')">⚔️ Unirme y presentar mi '+modeLabel(b.mode).toLowerCase()+'</button>';
-  const timer=local?`<div class="timer">⏱️ ${timeLeft(b.local_closes_at)} restantes</div>`:'';
-  const adminDeleteBtn = IS_ADMIN ? `<button class="danger" style="margin-top:10px" onclick="adminDeleteBattle('${b.id}')">🗑️ Eliminar batalla (Admin)</button>` : '';
-
-  document.getElementById('battleDetail').innerHTML=`<button class="backbtn" onclick="backToFeed()"><span>←</span> Volver al feed</button><div class="hero"><span class="badge">${local?'🏟️ EN VIVO · '+esc(b.city||'Trelew'):modeLabel(b.mode)}</span><h1>${esc(b.title)}</h1></div><div class="card">${local?'':`<div class="media-grid"><div>${mediaHtml(b.media_url_creator,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pa)}</small></div><div>${mediaHtml(b.media_url_opponent,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pb)}</small></div></div>`}<div class="players"><div class="player">${esc(pa)}<div class="score">${a}</div></div><div class="vs">VS</div><div class="player">${esc(pb)}<div class="score">${o}</div></div></div><div class="bar"><i style="width:${Math.round(a/Math.max(1,total)*100)}%"></i></div><div class="meta"><span>${total} votos · diferencia ${diff}</span>${timer}</div><div class="vote-grid" style="margin-top:14px"><button class="vote a" onclick="vote('${b.id}','${esc(local?b.local_participant_a:b.creator_id)}')">Votar ${esc(pa)}</button><button class="vote b" onclick="vote('${b.id}','${esc(local?b.local_participant_b:b.opponent_id||'')}')" ${pb==='Esperando…'?'disabled':''}>Votar ${esc(pb)}</button></div>${action}${adminDeleteBtn}</div>`;
-}
-
-async function joinMediaBattle(id){
-  try{
-    const b=await api('/battles/'+id);
-    if(!b||b.status!=='active')throw Error('La batalla no está activa.');
-    const input=document.createElement('input');
-    input.type='file';
-    input.accept=b.mode==='video'?'video/*':b.mode==='audio'?'audio/*':'image/*';
-    input.onchange=async()=>{
-      const f=input.files[0];
-      if(!f)return;
-      try{
-        if(f.size>50*1024*1024)throw Error('Máximo 50 MB.');
-        toast('Subiendo respuesta…');
-        const url=await uploadFile(f);
-        await api('/battles/'+id+'/join',{method:'POST',body:JSON.stringify({media_url:url})});
-        toast('¡Te uniste a la batalla!');
-        openBattle(id);
-      }catch(e){toast(e.message)}
-    };
-    input.click();
-  }catch(e){toast(e.message)}
-}
-
-async function vote(id,user){if(!user)return;try{const r=await api('/battles/'+id+'/vote',{method:'POST',body:JSON.stringify({voted_user_id:user})});toast(r.completed?'🏆 ¡Batalla finalizada!':'¡Voto registrado!');openBattle(id)}catch(e){toast(e.message)}}
 
 function scanFor(target){window.scanTarget=target;document.getElementById('scannerTitle').textContent='Escanear QR de usuario';startScanner()}
 function startEventScanner(){window.scanTarget=null;document.getElementById('scannerTitle').textContent='Escanear QR de evento';startScanner()}
@@ -1052,8 +1065,7 @@ const AURA_TEST_QUESTIONS=[
   {q:'Cuando aparece un desafío inesperado, ¿qué hacés primero?',o:[['Voy de frente.','Me gusta actuar rápido.'],['Observo y pienso.','Prefiero entender antes de moverme.'],['Busco una alternativa.','Siempre intento encontrar otro camino.'],['Me adapto sobre la marcha.','La presión me activa.']]},
   {q:'¿Qué situación te representa más?',o:[['Ser el centro de atención.','Disfruto mostrar lo que hago.'],['Sorprender sin avisar.','Me gusta lo inesperado.'],['Ayudar a alguien a destacar.','Prefiero potenciar a otros.'],['Competir hasta el final.','No me gusta rendirme.']]},
   {q:'Si tenés que elegir una energía para tu día, ¿cuál preferís?',o:[['Intensa.','Mucho movimiento y acción.'],['Tranquila.','Calma, foco y control.'],['Creativa.','Ideas, música y cosas nuevas.'],['Social.','Personas, risas y conexión.']]},
-  {q:'¿Qué hacés cuando algo no sale como esperabas?',o:[['Lo intento de nuevo.','No me gusta dejarlo a medias.'],['Cambio de estrategia.','Si no funciona, pruebo otra cosa.'],['Me tomo un momento.','Prefiero recuperar el foco.'],['Me río y sigo.','No dejo que me corte la energía.']]},
-  {q:'Elegí la frase que más se parece a vos.',o:[['“Voy a intentarlo.”','Aunque no sepa cómo todavía.'],['“Tengo una idea.”','Siempre se me ocurre algo.'],['“Vamos juntos.”','La energía compartida es mejor.'],['“Mirá esto.”','Me gusta sorprender.']]}
+  {q:'¿Qué hacés cuando algo no sale como esperabas?',o:[['Lo intento de nuevo.','No me gusta dejarlo a medias.'],['Cambio de estrategia.','Si no funciona, pruebo otra cosa.'],['Me tomo un momento.','Prefiero recuperar el foco.'],['Me río y sigo.','No dejo que me corte la energía.']]}
 ];
 
 let auraTestState={index:0,answers:[],cameraWanted:false,submitting:false};
@@ -1069,7 +1081,7 @@ function renderAuraQuestion(){
 }
 function selectAuraAnswer(i){
   auraTestState.answers[auraTestState.index]=i;
-  if(auraTestState.index<4){ auraTestState.index++; renderAuraQuestion(); }
+  if(auraTestState.index<3){ auraTestState.index++; renderAuraQuestion(); }
   else{ document.getElementById('auraTestQuestion').classList.add('hidden'); calculateAndSubmitAuraTest(); }
 }
 async function calculateAndSubmitAuraTest(){
@@ -1086,24 +1098,5 @@ setInterval(()=>{ if(document.getElementById('home').classList.contains('active'
 renderCreate();
 handleAuth();
 </script>
-
-<div id="auraTest" class="aura-test" aria-modal="true" role="dialog">
-  <div class="aura-test-inner">
-    <div id="auraTestIntro">
-      <h1 class="aura-test-title">✨ Descubrí tu Aura inicial</h1>
-      <div class="aura-test-card">
-        <p class="hint">Respondé 5 preguntas para definir tu resultado inicial entre <b>20 y 100 Aura</b>.</p>
-        <button class="primary" style="margin-top:18px" onclick="beginAuraTest()">Comenzar test</button>
-      </div>
-    </div>
-    <div id="auraTestQuestion" class="hidden"></div>
-    <div id="auraResult" class="aura-result">
-      <div class="aura-test-card">
-        <div id="auraResultNumber" class="aura-result-number">--</div>
-        <p class="aura-result-copy">Tu Aura inicial ha sido asignada a tu perfil.</p>
-        <button class="primary" onclick="closeAuraTest()">Entrar a AURA STAR</button>
-      </div>
-    </div>
-  </div>
-</div>
-</body></html>
+</body>
+</html>
