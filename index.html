@@ -29,6 +29,7 @@ header{border-bottom:1px solid rgba(246,196,83,.18);box-shadow:0 8px 30px rgba(0
 .action{background:linear-gradient(145deg,rgba(22,24,36,.95),rgba(10,12,20,.96));border-color:rgba(246,196,83,.13);box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}
 .action:hover{border-color:rgba(246,196,83,.35);box-shadow:0 12px 28px rgba(0,0,0,.25),0 0 22px rgba(246,196,83,.06)}
 .badge{background:linear-gradient(135deg,rgba(246,196,83,.14),rgba(139,92,246,.10));color:#ffe6a0;border-color:rgba(246,196,83,.24);box-shadow:0 0 18px rgba(246,196,83,.05)}
+.local-card{border:1px solid rgba(246,196,83,.28);background:linear-gradient(145deg,rgba(246,196,83,.05),rgba(14,17,27,.98))}
 .battle-title{color:#fff9e8}
 .player{border-color:rgba(246,196,83,.10);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012))}
 .vs{color:#ffe7a0;background:radial-gradient(circle,rgba(246,196,83,.18),rgba(246,196,83,.035));border-color:rgba(246,196,83,.36);box-shadow:0 0 18px rgba(246,196,83,.10)}
@@ -125,7 +126,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 <section id="local" class="view">
   <div class="hero">
     <h1>🏟️ Batallas locales</h1>
-    <p>Desafíos presenciales en tu zona.</p>
+    <p>Desafíos presenciales en vivo en tu zona.</p>
   </div>
   
   <div class="card" style="display:flex;align-items:center;gap:10px;padding:12px 16px;">
@@ -400,6 +401,7 @@ function battlePeople(b){return b.mode==='local'?[b.local_a_name||b.local_partic
 function feedMedia(url,mode,name){if(!url)return `<div class="feed-media"><div style="aspect-ratio:9/14;border-radius:16px;background:#090c14;display:grid;place-items:center;color:var(--muted);border:1px solid var(--border)">Esperando…</div><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='photo')return `<div class="feed-media"><img src="${esc(url)}" alt="Participación de ${esc(name)}" loading="lazy" oncontextmenu="return false;"><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='audio')return `<div class="feed-media"><div class="feed-audio"><div style="font-size:1.6rem;text-align:center;margin-bottom:6px">🎙️</div><audio controls controlsList="nodownload" preload="metadata" src="${esc(url)}"></audio></div><small class="feed-media-name">${esc(name)}</small></div>`;return `<div class="feed-media" data-feed-video><video playsinline controlsList="nodownload" disablePictureInPicture preload="metadata" src="${esc(url)}" onclick="toggleFeedVideo(this)" oncontextmenu="return false;"></video><div class="feed-play">▶</div><small class="feed-media-name">${esc(name)}</small></div>`}
 function toggleFeedVideo(video){event?.stopPropagation?.();const wrap=video.closest('.feed-media');if(!wrap)return;if(video.paused){document.querySelectorAll('.feed-media[data-feed-video] video').forEach(v=>{if(v!==video){v.pause();v.closest('.feed-media')?.classList.remove('playing')}});video.play().then(()=>wrap.classList.add('playing')).catch(()=>{});}else{video.pause();wrap.classList.remove('playing');}} 
 
+// RENDER DE TARJETA MULTIMEDIA VS TARJETA LOCAL PRESENCIAL
 function battleCard(b){
   const [aName, oName] = battlePeople(b);
   const a = +b.votes_creator || 0;
@@ -414,12 +416,52 @@ function battleCard(b){
   const hasOpponent = local ? Boolean(targetB) : Boolean(b.opponent_id && b.media_url_opponent);
   const disableVoting = !hasOpponent || b.status !== 'active';
 
-  const media = !local ? `<div class="feed-media-grid">${feedMedia(b.media_url_creator, b.mode, aName)}${feedMedia(b.media_url_opponent, b.mode, oName)}</div>` : '';
+  // TARJETA EXCLUSIVA PARA BATALLAS LOCALES PRESENCIALES
+  if (local) {
+    return `
+      <div class="card battle-card local-card" id="card-${b.id}">
+        <div style="display:flex;justify-content:space-between;align-items:center" onclick="openBattle('${b.id}')">
+          <span class="badge" style="background:rgba(251,191,36,.18);color:#ffe7a0;border-color:rgba(251,191,36,.3)">🏟️ EN VIVO · ${esc(b.city||'General')}</span>
+          <span class="muted" style="font-size:.72rem">Ver detalles →</span>
+        </div>
+        
+        <div class="battle-title" onclick="openBattle('${b.id}')" style="cursor:pointer;margin:12px 0 6px">${esc(b.title)}</div>
+
+        <div class="players">
+          <div class="player" onclick="openBattle('${b.id}')" style="cursor:pointer">
+            <div style="font-size:.85rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(aName)}</div>
+            <div class="score" id="score-a-${b.id}">${a}</div>
+          </div>
+
+          <div class="vs">VS</div>
+
+          <div class="player" onclick="openBattle('${b.id}')" style="cursor:pointer">
+            <div style="font-size:.85rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(oName)}</div>
+            <div class="score" id="score-b-${b.id}">${o}</div>
+          </div>
+        </div>
+
+        <div class="bar"><i id="bar-${b.id}" style="width:${p}%"></i></div>
+
+        <div class="vote-grid" style="margin-top:14px">
+          <button class="vote a" style="padding:11px;font-size:.82rem" onclick="voteDirect(event, '${b.id}', '${esc(targetA)}')" ${disableVoting ? 'disabled' : ''}>⚡ Votar ${esc(aName)}</button>
+          <button class="vote b" style="padding:11px;font-size:.82rem" onclick="voteDirect(event, '${b.id}', '${esc(targetB || '')}')" ${disableVoting ? 'disabled' : ''}>⚡ Votar ${esc(oName)}</button>
+        </div>
+
+        <div class="meta" style="margin-top:10px">
+          <span id="total-${b.id}">${total} votos presenciales · ⏱️ ${timeLeft(b.local_closes_at)}</span>
+        </div>
+      </div>
+    `;
+  }
+
+  // TARJETA MULTIMEDIA (VIDEO / AUDIO / FOTO)
+  const media = `<div class="feed-media-grid">${feedMedia(b.media_url_creator, b.mode, aName)}${feedMedia(b.media_url_opponent, b.mode, oName)}</div>`;
 
   return `
     <div class="card battle-card" id="card-${b.id}">
       <div style="display:flex;justify-content:space-between;align-items:center" onclick="openBattle('${b.id}')">
-        <span class="badge">${local ? '🏟️ Local · ' + esc(b.city||'General') : modeLabel(b.mode)}</span>
+        <span class="badge">${modeLabel(b.mode)}</span>
         <span class="muted" style="font-size:.72rem">Ver detalle →</span>
       </div>
       
@@ -450,7 +492,7 @@ function battleCard(b){
       ${!hasOpponent ? '<div class="hint" style="text-align:center;margin-top:6px;color:var(--gold)">⏳ Esperando que se una un oponente para abrir la votación.</div>' : ''}
 
       <div class="meta" style="margin-top:8px">
-        <span id="total-${b.id}">${total} votos${local ? ' · ' + timeLeft(b.local_closes_at) : ''}</span>
+        <span id="total-${b.id}">${total} votos</span>
       </div>
     </div>
   `;
@@ -703,7 +745,7 @@ function renderBattle(b){
   const timer=local?`<div class="timer">⏱️ ${timeLeft(b.local_closes_at)} restantes</div>`:'';
   const adminDeleteBtn = IS_ADMIN ? `<button class="danger" style="margin-top:10px" onclick="adminDeleteBattle('${b.id}')">🗑️ Eliminar batalla (Admin)</button>` : '';
 
-  document.getElementById('battleDetail').innerHTML=`<button class="backbtn" onclick="backToFeed()"><span>←</span> Volver al feed</button><div class="hero"><span class="badge">${local?'🏟️ Local · '+esc(b.city||'General'):modeLabel(b.mode)}</span><h1>${esc(b.title)}</h1></div><div class="card">${local?'':`<div class="media-grid"><div>${mediaHtml(b.media_url_creator,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pa)}</small></div><div>${mediaHtml(b.media_url_opponent,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pb)}</small></div></div>`}<div class="players"><div class="player">${esc(pa)}<div class="score">${a}</div></div><div class="vs">VS</div><div class="player">${esc(pb)}<div class="score">${o}</div></div></div><div class="bar"><i style="width:${Math.round(a/Math.max(1,total)*100)}%"></i></div><div class="meta"><span>${total} votos · diferencia ${diff}</span>${timer}</div><div class="vote-grid" style="margin-top:14px"><button class="vote a" onclick="vote('${b.id}','${esc(local?b.local_participant_a:b.creator_id)}')">Votar ${esc(pa)}</button><button class="vote b" onclick="vote('${b.id}','${esc(local?b.local_participant_b:b.opponent_id||'')}')" ${pb==='Esperando…'?'disabled':''}>Votar ${esc(pb)}</button></div>${action}${adminDeleteBtn}</div>`;
+  document.getElementById('battleDetail').innerHTML=`<button class="backbtn" onclick="backToFeed()"><span>←</span> Volver al feed</button><div class="hero"><span class="badge">${local?'🏟️ EN VIVO · '+esc(b.city||'General'):modeLabel(b.mode)}</span><h1>${esc(b.title)}</h1></div><div class="card">${local?'':`<div class="media-grid"><div>${mediaHtml(b.media_url_creator,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pa)}</small></div><div>${mediaHtml(b.media_url_opponent,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pb)}</small></div></div>`}<div class="players"><div class="player">${esc(pa)}<div class="score">${a}</div></div><div class="vs">VS</div><div class="player">${esc(pb)}<div class="score">${o}</div></div></div><div class="bar"><i style="width:${Math.round(a/Math.max(1,total)*100)}%"></i></div><div class="meta"><span>${total} votos · diferencia ${diff}</span>${timer}</div><div class="vote-grid" style="margin-top:14px"><button class="vote a" onclick="vote('${b.id}','${esc(local?b.local_participant_a:b.creator_id)}')">Votar ${esc(pa)}</button><button class="vote b" onclick="vote('${b.id}','${esc(local?b.local_participant_b:b.opponent_id||'')}')" ${pb==='Esperando…'?'disabled':''}>Votar ${esc(pb)}</button></div>${action}${adminDeleteBtn}</div>`;
 }
 
 async function joinMediaBattle(id){
