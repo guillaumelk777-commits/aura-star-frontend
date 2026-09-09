@@ -10,6 +10,15 @@
 *{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:radial-gradient(circle at 50% 0,rgba(139,92,246,.22),transparent 42%),radial-gradient(circle at 100% 50%,rgba(139,92,246,.08),transparent 35%),var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button{border:0;cursor:pointer}.app{max-width:480px;margin:auto;min-height:100vh;padding-bottom:92px}header{padding:15px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:rgba(6,7,13,.82);backdrop-filter:blur(18px);z-index:20;border-bottom:1px solid var(--border)}.brand{display:flex;align-items:center;gap:10px}.brand-icon{width:32px;height:32px;background:linear-gradient(135deg,#fff,var(--purple));clip-path:polygon(50% 0,65% 35%,100% 50%,65% 65%,50% 100%,35% 65%,0 50%,35% 35%);filter:drop-shadow(0 0 9px var(--glow))}.logo{font-weight:900;font-size:1.38rem;letter-spacing:.6px;background:linear-gradient(135deg,#fff,var(--purple2));-webkit-background-clip:text;color:transparent}.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--surface2),#24164a);border:1px solid rgba(167,139,250,.6);font-weight:900;color:#fff}.view{display:none;animation:in .25s ease}.view.active{display:block}@keyframes in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}main{padding:10px 16px}.hero{padding:22px 3px 16px}.hero h1{font-size:2rem;line-height:1.06;margin:0 0 8px;font-weight:900;letter-spacing:-.8px}.hero p{margin:0;color:var(--muted);font-size:.9rem}.section-title{display:flex;justify-content:space-between;align-items:center;margin:23px 2px 12px}.section-title h2{font-size:1rem;margin:0;font-weight:800}.muted{color:var(--muted);font-size:.78rem}.card{background:linear-gradient(145deg,rgba(20,25,39,.9),rgba(10,13,22,.94));border:1px solid var(--border);border-radius:22px;padding:17px;margin:12px 0;box-shadow:0 18px 38px rgba(0,0,0,.28);position:relative;overflow:hidden}.card:before{content:"";position:absolute;left:10%;right:10%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent)}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.action{padding:17px 15px;border-radius:18px;background:var(--surface);border:1px solid var(--border);color:var(--text);text-align:left}.action:active,.battle-card:active{transform:scale(.98)}.action strong{display:block;margin-bottom:5px}.action span{color:var(--muted);font-size:.72rem}.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(139,92,246,.13);color:#c4b5fd;border:1px solid rgba(139,92,246,.2);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.4px}.battle-title{font-size:1.08rem;font-weight:850;margin:10px 0}.feed-media-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.feed-media{position:relative;min-width:0}.feed-media video,.feed-media img{width:100%;aspect-ratio:9/14;object-fit:cover;border-radius:16px;background:#000;border:1px solid var(--border);display:block}.feed-media video{cursor:pointer}.feed-media-name{display:block;text-align:center;font-size:.72rem;font-weight:850;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.feed-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.94);border:1px solid rgba(255,255,255,.98);color:#4c1d95;font-size:1.25rem;font-weight:900;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.35);transition:opacity .18s ease,transform .18s ease}.feed-media.playing .feed-play{opacity:0;transform:translate(-50%,-50%) scale(.9)}.feed-audio{background:#090c14;border:1px solid var(--border);border-radius:16px;padding:12px}.feed-audio audio{width:100%}.battle-card .feed-vote{margin-top:11px}.backbtn{display:flex;align-items:center;gap:7px;background:none;color:#c4b5fd;font-weight:850;padding:4px 0;margin:2px 0 4px}.backbtn span{font-size:1.35rem;line-height:1}.players{display:grid;grid-template-columns:1fr 40px 1fr;gap:8px;align-items:center;text-align:center;margin:17px 0}.player{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);border-radius:15px;padding:10px 5px;font-weight:750}.score{font-size:1.55rem;font-weight:900;margin-top:2px}.vs{width:34px;height:34px;margin:auto;border-radius:50%;display:grid;place-items:center;color:var(--gold);background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.18);font-size:.7rem;font-weight:900}.bar{height:8px;background:linear-gradient(90deg, #ef4444, #b98218);border-radius:99px;overflow:hidden;border:1px solid var(--border)}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--purple),#22c55e);border-radius:99px;transition:width .3s ease}.meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.72rem;margin-top:10px}.linkbtn{background:none;color:#c4b5fd;font-weight:800}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:#090c14;padding:5px;border-radius:16px;margin-bottom:12px}.tab{background:none;color:var(--muted);padding:10px 4px;border-radius:12px;font-size:.7rem;font-weight:800}.tab.active{background:var(--surface2);color:#fff;box-shadow:0 5px 15px rgba(0,0,0,.25)}form input,form select,form textarea,.search{width:100%;padding:13px 14px;margin:7px 0;border-radius:13px;background:#090c14;color:#fff;border:1px solid var(--border);outline:none}form input:focus,form select:focus,form textarea:focus,.search:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(139,92,246,.1)}select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#94a3b8 50%),linear-gradient(135deg,#94a3b8 50%,transparent 50%);background-position:calc(100% - 17px) 55%,calc(100% - 12px) 55%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:34px}.primary{width:100%;padding:14px;border-radius:15px;background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;font-weight:850;box-shadow:0 9px 22px var(--glow);margin-top:8px}.primary:disabled{opacity:.45;box-shadow:none;cursor:not-allowed}.secondary{width:100%;padding:13px;border-radius:14px;background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--border);font-weight:800;margin-top:8px}.danger{width:100%;padding:13px;border-radius:14px;background:rgba(239,68,68,.1);color:#fca5a5;border:1px solid rgba(239,68,68,.25);font-weight:800}.vote-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.vote{padding:15px;border-radius:15px;color:#fff;font-weight:850}.vote.a{background:linear-gradient(135deg,#166534,#22c55e)}.vote.b{background:linear-gradient(135deg,#991b1b,#ef4444)}.vote:disabled{opacity:.3;filter:grayscale(1)}.media-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.media-grid video,.media-grid img{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:15px;background:#000;border:1px solid var(--border)}.audio-box{background:#090c14;border:1px solid var(--border);border-radius:15px;padding:14px}.audio-box audio{width:100%}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:15px 8px;text-align:center;background:#090c14;border:1px solid var(--border);border-radius:16px}.stat b{display:block;color:var(--gold);font-size:1.35rem}.stat span{color:var(--muted);font-size:.67rem;text-transform:uppercase}.rank{display:flex;align-items:center;gap:12px}.ranknum{width:28px;color:var(--gold);font-weight:900}.rankavatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#21173e;border:1px solid rgba(139,92,246,.3);font-weight:900}.rankname{flex:1;font-weight:800}.rankname small{display:block;color:var(--muted);font-weight:500}.aura{color:var(--gold);font-weight:900}.local-search{position:relative}.local-result{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--border);border-radius:15px;background:rgba(255,255,255,.025);margin:8px 0}.local-result .grow{flex:1}.event-bracket{display:grid;gap:8px}.event-round{border:1px solid rgba(246,196,83,.14);border-radius:18px;padding:12px;background:rgba(246,196,83,.025)}.event-round h3{margin:0 0 8px;color:#ffe7a0}.event-note{border-left:2px solid var(--gold);padding-left:10px}.timer{color:var(--gold);font-weight:850;font-size:.8rem}.mode-info{padding:12px 13px;border-radius:15px;background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.15);color:#cbd5e1;font-size:.76rem;line-height:1.45}.qr{display:grid;place-items:center;background:#fff;border-radius:14px;padding:12px;margin:12px auto;width:max-content}.scan{position:fixed;inset:0;background:rgba(3,5,10,.96);z-index:50;display:none;flex-direction:column;align-items:center;justify-content:center;padding:18px}.scan.active{display:flex}.scan video{width:min(92vw,380px);aspect-ratio:1;border-radius:20px;object-fit:cover;background:#000}.scan canvas{display:none}.scan .close{margin-top:14px;width:min(92vw,380px)}.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(480px,100%);display:grid;grid-template-columns:repeat(5,1fr);padding:10px 8px calc(10px + env(safe-area-inset-bottom));background:rgba(6,7,13,.91);backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:20}.nav{background:none;color:var(--muted);font-size:.67rem;padding:6px;font-weight:700}.nav.active{color:#fff}.nav b{display:block;font-size:1.2rem;margin-bottom:3px}.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:#111827;color:#fff;border:1px solid var(--border);padding:12px 18px;border-radius:25px;display:none;z-index:60;font-size:.8rem;box-shadow:0 10px 30px rgba(0,0,0,.45);max-width:90%;text-align:center}.empty{text-align:center;padding:30px 15px;color:var(--muted);font-size:.82rem}.hint{font-size:.73rem;color:var(--muted);line-height:1.45}.store-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.store-item{padding:15px;border:1px solid var(--border);border-radius:17px;background:rgba(255,255,255,.025)}.store-item b{display:block;font-size:1.1rem}.store-item .price{color:var(--gold);font-weight:900;margin:5px 0 10px}.store-item button{margin-top:0}.hidden{display:none!important}@media(min-width:700px){body{padding:20px}.app{border:1px solid var(--border);border-radius:30px;overflow:hidden}.bottom{position:fixed}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 
+/* PESTAÑAS TIPO CHROME EN EL FEED */
+.chrome-tabs{display:flex;background:#090c14;padding:4px;border-radius:16px;border:1px solid rgba(246,196,83,.15);margin:12px 0 16px;gap:4px}
+.chrome-tab{flex:1;padding:12px 8px;text-align:center;background:none;color:var(--muted);border-radius:12px;font-weight:800;font-size:.82rem;display:flex;align-items:center;justify-content:center;gap:6px;transition:.2s}
+.chrome-tab.active{background:linear-gradient(135deg,rgba(139,92,246,.25),rgba(246,196,83,.12));color:#ffe7a0;border:1px solid rgba(246,196,83,.22);box-shadow:0 6px 18px rgba(0,0,0,.35)}
+
+/* TARJETA EXCLUSIVA PARA BATALLAS LOCALES */
+.local-card{border:1px solid rgba(246,196,83,.32);background:linear-gradient(145deg,rgba(246,196,83,.06),rgba(14,17,27,.98));box-shadow:0 18px 42px rgba(0,0,0,.45)}
+.local-badge{background:linear-gradient(135deg,rgba(246,196,83,.25),rgba(139,92,246,.15));color:#ffe7a0;border:1px solid rgba(246,196,83,.4);font-weight:900}
+
 .new-battles-banner{position:sticky;top:66px;z-index:19;margin:-10px 0 14px;text-align:center;display:none}
 .new-battles-banner button{background:linear-gradient(135deg,var(--gold),#b98218);color:#15110a;font-weight:900;font-size:.78rem;padding:8px 16px;border-radius:999px;box-shadow:0 8px 20px var(--goldglow);border:1px solid rgba(255,255,255,.3);animation:floatBanner .3s ease}
 @keyframes floatBanner{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
@@ -29,7 +38,6 @@ header{border-bottom:1px solid rgba(246,196,83,.18);box-shadow:0 8px 30px rgba(0
 .action{background:linear-gradient(145deg,rgba(22,24,36,.95),rgba(10,12,20,.96));border-color:rgba(246,196,83,.13);box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}
 .action:hover{border-color:rgba(246,196,83,.35);box-shadow:0 12px 28px rgba(0,0,0,.25),0 0 22px rgba(246,196,83,.06)}
 .badge{background:linear-gradient(135deg,rgba(246,196,83,.14),rgba(139,92,246,.10));color:#ffe6a0;border-color:rgba(246,196,83,.24);box-shadow:0 0 18px rgba(246,196,83,.05)}
-.local-card{border:1px solid rgba(246,196,83,.28);background:linear-gradient(145deg,rgba(246,196,83,.05),rgba(14,17,27,.98))}
 .battle-title{color:#fff9e8}
 .player{border-color:rgba(246,196,83,.10);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012))}
 .vs{color:#ffe7a0;background:radial-gradient(circle,rgba(246,196,83,.18),rgba(246,196,83,.035));border-color:rgba(246,196,83,.36);box-shadow:0 0 18px rgba(246,196,83,.10)}
@@ -38,12 +46,9 @@ header{border-bottom:1px solid rgba(246,196,83,.18);box-shadow:0 8px 30px rgba(0
 .primary{background:linear-gradient(135deg,#8b5cf6 0%,#7040d8 50%,#b67a18 100%);box-shadow:0 10px 28px rgba(139,92,246,.25),0 0 20px rgba(246,196,83,.08);border:1px solid rgba(255,231,160,.16)}
 .secondary{border-color:rgba(246,196,83,.13);background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.025))}
 .secondary:hover{border-color:rgba(246,196,83,.3)}
-.tabs{border:1px solid rgba(246,196,83,.09)}
-.tab.active{background:linear-gradient(135deg,rgba(139,92,246,.24),rgba(246,196,83,.10));color:#fff4c8;border:1px solid rgba(246,196,83,.14)}
 .aura,.timer,.ranknum{color:#f6c453;text-shadow:0 0 14px rgba(246,196,83,.16)}
 .stat b{color:#f6c453;text-shadow:0 0 16px rgba(246,196,83,.16)}
 .rankavatar{background:radial-gradient(circle at 35% 30%,#3c2b59,#171020);border-color:rgba(246,196,83,.2)}
-.local-result{border-color:rgba(246,196,83,.11)}
 .store-item{border-color:rgba(246,196,83,.14);background:linear-gradient(145deg,rgba(246,196,83,.045),rgba(255,255,255,.018))}
 .store-item .price{color:#f6c453}
 .qr{box-shadow:0 0 0 1px rgba(246,196,83,.35),0 10px 30px rgba(0,0,0,.3)}
@@ -51,7 +56,6 @@ header{border-bottom:1px solid rgba(246,196,83,.18);box-shadow:0 8px 30px rgba(0
 .nav.active{color:#ffe7a0;text-shadow:0 0 12px rgba(246,196,83,.16)}
 .linkbtn{color:#e8c96f}
 input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!important;box-shadow:0 0 0 3px rgba(246,196,83,.08)!important}
-.login-gold{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:#d6ad50;margin-bottom:8px;font-weight:800}
 .share-card{background:linear-gradient(145deg,rgba(246,196,83,.08),rgba(139,92,246,.08));border:1px solid rgba(246,196,83,.22)}.share-btn{background:linear-gradient(135deg,#f6c453,#b98218);color:#15110a;border:0;box-shadow:0 8px 22px rgba(246,196,83,.18)}
 
 .admin-card{border-color:rgba(251,191,36,.25)}
@@ -108,41 +112,35 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 <div class="app"><header><div class="brand"><span class="brand-icon"></span><div class="logo">AURA STAR</div></div><button class="avatar" id="avatar" onclick="show('profile')">★</button></header>
 <main>
 <section id="home" class="view active">
-  <div class="hero"><h1>La comunidad<br><span style="color:var(--purple2)">decide quién tiene Aura.</span></h1><p>Video, audio o foto de toda la comunidad.</p></div>
-  <div class="grid"><button class="action" onclick="show('create')"><strong>⚔️ Crear batalla</strong><span>Elegí cómo competir</span></button><button class="action" onclick="show('local')"><strong>🏟️ Batallas locales</strong><span>Encontrá una en tu zona</span></button></div>
-  <div class="section-title"><h2>🔥 Batallas activas</h2><span class="muted" id="battleCount"></span></div>
+  <div class="hero"><h1>La comunidad<br><span style="color:var(--purple2)">decide quién tiene Aura.</span></h1></div>
   
-  <div id="newBattlesBanner" class="new-battles-banner">
-    <button onclick="applyNewBattles()">✨ Nuevas batallas en el feed · Tocar para ver</button>
+  <!-- SOLAPAS TIPO CHROME EN EL FEED -->
+  <div class="chrome-tabs">
+    <button class="chrome-tab active" id="tabFeedGlobal" onclick="switchFeedTab('global')">🌐 Feed Global</button>
+    <button class="chrome-tab" id="tabFeedLocal" onclick="switchFeedTab('local')">🏟️ Batallas Locales</button>
   </div>
-  
-  <div id="battles"></div>
+
+  <!-- VISTA 1: FEED GLOBAL MULTIMEDIA -->
+  <div id="sectionFeedGlobal">
+    <div class="grid" style="margin-bottom:12px"><button class="action" onclick="show('create')"><strong>⚔️ Crear desafío</strong><span>Video, audio o foto</span></button></div>
+    <div id="newBattlesBanner" class="new-battles-banner"><button onclick="applyNewBattles()">✨ Nuevas batallas en el feed · Tocar para ver</button></div>
+    <div id="battles"></div>
+  </div>
+
+  <!-- VISTA 2: FEED PRESENCIAL LOCAL -->
+  <div id="sectionFeedLocal" style="display:none">
+    <div class="card" style="display:flex;align-items:center;gap:10px;padding:12px 16px;">
+      <span>📍 Ciudad:</span>
+      <input id="userCityInput" class="search" style="margin:0;flex:1;" placeholder="Cargando localidad..." onchange="changeLocalCity(this.value)">
+      <button type="button" class="secondary" style="width:auto;margin:0;padding:9px 12px" onclick="autoDetectCurrentCity('userCityInput', true)">📍 GPS</button>
+    </div>
+    <div id="localBattlesFeed"></div>
+  </div>
 </section>
 
 <section id="create" class="view"><div class="hero"><h1>Crear batalla</h1><p>Elegí el formato que mejor representa tu desafío.</p></div><div class="tabs"><button class="tab active" data-mode="video" onclick="setMode('video')">🎥 Video</button><button class="tab" data-mode="audio" onclick="setMode('audio')">🎙️ Audio</button><button class="tab" data-mode="photo" onclick="setMode('photo')">📸 Foto</button><button class="tab" data-mode="local" onclick="setMode('local')">🏟️ Local</button></div><div id="createCard" class="card"></div></section>
 
 <section id="battle" class="view"><div id="battleDetail"></div></section>
-
-<section id="local" class="view">
-  <div class="hero">
-    <h1>🏟️ Batallas locales</h1>
-    <p>Desafíos presenciales en vivo en tu zona.</p>
-  </div>
-  
-  <div class="card" style="display:flex;align-items:center;gap:10px;padding:12px 16px;">
-    <span>📍 Ciudad:</span>
-    <input id="userCityInput" class="search" style="margin:0;flex:1;" placeholder="Cargando localidad..." onchange="changeLocalCity(this.value)">
-    <button type="button" class="secondary" style="width:auto;margin:0;padding:9px 12px" onclick="autoDetectCurrentCity('userCityInput', true)">📍 GPS</button>
-  </div>
-
-  <div class="card local-search" style="margin-top:10px">
-    <input class="search" id="localSearch" placeholder="Buscar por nombre en esta ciudad…" oninput="searchLocal()">
-  </div>
-
-  <div id="localBattlesFeed">
-    <div class="empty">Cargando batallas de tu localidad…</div>
-  </div>
-</section>
 
 <section id="events" class="view"><div class="hero"><h1>🎪 Eventos</h1><p>Torneos locales de 4 u 8 participantes, con bracket automático y QR para el público.</p></div><div class="grid"><button class="action" onclick="openTournamentCreate()"><strong>🏆 Crear torneo</strong><span>Organizá un evento presencial</span></button><button class="action" onclick="loadEvents()"><strong>📍 Eventos cercanos</strong><span>Descubrí eventos sin mostrar ubicaciones exactas</span></button><button class="action" onclick="startEventScanner()"><strong>📷 Escanear QR</strong><span>Entrá directamente al evento</span></button></div><div class="mode-info" style="margin-top:12px"><b>🛡️ Seguridad</b><br>Los torneos están separados por rango de edad. AURA STAR no publica coordenadas exactas ni organiza físicamente el evento.</div><div id="eventCreate" class="card" style="display:none;margin-top:12px"></div><div id="eventsList"></div><div id="tournamentDetail"></div></section>
 
@@ -175,18 +173,12 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 <div id="login" class="scan" style="background:rgba(3,5,10,.97)">
   <div class="card" style="width:min(92vw,390px);text-align:center">
     <div class="brand" style="justify-content:center;margin-bottom:18px"><span class="brand-icon"></span><div class="logo">AURA STAR</div></div>
-    <div class="login-gold">TU IDENTIDAD · TU AURA · TU ARENA</div>
     <h2 style="margin:0 0 8px">Entrá a AURA STAR</h2>
-    <p class="hint" style="margin:0 0 16px">Iniciá sesión con Google o ingresá tu email para recibir un enlace de acceso instantáneo.</p>
-    
+    <p class="hint" style="margin:0 0 16px">Iniciá sesión con Google o ingresá tu email.</p>
     <button class="primary" onclick="signInWith('google')" style="background:#fff;color:#111827;box-shadow:none">🌐 Continuar con Google</button>
-    
-    <div style="display:flex;align-items:center;margin:16px 0;color:var(--muted);font-size:.75rem"><hr style="flex:1;border:0;border-top:1px solid var(--border)"><span style="padding:0 8px">O INGRESÁ CON EMAIL</span><hr style="flex:1;border:0;border-top:1px solid var(--border)"></div>
-    
+    <div style="display:flex;align-items:center;margin:16px 0;color:var(--muted);font-size:.75rem"><hr style="flex:1;border:0;border-top:1px solid var(--border)"><span style="padding:0 8px">O EMAIL</span><hr style="flex:1;border:0;border-top:1px solid var(--border)"></div>
     <input id="emailInput" class="search" type="email" placeholder="tu@email.com" style="margin-bottom:8px">
     <button class="secondary" onclick="signInWithEmail()" style="margin-top:0">✉️ Enviar enlace mágico</button>
-    
-    <p id="loginHint" class="hint" style="margin:14px 0 0">Al ingresar con email te enviaremos un enlace de acceso seguro a tu casilla.</p>
   </div>
 </div>
 
@@ -195,20 +187,14 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 <div id="giftModal" class="scan" style="background:rgba(3,5,10,.95)">
   <div class="card" style="width:min(92vw,400px)">
     <h3 style="margin-top:0;display:flex;align-items:center;gap:8px">✦ Regalar Estrellas Aura</h3>
-    <p class="hint" style="margin-top:-4px;margin-bottom:12px">El destinatario recibirá tus estrellas convertidas en puntos de Aura para su perfil y ranking.</p>
-    
+    <p class="hint" style="margin-top:-4px;margin-bottom:12px">El destinatario recibirá tus estrellas convertidas en puntos de Aura para su perfil.</p>
     <div class="tabs">
       <button class="tab active" id="tabGiftUser" onclick="setGiftTab('username')">@ Usuario</button>
       <button class="tab" id="tabGiftQr" onclick="setGiftTab('qr')">📷 QR</button>
     </div>
-
     <form id="giftForm" onsubmit="sendGiftStars(event)" style="margin-top:10px">
-      <div id="giftTabInput">
-        <input id="giftTarget" class="search" placeholder="Nombre de usuario (ej: @marcos)" required>
-      </div>
-      
+      <div id="giftTabInput"><input id="giftTarget" class="search" placeholder="Nombre de usuario (ej: @marcos)" required></div>
       <input id="giftAmount" type="number" min="1" class="search" placeholder="Cantidad de Estrellas (ej: 10)" required>
-      
       <button type="submit" class="primary">✦ Enviar Regalo</button>
       <button type="button" class="secondary" onclick="closeGiftModal()">Cancelar</button>
     </form>
@@ -216,10 +202,10 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 </div>
 
 <script>
-const CONFIG={API:'https://aura-backend-oflg.onrender.com/api',SUPABASE_URL:'https://saqhaofycdjlwdauzhtv.supabase.co',SUPABASE_ANON_KEY:'sb_publishable_itAVUVk2JCkBjqKXSgQYrw_WsweKG1H',LOCAL_COST:0,TOURNAMENT_COST:0,MIN_VOTES:10,MIN_DIFF:3,ARBITER_CLOSE_VOTES:30,LOCAL_HOURS:2};
+const CONFIG={API:'https://aura-backend-oflg.onrender.com/api',SUPABASE_URL:'https://saqhaofycdjlwdauzhtv.supabase.co',SUPABASE_ANON_KEY:'sb_publishable_itAVUVk2JCkBjqKXSgQYrw_WsweKG1H'};
 const OAUTH_REDIRECT='https://guillaumelk777-commits.github.io/aura-star-frontend/';
 const sb=supabase.createClient(CONFIG.SUPABASE_URL,CONFIG.SUPABASE_ANON_KEY);
-let CURRENT_USER=null,IS_ADMIN=false,cache=[],pendingNewBattles=[],currentMode='video',scanStream=null,scanTimer=null,currentGiftMethod='username',currentCity='Trelew';
+let CURRENT_USER=null,IS_ADMIN=false,cache=[],pendingNewBattles=[],currentMode='video',scanStream=null,scanTimer=null,currentGiftMethod='username',currentCity='Trelew',currentFeedTab='global';
 
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 function getUserId(){return CURRENT_USER?.id||''}
@@ -253,12 +239,21 @@ async function api(path,opt={}){
   return d;
 }
 
-// DETECCIÓN GPS DE CIUDAD MEDIANTE GEOCÓDIGO INVERSO
+// NAVEGACIÓN POR PESTAÑAS (GLOBAL VS PRESENCIAL LOCAL)
+function switchFeedTab(tab) {
+  currentFeedTab = tab;
+  document.getElementById('tabFeedGlobal').classList.toggle('active', tab === 'global');
+  document.getElementById('tabFeedLocal').classList.toggle('active', tab === 'local');
+  document.getElementById('sectionFeedGlobal').style.display = tab === 'global' ? 'block' : 'none';
+  document.getElementById('sectionFeedLocal').style.display = tab === 'local' ? 'block' : 'none';
+  
+  if (tab === 'global') { loadBattles(); }
+  else { loadLocalFeed(); }
+}
+
+// DETECCIÓN GPS
 function autoDetectCurrentCity(targetInputId, notify = false) {
-  if (!navigator.geolocation) {
-    if (notify) toast('Geolocalización no disponible.');
-    return;
-  }
+  if (!navigator.geolocation) { if (notify) toast('Geolocalización no disponible.'); return; }
   if (notify) toast('Obteniendo ubicación...');
   navigator.geolocation.getCurrentPosition(async (pos) => {
     try {
@@ -272,12 +267,8 @@ function autoDetectCurrentCity(targetInputId, notify = false) {
       if (el) el.value = city;
       if (targetInputId === 'userCityInput') loadLocalFeed();
       if (notify) toast(`📍 Ciudad identificada: ${city}`);
-    } catch (e) {
-      if (notify) toast('No se pudo identificar la ciudad.');
-    }
-  }, () => {
-    if (notify) toast('Permiso de GPS denegado.');
-  }, { timeout: 6000 });
+    } catch (e) { if (notify) toast('No se pudo identificar la ciudad.'); }
+  }, () => { if (notify) toast('Permiso de GPS denegado.'); }, { timeout: 6000 });
 }
 
 async function signInWith(provider){
@@ -329,8 +320,8 @@ async function initUser(){
     document.getElementById('onboard').classList.remove('active');
     await claimPendingReferral();
     checkPaymentReturn();
-    loadBattles();
     autoDetectCurrentCity('userCityInput');
+    switchFeedTab('global');
     await maybeShowAuraTest(u);
   }catch(e){
     if(e.status===404){
@@ -389,8 +380,7 @@ function show(v){
   document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
   document.getElementById(v).classList.add('active');
   document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.view===v));
-  if(v==='home')checkOrLoadBattles();
-  if(v==='local')loadLocalFeed();
+  if(v==='home')switchFeedTab(currentFeedTab);
   if(v==='rank')loadRanking();
   if(v==='profile'){loadProfile();loadShareStatus();loadAdminSection();}
   if(v==='store')loadStore();
@@ -401,7 +391,7 @@ function battlePeople(b){return b.mode==='local'?[b.local_a_name||b.local_partic
 function feedMedia(url,mode,name){if(!url)return `<div class="feed-media"><div style="aspect-ratio:9/14;border-radius:16px;background:#090c14;display:grid;place-items:center;color:var(--muted);border:1px solid var(--border)">Esperando…</div><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='photo')return `<div class="feed-media"><img src="${esc(url)}" alt="Participación de ${esc(name)}" loading="lazy" oncontextmenu="return false;"><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='audio')return `<div class="feed-media"><div class="feed-audio"><div style="font-size:1.6rem;text-align:center;margin-bottom:6px">🎙️</div><audio controls controlsList="nodownload" preload="metadata" src="${esc(url)}"></audio></div><small class="feed-media-name">${esc(name)}</small></div>`;return `<div class="feed-media" data-feed-video><video playsinline controlsList="nodownload" disablePictureInPicture preload="metadata" src="${esc(url)}" onclick="toggleFeedVideo(this)" oncontextmenu="return false;"></video><div class="feed-play">▶</div><small class="feed-media-name">${esc(name)}</small></div>`}
 function toggleFeedVideo(video){event?.stopPropagation?.();const wrap=video.closest('.feed-media');if(!wrap)return;if(video.paused){document.querySelectorAll('.feed-media[data-feed-video] video').forEach(v=>{if(v!==video){v.pause();v.closest('.feed-media')?.classList.remove('playing')}});video.play().then(()=>wrap.classList.add('playing')).catch(()=>{});}else{video.pause();wrap.classList.remove('playing');}} 
 
-// RENDER DE TARJETA MULTIMEDIA VS TARJETA LOCAL PRESENCIAL
+// TARJETA DE BATALLA (MULTIMEDIA VS LOCAL PRESENCIAL)
 function battleCard(b){
   const [aName, oName] = battlePeople(b);
   const a = +b.votes_creator || 0;
@@ -416,12 +406,12 @@ function battleCard(b){
   const hasOpponent = local ? Boolean(targetB) : Boolean(b.opponent_id && b.media_url_opponent);
   const disableVoting = !hasOpponent || b.status !== 'active';
 
-  // TARJETA EXCLUSIVA PARA BATALLAS LOCALES PRESENCIALES
+  // TARJETA EXCLUSIVA PARA BATALLAS PRESENCIALES LOCALES (SIN VIDEO NI FOTOS)
   if (local) {
     return `
       <div class="card battle-card local-card" id="card-${b.id}">
         <div style="display:flex;justify-content:space-between;align-items:center" onclick="openBattle('${b.id}')">
-          <span class="badge" style="background:rgba(251,191,36,.18);color:#ffe7a0;border-color:rgba(251,191,36,.3)">🏟️ EN VIVO · ${esc(b.city||'General')}</span>
+          <span class="badge local-badge">🏟️ EN VIVO · ${esc(b.city||'Trelew')}</span>
           <span class="muted" style="font-size:.72rem">Ver detalles →</span>
         </div>
         
@@ -429,14 +419,14 @@ function battleCard(b){
 
         <div class="players">
           <div class="player" onclick="openBattle('${b.id}')" style="cursor:pointer">
-            <div style="font-size:.85rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(aName)}</div>
+            <div style="font-size:.88rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(aName)}</div>
             <div class="score" id="score-a-${b.id}">${a}</div>
           </div>
 
           <div class="vs">VS</div>
 
           <div class="player" onclick="openBattle('${b.id}')" style="cursor:pointer">
-            <div style="font-size:.85rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(oName)}</div>
+            <div style="font-size:.88rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(oName)}</div>
             <div class="score" id="score-b-${b.id}">${o}</div>
           </div>
         </div>
@@ -444,8 +434,8 @@ function battleCard(b){
         <div class="bar"><i id="bar-${b.id}" style="width:${p}%"></i></div>
 
         <div class="vote-grid" style="margin-top:14px">
-          <button class="vote a" style="padding:11px;font-size:.82rem" onclick="voteDirect(event, '${b.id}', '${esc(targetA)}')" ${disableVoting ? 'disabled' : ''}>⚡ Votar ${esc(aName)}</button>
-          <button class="vote b" style="padding:11px;font-size:.82rem" onclick="voteDirect(event, '${b.id}', '${esc(targetB || '')}')" ${disableVoting ? 'disabled' : ''}>⚡ Votar ${esc(oName)}</button>
+          <button class="vote a" style="padding:12px;font-size:.82rem" onclick="voteDirect(event, '${b.id}', '${esc(targetA)}')" ${disableVoting ? 'disabled' : ''}>⚡ Votar ${esc(aName)}</button>
+          <button class="vote b" style="padding:12px;font-size:.82rem" onclick="voteDirect(event, '${b.id}', '${esc(targetB || '')}')" ${disableVoting ? 'disabled' : ''}>⚡ Votar ${esc(oName)}</button>
         </div>
 
         <div class="meta" style="margin-top:10px">
@@ -509,22 +499,7 @@ async function voteDirect(event, battleId, targetUser) {
     });
 
     toast(r.completed ? '🏆 ¡Batalla finalizada!' : '¡Voto registrado!');
-    const scoreA = document.getElementById(`score-a-${battleId}`);
-    const scoreB = document.getElementById(`score-b-${battleId}`);
-    const bar = document.getElementById(`bar-${battleId}`);
-    const totalEl = document.getElementById(`total-${battleId}`);
-
-    if (scoreA && scoreB && bar && r.votes_creator !== undefined) {
-      const va = Number(r.votes_creator);
-      const vb = Number(r.votes_opponent);
-      const total = va + vb;
-      const pct = total > 0 ? Math.round((va / total) * 100) : 50;
-
-      scoreA.textContent = va;
-      scoreB.textContent = vb;
-      bar.style.width = `${pct}%`;
-      if (totalEl) totalEl.textContent = `${total} votos`;
-    }
+    if (currentFeedTab === 'global') loadBattles(true); else loadLocalFeed();
   } catch (e) {
     toast(e.message || 'No se pudo registrar el voto');
   }
@@ -533,10 +508,10 @@ async function voteDirect(event, battleId, targetUser) {
 function modeLabel(m){return m==='audio'?'🎙️ Audio':m==='photo'?'📸 Foto':'🎥 Video'} 
 function timeLeft(d){if(!d)return'';const ms=new Date(d)-Date.now();if(ms<=0)return'finalizando';const h=Math.floor(ms/3600000),m=Math.floor(ms%3600000/60000);return h?`${h}h ${m}m`: `${m}m`}
 
-// FEED GLOBAL MULTIMEDIA
 async function loadBattles(isSilent = false){
   const box = document.getElementById('battles');
   if(!box) return;
+
   if(!isSilent && !cache.length){ box.innerHTML = '<div class="empty">Cargando…</div>'; }
 
   try {
@@ -544,10 +519,12 @@ async function loadBattles(isSilent = false){
     const d = await r.json().catch(() => null);
     if (!r.ok) throw Error(d?.error || `No se pudieron cargar las batallas (${r.status}).`);
 
-    const newRows = Array.isArray(d) ? d : (Array.isArray(d?.battles) ? d.battles : []);
+    const newRows = Array.isArray(d) ? d : (Array.isArray(d?.battles) ? d.battles : Array.isArray(d?.data) ? d.data : []);
+
     if (isSilent && cache.length > 0) {
       const existingIds = new Set(cache.map(b => b.id));
       const freshlyAdded = newRows.filter(b => !existingIds.has(b.id));
+
       if (freshlyAdded.length > 0) {
         pendingNewBattles = newRows;
         showNewBattlesBanner(freshlyAdded.length);
@@ -557,22 +534,19 @@ async function loadBattles(isSilent = false){
       cache = newRows;
       pendingNewBattles = [];
       hideNewBattlesBanner();
-      document.getElementById('battleCount').textContent = cache.length + ' activas';
-      box.innerHTML = cache.length ? cache.map(battleCard).join('') : '<div class="empty">Todavía no hay batallas activas.</div>';
+      box.innerHTML = cache.length ? cache.map(battleCard).join('') : '<div class="empty">Todavía no hay batallas multimedia activas.</div>';
     }
   } catch (e) {
     if (!isSilent && !cache.length) {
-      document.getElementById('battleCount').textContent = '';
       box.innerHTML = `<div class="empty">No se pudieron cargar las batallas.<br><button class="secondary" style="margin-top:10px" onclick="loadBattles()">Reintentar</button></div>`;
     }
   }
 }
 
-// FEED PRESENCIAL POR LOCALIDAD
 async function loadLocalFeed() {
   const container = document.getElementById('localBattlesFeed');
   if(!container) return;
-  container.innerHTML = '<div class="empty">Buscando batallas locales…</div>';
+  container.innerHTML = '<div class="empty">Buscando batallas presenciales…</div>';
   
   try {
     const rows = await api(`/battles/local/feed?city=${encodeURIComponent(currentCity)}`);
@@ -590,10 +564,6 @@ function changeLocalCity(newCity) {
   if(!newCity.trim()) return;
   currentCity = newCity.trim();
   loadLocalFeed();
-}
-
-function checkOrLoadBattles(){
-  if(!cache.length){ loadBattles(false); } else { loadBattles(true); }
 }
 
 function showNewBattlesBanner(count){
@@ -614,7 +584,6 @@ function applyNewBattles(){
     cache = pendingNewBattles;
     pendingNewBattles = [];
     hideNewBattlesBanner();
-    document.getElementById('battleCount').textContent = cache.length + ' activas';
     document.getElementById('battles').innerHTML = cache.map(battleCard).join('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -624,9 +593,9 @@ function renderCreate(){
   const c = document.getElementById('createCard');
   if(currentMode==='local'){
     c.innerHTML = `
-      <div class="mode-info"><b>FC Batalla presencial</b><br>Las batallas presenciales aparecen automáticamente en el feed exclusivo de tu ciudad. La creación es <b>gratuita</b>.</div>
+      <div class="mode-info"><b>🏟️ Batalla presencial</b><br>Aparece automáticamente en el feed de tu ciudad. La creación es <b>gratuita</b>.</div>
       <form id="localForm">
-        <input id="battleTitle" maxlength="80" placeholder="Nombre del evento o batalla" required>
+        <input id="battleTitle" maxlength="80" placeholder="Nombre de la batalla" required>
         
         <div style="display:flex;gap:8px;align-items:center;margin:6px 0">
           <input id="battleCity" maxlength="100" placeholder="Ciudad / Localidad" value="${esc(currentCity)}" required>
@@ -718,7 +687,7 @@ async function uploadFile(file){
   const ext=(file.name.match(/\.[a-zA-Z0-9]+$/)||[''])[0].toLowerCase();
   const path=session.user.id+'/'+Date.now()+'_'+Math.random().toString(36).slice(2)+ext;
   const {error}=await sb.storage.from(STORAGE_BUCKET).upload(path,file,{contentType:file.type||'application/octet-stream',upsert:false});
-  if(error) throw Error('No se pudo subir el archivo a Supabase Storage: '+error.message);
+  if(error) throw Error('No se pudo subir el archivo: '+error.message);
   const {data:pub}=sb.storage.from(STORAGE_BUCKET).getPublicUrl(path);
   return pub.publicUrl;
 }
@@ -745,7 +714,7 @@ function renderBattle(b){
   const timer=local?`<div class="timer">⏱️ ${timeLeft(b.local_closes_at)} restantes</div>`:'';
   const adminDeleteBtn = IS_ADMIN ? `<button class="danger" style="margin-top:10px" onclick="adminDeleteBattle('${b.id}')">🗑️ Eliminar batalla (Admin)</button>` : '';
 
-  document.getElementById('battleDetail').innerHTML=`<button class="backbtn" onclick="backToFeed()"><span>←</span> Volver al feed</button><div class="hero"><span class="badge">${local?'🏟️ EN VIVO · '+esc(b.city||'General'):modeLabel(b.mode)}</span><h1>${esc(b.title)}</h1></div><div class="card">${local?'':`<div class="media-grid"><div>${mediaHtml(b.media_url_creator,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pa)}</small></div><div>${mediaHtml(b.media_url_opponent,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pb)}</small></div></div>`}<div class="players"><div class="player">${esc(pa)}<div class="score">${a}</div></div><div class="vs">VS</div><div class="player">${esc(pb)}<div class="score">${o}</div></div></div><div class="bar"><i style="width:${Math.round(a/Math.max(1,total)*100)}%"></i></div><div class="meta"><span>${total} votos · diferencia ${diff}</span>${timer}</div><div class="vote-grid" style="margin-top:14px"><button class="vote a" onclick="vote('${b.id}','${esc(local?b.local_participant_a:b.creator_id)}')">Votar ${esc(pa)}</button><button class="vote b" onclick="vote('${b.id}','${esc(local?b.local_participant_b:b.opponent_id||'')}')" ${pb==='Esperando…'?'disabled':''}>Votar ${esc(pb)}</button></div>${action}${adminDeleteBtn}</div>`;
+  document.getElementById('battleDetail').innerHTML=`<button class="backbtn" onclick="backToFeed()"><span>←</span> Volver al feed</button><div class="hero"><span class="badge">${local?'🏟️ EN VIVO · '+esc(b.city||'Trelew'):modeLabel(b.mode)}</span><h1>${esc(b.title)}</h1></div><div class="card">${local?'':`<div class="media-grid"><div>${mediaHtml(b.media_url_creator,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pa)}</small></div><div>${mediaHtml(b.media_url_opponent,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pb)}</small></div></div>`}<div class="players"><div class="player">${esc(pa)}<div class="score">${a}</div></div><div class="vs">VS</div><div class="player">${esc(pb)}<div class="score">${o}</div></div></div><div class="bar"><i style="width:${Math.round(a/Math.max(1,total)*100)}%"></i></div><div class="meta"><span>${total} votos · diferencia ${diff}</span>${timer}</div><div class="vote-grid" style="margin-top:14px"><button class="vote a" onclick="vote('${b.id}','${esc(local?b.local_participant_a:b.creator_id)}')">Votar ${esc(pa)}</button><button class="vote b" onclick="vote('${b.id}','${esc(local?b.local_participant_b:b.opponent_id||'')}')" ${pb==='Esperando…'?'disabled':''}>Votar ${esc(pb)}</button></div>${action}${adminDeleteBtn}</div>`;
 }
 
 async function joinMediaBattle(id){
@@ -1005,6 +974,17 @@ async function adminDeleteBattle(battleId) {
   } catch (e) { toast(e.message); }
 }
 
+// TORNEOS Y EVENTOS
+function openTournamentCreate(){
+  const box=document.getElementById('eventCreate'); box.style.display='block';
+  box.innerHTML=`<h3 style="margin-top:0">🏆 Nuevo torneo local</h3>
+  <form id="tournamentForm"><input id="tTitle" class="search" maxlength="80" placeholder="Nombre del torneo" required><textarea id="tDesc" class="search" maxlength="300" placeholder="Descripción" rows="3"></textarea><select id="tCat" class="search"><option value="freestyle">🎤 Freestyle</option><option value="dance">💃 Dance</option><option value="singing">🎤 Canto</option></select><select id="tSize" class="search"><option value="4">4 participantes</option><option value="8">8 participantes</option></select><button class="primary" type="submit">Crear torneo gratis</button></form>`;
+  document.getElementById('tournamentForm').onsubmit=createTournament;
+}
+async function createTournament(e){e.preventDefault();try{const x=await api('/tournaments',{method:'POST',body:JSON.stringify({title:document.getElementById('tTitle').value,description:document.getElementById('tDesc').value,category:document.getElementById('tCat').value,size:Number(document.getElementById('tSize').value)})});toast('🏆 Torneo creado');document.getElementById('eventCreate').style.display='none';openTournament(x.id)}catch(e){toast(e.message)}}
+async function loadEvents(){const box=document.getElementById('eventsList');if(!box)return;try{const d=await api('/events/local');box.innerHTML=d.events.length?d.events.map(t=>`<div class="card"><h3>${esc(t.title)}</h3><button class="secondary" onclick="openTournament('${t.id}')">Ver evento</button></div>`).join(''):'<div class="empty">No hay eventos activos.</div>'}catch(e){}}
+async function openTournament(id){show('events');const box=document.getElementById('tournamentDetail');try{const d=await api('/tournaments/'+id);box.innerHTML=`<div class="card"><h1>${esc(d.tournament.title)}</h1></div>`}catch(e){}}
+
 // TEST DE AURA INICIAL
 const AURA_TEST_QUESTIONS=[
   {q:'Cuando aparece un desafío inesperado, ¿qué hacés primero?',o:[['Voy de frente.','Me gusta actuar rápido.'],['Observo y pienso.','Prefiero entender antes de moverme.'],['Busco una alternativa.','Siempre intento encontrar otro camino.'],['Me adapto sobre la marcha.','La presión me activa.']]},
@@ -1039,7 +1019,7 @@ async function calculateAndSubmitAuraTest(){
 }
 async function maybeShowAuraTest(u){ if(!auraTestCompleted(u)) setTimeout(openAuraTest, 400); }
 
-setInterval(()=>{ if(document.getElementById('home').classList.contains('active') && CURRENT_USER) loadBattles(true); }, 30000);
+setInterval(()=>{ if(document.getElementById('home').classList.contains('active') && CURRENT_USER) switchFeedTab(currentFeedTab); }, 30000);
 
 renderCreate();
 handleAuth();
