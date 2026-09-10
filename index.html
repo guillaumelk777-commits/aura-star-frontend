@@ -108,11 +108,28 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .aura-card-camera video,.aura-card-camera canvas{width:100%;height:100%;object-fit:cover;display:block}
 .aura-card-canvas-wrap{width:min(92vw,380px);border-radius:24px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.5);border:1px solid rgba(246,196,83,.35);position:relative}
 .aura-card-canvas-wrap canvas{display:block;width:100%;height:auto}
-.aura-card-overlay{position:absolute;left:0;right:0;bottom:0;padding:16px;text-align:center;background:linear-gradient(0deg,rgba(6,7,13,.92),rgba(6,7,13,.35) 70%,transparent)}
-.aura-card-username{font-size:1.15rem;font-weight:900;color:#fff}
-.aura-card-city{font-size:.72rem;color:#e8c96f;font-weight:700;letter-spacing:.06em;margin-top:2px}
-.aura-card-badge{display:inline-block;margin-top:6px;background:linear-gradient(135deg,var(--gold),#b98218);color:#111;font-size:1rem;font-weight:900;padding:5px 16px;border-radius:999px;box-shadow:0 4px 18px rgba(246,196,83,.3)}
-.aura-card-brand{margin-top:6px;font-size:.66rem;font-weight:900;color:var(--purple2);letter-spacing:.15em}
+
+/* DISEÑO DE PLAYER CARD — DATOS ARRIBA A LA IZQUIERDA */
+.aura-card-overlay-topleft {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: rgba(6, 7, 13, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(246, 196, 83, 0.28);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  text-align: left;
+  z-index: 10;
+  max-width: 80%;
+}
+.aura-card-username{font-size:1.1rem;font-weight:900;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.8);letter-spacing:-0.2px}
+.aura-card-city{font-size:.68rem;color:#e8c96f;font-weight:700;letter-spacing:.04em;margin-top:2px;text-shadow:0 1px 4px rgba(0,0,0,0.8)}
+.aura-card-badge{display:inline-block;margin-top:6px;background:linear-gradient(135deg,var(--gold),#b98218);color:#111;font-size:.85rem;font-weight:900;padding:4px 12px;border-radius:999px;box-shadow:0 4px 14px rgba(246,196,83,.35)}
+.aura-card-brand{position:absolute;bottom:12px;right:14px;font-size:.65rem;font-weight:900;color:rgba(255,255,255,0.7);letter-spacing:.15em;text-shadow:0 2px 6px rgba(0,0,0,0.8);z-index:10}
+
 .aura-card-actions{width:min(92vw,380px);display:grid;gap:10px;margin-top:16px}
 .aura-card-share-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 .aura-card-share-row button{padding:12px 6px;font-size:.72rem;border-radius:13px;font-weight:800;color:#fff;background:rgba(255,255,255,.06);border:1px solid var(--border)}
@@ -125,8 +142,38 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .aura-mode-selector{display:flex;gap:8px;width:min(92vw,380px);margin-bottom:10px}
 .aura-mode-selector button{flex:1;padding:10px;border-radius:12px;font-size:.75rem;font-weight:800;background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--border)}
 .aura-mode-selector button.active{background:var(--surface2);border-color:var(--gold)}
+
+.aura-energy-box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.aura-energy-box video, .aura-energy-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.aura-glow-effect {
+  position: absolute;
+  inset: -15px;
+  pointer-events: none;
+  filter: url('#auraGooFilter') blur(12px) brightness(1.6);
+  opacity: 0.85;
+  mix-blend-mode: screen;
+}
 </style></head>
 <body>
+
+<svg style="position: absolute; width: 0; height: 0;" aria-hidden="true">
+  <filter id="auraGooFilter">
+    <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" result="noise">
+      <animate attributeName="baseFrequency" dur="6s" values="0.01;0.04;0.01" repeatCount="indefinite" />
+    </feTurbulence>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="35" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+</svg>
 
 <div class="app"><header><div class="brand"><span class="brand-icon"></span><div class="logo">AURA STAR</div></div><button class="avatar" id="avatar" onclick="show('profile')">★</button></header>
 <main>
@@ -234,7 +281,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
   </div>
 </div>
 
-<!-- TARJETA DE AURA EN EL MODAL -->
+<!-- TARJETA DE AURA MODAL -->
 <div id="auraCardModal" class="aura-card-modal">
   <div id="auraCardStage"></div>
 </div>
@@ -1130,7 +1177,7 @@ async function calculateAndSubmitAuraTest(){
 }
 async function maybeShowAuraTest(u){ if(!auraTestCompleted(u)) setTimeout(openAuraTest, 400); }
 
-// MÓDULO AURA DINÁMICO CON PROYECCIÓN POR MÁSCARA DE LUMINANCIA NATIVA
+// MÓDULO AURA CON DATOS ARRIBA A LA IZQUIERDA (PLAYER CARD)
 let auraCardState={stream:null,resultCanvas:null,inputSource:'camera',loadedImage:null};
 let auraStyleMode='gold';
 
@@ -1259,7 +1306,6 @@ function updateAuraGlowBox(){
   glowBox.style.background = bgGradient;
 }
 
-// CAPTURA CON SEGMENTACIÓN DE CONTORNO LUMINOSO NATIVO
 function captureAuraCardPhoto(){
   toast('Generando tarjeta…');
   const video = document.getElementById('auraCardVideo');
@@ -1272,7 +1318,6 @@ function captureAuraCardPhoto(){
   canvas.width = w; canvas.height = h;
   const ctx = canvas.getContext('2d');
 
-  // 1. Extraer máscara de luminancia de la persona para generar el contorno real
   const srcCanvas = document.createElement('canvas');
   srcCanvas.width = w; srcCanvas.height = h;
   const sctx = srcCanvas.getContext('2d');
@@ -1287,7 +1332,6 @@ function captureAuraCardPhoto(){
   const srcData = sctx.getImageData(0, 0, w, h);
   const data = srcData.data;
 
-  // Crear mapa de silueta por contraste/brillo
   const edgeCanvas = document.createElement('canvas');
   edgeCanvas.width = w; edgeCanvas.height = h;
   const ectx = edgeCanvas.getContext('2d');
@@ -1299,7 +1343,6 @@ function captureAuraCardPhoto(){
       const r = data[idx], g = data[idx+1], b = data[idx+2];
       const brightness = (r * 0.299 + g * 0.587 + b * 0.114);
 
-      // Si pertenece a la figura principal
       if (brightness > 35) {
         edgeData.data[idx] = 255;
         edgeData.data[idx+1] = 255;
@@ -1310,7 +1353,6 @@ function captureAuraCardPhoto(){
   }
   ectx.putImageData(edgeData, 0, 0);
 
-  // 2. Dibujar llamaradas de Aura escalando y desenfocando la máscara del contorno
   ctx.save();
   ctx.fillStyle = '#06070d';
   ctx.fillRect(0, 0, w, h);
@@ -1319,16 +1361,14 @@ function captureAuraCardPhoto(){
   auraLayer.width = w; auraLayer.height = h;
   const actx = auraLayer.getContext('2d');
 
-  // Tratar la capa de contorno dilata
   actx.save();
   actx.translate(w/2, h/2);
-  actx.scale(1.08, 1.08); // Expansión alrededor del sujeto
+  actx.scale(1.08, 1.08);
   actx.translate(-w/2, -h/2);
   actx.filter = 'blur(18px) brightness(1.8)';
   actx.drawImage(edgeCanvas, 0, -8);
   actx.restore();
 
-  // Colorizar halo de contorno
   actx.save();
   actx.globalCompositeOperation = 'source-atop';
   if(auraStyleMode==='rainbow'){
@@ -1343,11 +1383,9 @@ function captureAuraCardPhoto(){
   actx.fillRect(0,0,w,h);
   actx.restore();
 
-  // Proyectar destellos en la tarjeta final
   ctx.globalCompositeOperation = 'screen';
   ctx.drawImage(auraLayer, 0, 0, w, h);
 
-  // 3. Montar la imagen del usuario sobre el aura
   ctx.globalCompositeOperation = 'source-over';
   ctx.drawImage(srcCanvas, 0, 0, w, h);
 
@@ -1363,13 +1401,17 @@ function renderAuraCardPreview(){
     <button class="backbtn" onclick="closeAuraCardModal()" style="align-self:flex-start;margin-bottom:10px"><span>←</span> Cerrar</button>
     <div class="aura-card-canvas-wrap" id="auraCardBox">
       <img src="${auraCapturedDataUrl}" style="display:block;width:100%">
-      <div class="aura-card-overlay">
+      
+      <!-- INSIGNIA DE DATOS EN LA ESQUINA SUPERIOR IZQUIERDA -->
+      <div class="aura-card-overlay-topleft">
         <div class="aura-card-username">@${esc(u.username||'usuario')}</div>
-        <div class="aura-card-city">📍 ${esc(currentCity||'')}</div>
+        ${currentCity ? `<div class="aura-card-city">📍 ${esc(currentCity)}</div>` : ''}
         <div class="aura-card-badge">★ ${u.aura_points||0} Aura</div>
-        <div class="aura-card-brand">✦ AURA STAR ✦</div>
       </div>
+      
+      <div class="aura-card-brand">✦ AURA STAR ✦</div>
     </div>
+
     <div class="aura-card-actions">
       <button class="primary" onclick="shareAuraCard()">📤 Compartir tarjeta</button>
       <div class="aura-card-share-row">
