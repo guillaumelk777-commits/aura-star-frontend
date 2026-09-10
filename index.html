@@ -233,7 +233,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
   </div>
 </div>
 
-<!-- TARJETA DE AURA EN EL MODAL -->
+<!-- TARJETA DE AURA MODAL -->
 <div id="auraCardModal" class="aura-card-modal">
   <div id="auraCardStage"></div>
 </div>
@@ -242,7 +242,8 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 const CONFIG={API:'https://aura-backend-oflg.onrender.com/api',SUPABASE_URL:'https://saqhaofycdjlwdauzhtv.supabase.co',SUPABASE_ANON_KEY:'sb_publishable_itAVUVk2JCkBjqKXSgQYrw_WsweKG1H'};
 const OAUTH_REDIRECT='https://guillaumelk777-commits.github.io/aura-star-frontend/';
 const sb=supabase.createClient(CONFIG.SUPABASE_URL,CONFIG.SUPABASE_ANON_KEY);
-let CURRENT_USER=null,IS_ADMIN=false,CURRENT_USERNAME='',CURRENT_AURA_POINTS=0,cache=[],pendingNewBattles=[],currentMode='video',scanStream=null,scanTimer=null,currentGiftMethod='username',currentCity='Trelew',currentFeedTab='global';
+let CURRENT_USER=null,IS_ADMIN=false,CURRENT_USERNAME='',CURRENT_AURA_POINTS=0,LAST_PROFILE=null;
+let cache=[],pendingNewBattles=[],currentMode='video',scanStream=null,scanTimer=null,currentGiftMethod='username',currentCity='Trelew',currentFeedTab='global';
 
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 function getUserId(){return CURRENT_USER?.id||''}
@@ -375,6 +376,7 @@ async function initUser(){
     IS_ADMIN=!!(u.is_admin||u.moderation_role==='admin');
     CURRENT_USERNAME=u.username||'';
     CURRENT_AURA_POINTS=Number(u.aura_points||0);
+    LAST_PROFILE=u;
     document.getElementById('avatar').textContent=(u.username||'✦')[0].toUpperCase();
     document.getElementById('onboard').classList.remove('active');
     await claimPendingReferral();
@@ -413,7 +415,6 @@ async function handleAuth(){
   captureShareToken();
   const params=new URLSearchParams(location.search);
   if(params.get('error')){
-    const desc=params.get('error_description')||params.get('error');
     history.replaceState({},document.title,location.pathname);
     document.getElementById('login').classList.add('active');
     return;
@@ -435,6 +436,17 @@ sb.auth.onAuthStateChange((event,session)=>{
     document.getElementById('onboard').classList.remove('active');
   }
 });
+
+function show(v){
+  document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+  document.getElementById(v).classList.add('active');
+  document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.view===v));
+  if(v==='home')switchFeedTab(currentFeedTab);
+  if(v==='rank')loadRanking();
+  if(v==='profile'){loadProfile();loadShareStatus();loadAdminSection();}
+  if(v==='store')loadStore();
+  if(v==='events')loadEvents();
+}
 
 function battlePeople(b){return b.mode==='local'?[b.local_a_name||b.local_participant_a,b.local_b_name||b.local_participant_b]:[b.creator_name||b.creator_id,b.opponent_name||b.opponent_id||'Esperando…']}
 function feedMedia(url,mode,name){if(!url)return `<div class="feed-media"><div style="aspect-ratio:9/14;border-radius:16px;background:#090c14;display:grid;place-items:center;color:var(--muted);border:1px solid var(--border)">Esperando…</div><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='photo')return `<div class="feed-media"><img src="${esc(url)}" alt="Participación de ${esc(name)}" loading="lazy" oncontextmenu="return false;"><small class="feed-media-name">${esc(name)}</small></div>`;if(mode==='audio')return `<div class="feed-media"><div class="feed-audio"><div style="font-size:1.6rem;text-align:center;margin-bottom:6px">🎙️</div><audio controls controlsList="nodownload" preload="metadata" src="${esc(url)}"></audio></div><small class="feed-media-name">${esc(name)}</small></div>`;return `<div class="feed-media" data-feed-video><video playsinline controlsList="nodownload" disablePictureInPicture preload="metadata" src="${esc(url)}" onclick="toggleFeedVideo(this)" oncontextmenu="return false;"></video><div class="feed-play">▶</div><small class="feed-media-name">${esc(name)}</small></div>`}
@@ -929,7 +941,6 @@ async function sendGiftStars(e) {
   } catch (err) { toast(err.message || 'No se pudo realizar el regalo.'); }
 }
 
-let LAST_PROFILE=null;
 async function loadProfile(){
   const box=document.getElementById('profileCard'), data=document.getElementById('profileData');
   try{
@@ -1118,7 +1129,7 @@ async function calculateAndSubmitAuraTest(){
 }
 async function maybeShowAuraTest(u){ if(!auraTestCompleted(u)) setTimeout(openAuraTest, 400); }
 
-// MÓDULO AURA ETÉREA VECTORIAL NATIVA (SINO Carga DE RED NI MODELOS EXTERNOS)
+// TARJETA DE AURA (CÁMARA O GALERÍA CON PROCESAMIENTO NATIVO)
 let auraCardState={stream:null,resultCanvas:null,inputSource:'camera',loadedImage:null};
 let auraStyleMode='gold', auraWaveTime=0, auraAnimLoop=null;
 
@@ -1237,7 +1248,6 @@ function startAuraLoop(){
   auraAnimLoop=requestAnimationFrame(loop);
 }
 
-// RENDERIZADO ETÉREO VECTORIAL INTEGRADO NATIVAMENTE
 function drawAuraFrame(){
   const canvas=document.getElementById('auraCardCanvas');
   const video=document.getElementById('auraCardVideo');
@@ -1254,7 +1264,7 @@ function drawAuraFrame(){
   auraWaveTime += 0.05;
   ctx.clearRect(0,0,w,h);
 
-  // 1. Proyectar la silueta vectorial de aura etérea (cabeza y hombros en llamarada)
+  // 1. Silueta vectorial
   const silCanvas=document.createElement('canvas');
   silCanvas.width=w; silCanvas.height=h;
   const sctx=silCanvas.getContext('2d');
@@ -1268,7 +1278,6 @@ function drawAuraFrame(){
   sctx.quadraticCurveTo(cx + w*0.28, h*0.55, cx + w*0.32, h);
   sctx.closePath();
 
-  // Relleno de color del halo
   if(auraStyleMode==='rainbow'){
     const g=sctx.createLinearGradient(0,0,0,h);
     g.addColorStop(0,'#a855f7'); g.addColorStop(0.3,'#3b82f6');
@@ -1280,7 +1289,7 @@ function drawAuraFrame(){
   else { sctx.fillStyle='#fbbf24'; }
   sctx.fill();
 
-  // 2. Renderizar capas de luz de resplandor difuminado
+  // 2. Capas de resplandor
   ctx.save();
   ctx.globalCompositeOperation='screen';
 
@@ -1299,7 +1308,7 @@ function drawAuraFrame(){
   ctx.drawImage(silCanvas, 0, -2);
   ctx.restore();
 
-  // 3. Renderizar imagen del usuario nítida
+  // 3. Imagen del usuario
   ctx.save();
   if(auraCardState.inputSource==='camera'){
     ctx.translate(w,0); ctx.scale(-1,1);
