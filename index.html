@@ -125,8 +125,41 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .aura-mode-selector{display:flex;gap:8px;width:min(92vw,380px);margin-bottom:10px}
 .aura-mode-selector button{flex:1;padding:10px;border-radius:12px;font-size:.75rem;font-weight:800;background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--border)}
 .aura-mode-selector button.active{background:var(--surface2);border-color:var(--gold)}
+
+/* REGLAS CSS DEL FILTRO DE TURBULENCIA / LLAMARADA DINÁMICA DE AURA */
+.aura-energy-box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.aura-energy-box video, .aura-energy-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.aura-glow-effect {
+  position: absolute;
+  inset: -15px;
+  pointer-events: none;
+  filter: url('#auraGooFilter') blur(12px) brightness(1.6);
+  opacity: 0.85;
+  mix-blend-mode: screen;
+}
 </style></head>
 <body>
+
+<!-- INYECCIÓN DEL FILTRO VECTORIAL TURBULENTO NATIVO -->
+<svg style="position: absolute; width: 0; height: 0;" aria-hidden="true">
+  <filter id="auraGooFilter">
+    <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" result="noise">
+      <animate attributeName="baseFrequency" dur="6s" values="0.01;0.04;0.01" repeatCount="indefinite" />
+    </feTurbulence>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="35" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+</svg>
+
 <div class="app"><header><div class="brand"><span class="brand-icon"></span><div class="logo">AURA STAR</div></div><button class="avatar" id="avatar" onclick="show('profile')">★</button></header>
 <main>
 <section id="home" class="view active">
@@ -233,7 +266,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
   </div>
 </div>
 
-<!-- TARJETA DE AURA MODAL -->
+<!-- TARJETA DE AURA EN EL MODAL -->
 <div id="auraCardModal" class="aura-card-modal">
   <div id="auraCardStage"></div>
 </div>
@@ -1129,9 +1162,9 @@ async function calculateAndSubmitAuraTest(){
 }
 async function maybeShowAuraTest(u){ if(!auraTestCompleted(u)) setTimeout(openAuraTest, 400); }
 
-// MÓDULO AURA ETÉREA (PROYECCIÓN ENVOLVENTE EN CANVAS NATIVO)
+// MÓDULO AURA DINÁMICO POR FILTRO VECTORIAL TURBULENTO (SVG/CSS NATIVO)
 let auraCardState={stream:null,resultCanvas:null,inputSource:'camera',loadedImage:null};
-let auraStyleMode='gold', auraWaveTime=0, auraAnimLoop=null;
+let auraStyleMode='gold';
 
 function auraCardStage(){return document.getElementById('auraCardStage')}
 
@@ -1146,8 +1179,6 @@ function closeAuraCardModal(){
 }
 
 function stopAuraCamStream(){
-  if(auraAnimLoop) cancelAnimationFrame(auraAnimLoop);
-  auraAnimLoop = null;
   if(auraCardState.stream){auraCardState.stream.getTracks().forEach(t=>t.stop());auraCardState.stream=null;}
 }
 
@@ -1165,8 +1196,11 @@ function renderAuraCardCameraStage(){
     </div>
 
     <div class="aura-card-camera">
-      <video id="auraCardVideo" playsinline muted style="display:none"></video>
-      <canvas id="auraCardCanvas" style="display:block;width:100%;height:100%"></canvas>
+      <div class="aura-energy-box" id="auraMediaBox">
+        <video id="auraCardVideo" playsinline muted style="display:block;transform:scaleX(-1)"></video>
+        <img id="auraCardImage" style="display:none;width:100%;height:100%;object-fit:cover">
+        <div id="auraGlowBox" class="aura-glow-effect"></div>
+      </div>
       <input type="file" id="auraFileInput" accept="image/*" style="display:none" onchange="handleAuraFileSelect(event)">
     </div>
 
@@ -1189,10 +1223,17 @@ function switchAuraSource(source){
   document.getElementById('btnSourceCam').classList.toggle('active', source==='camera');
   document.getElementById('btnSourceFile').classList.toggle('active', source==='file');
   
+  const video=document.getElementById('auraCardVideo');
+  const img=document.getElementById('auraCardImage');
+
   if(source==='camera'){
+    img.style.display='none';
+    video.style.display='block';
     startAuraCameraStream();
   } else {
     stopAuraCamStream();
+    video.style.display='none';
+    img.style.display='block';
     document.getElementById('btnSnapAura').disabled=true;
     document.getElementById('auraFileInput').click();
   }
@@ -1203,13 +1244,11 @@ function handleAuraFileSelect(e){
   if(!file) return;
   const reader=new FileReader();
   reader.onload=(evt)=>{
-    const img=new Image();
-    img.onload=()=>{
-      auraCardState.loadedImage=img;
-      document.getElementById('btnSnapAura').disabled=false;
-      drawAuraFrame();
-    };
+    const img=document.getElementById('auraCardImage');
     img.src=evt.target.result;
+    auraCardState.loadedImage=img;
+    document.getElementById('btnSnapAura').disabled=false;
+    updateAuraGlowBox();
   };
   reader.readAsDataURL(file);
 }
@@ -1223,7 +1262,7 @@ async function startAuraCameraStream(){
     video.onloadedmetadata=()=>{
       video.play();
       document.getElementById('btnSnapAura').disabled=false;
-      startAuraLoop();
+      updateAuraGlowBox();
     };
   }catch(e){
     toast('No se pudo acceder a la cámara.');
@@ -1233,90 +1272,74 @@ async function startAuraCameraStream(){
 function setAuraStyle(style){
   auraStyleMode=style;
   document.querySelectorAll('.aura-style-row button').forEach(b=>b.classList.toggle('active',b.dataset.style===style));
-  if(auraCardState.inputSource==='file' && auraCardState.loadedImage){
-    drawAuraFrame();
-  }
+  updateAuraGlowBox();
 }
 
-function startAuraLoop(){
-  function loop(){
-    if(auraCardState.inputSource==='camera'){
-      drawAuraFrame();
-      auraAnimLoop=requestAnimationFrame(loop);
-    }
+function updateAuraGlowBox(){
+  const glowBox = document.getElementById('auraGlowBox');
+  if(!glowBox) return;
+
+  let bgGradient = 'radial-gradient(circle, rgba(251,191,36,0.85) 20%, rgba(245,158,11,0.6) 60%, transparent 80%)';
+  if(auraStyleMode === 'rainbow'){
+    bgGradient = 'radial-gradient(circle, rgba(168,85,247,0.8) 0%, rgba(59,130,246,0.7) 35%, rgba(34,197,94,0.6) 60%, rgba(251,191,36,0.5) 80%, transparent 100%)';
+  } else if(auraStyleMode === 'cyan'){
+    bgGradient = 'radial-gradient(circle, rgba(6,182,212,0.85) 20%, rgba(14,165,233,0.6) 60%, transparent 80%)';
+  } else if(auraStyleMode === 'purple'){
+    bgGradient = 'radial-gradient(circle, rgba(168,85,247,0.85) 20%, rgba(126,34,206,0.6) 60%, transparent 80%)';
   }
-  auraAnimLoop=requestAnimationFrame(loop);
+  
+  glowBox.style.background = bgGradient;
 }
 
-// RENDERIZADO ENVOLVENTE (PROYECTA EL HALO DESDE LA PROPIA CAPTURA)
-function drawAuraFrame(){
-  const canvas=document.getElementById('auraCardCanvas');
-  const video=document.getElementById('auraCardVideo');
-  if(!canvas) return;
+function captureAuraCardPhoto(){
+  toast('Generando tarjeta…');
+  const video = document.getElementById('auraCardVideo');
+  const img = document.getElementById('auraCardImage');
+  const source = auraCardState.inputSource === 'camera' ? video : img;
 
-  const ctx=canvas.getContext('2d');
-  const source = auraCardState.inputSource === 'camera' ? video : auraCardState.loadedImage;
-  if(!source) return;
-
-  const w = source.videoWidth || source.width || 480;
-  const h = source.videoHeight || source.height || 480;
+  const canvas = document.createElement('canvas');
+  const w = source.videoWidth || source.naturalWidth || 480;
+  const h = source.videoHeight || source.naturalHeight || 480;
   canvas.width = w; canvas.height = h;
+  const ctx = canvas.getContext('2d');
 
-  auraWaveTime += 0.05;
-  ctx.clearRect(0,0,w,h);
-
-  // 1. Proyectar primero la imagen escalada y difuminada que "abraza" los bordes de la persona
-  const haloCanvas=document.createElement('canvas');
-  haloCanvas.width=w; haloCanvas.height=h;
-  const hctx=haloCanvas.getContext('2d');
-
-  const pulse = 1.06 + Math.sin(auraWaveTime)*0.035;
-
-  hctx.save();
+  // 1. Proyectar llamarada de Aura al fondo
+  const auraLayer = document.createElement('canvas');
+  auraLayer.width = w; auraLayer.height = h;
+  const actx = auraLayer.getContext('2d');
+  
+  actx.save();
   if(auraCardState.inputSource==='camera'){
-    hctx.translate(w,0); hctx.scale(-1,1);
+    actx.translate(w,0); actx.scale(-1,1);
   }
-  hctx.translate(w/2, h/2);
-  hctx.scale(pulse, pulse);
-  hctx.translate(-w/2, -h/2);
-  hctx.filter='blur(22px) brightness(1.7)';
-  hctx.drawImage(source, 0, 0, w, h);
-  hctx.restore();
+  actx.filter = 'blur(20px) brightness(1.7)';
+  actx.drawImage(source, -15, -15, w + 30, h + 30);
+  actx.restore();
 
-  // Recortar y tintar el halo según el estilo seleccionado
-  hctx.save();
-  hctx.globalCompositeOperation='source-atop';
+  actx.save();
+  actx.globalCompositeOperation = 'source-atop';
   if(auraStyleMode==='rainbow'){
-    const g=hctx.createLinearGradient(0,0,0,h);
+    const g=actx.createLinearGradient(0,0,0,h);
     g.addColorStop(0,'#a855f7'); g.addColorStop(0.3,'#3b82f6');
     g.addColorStop(0.6,'#22c55e'); g.addColorStop(0.85,'#fbbf24');
     g.addColorStop(1,'#ef4444');
-    hctx.fillStyle=g;
-  } else if(auraStyleMode==='cyan'){ hctx.fillStyle='#06b6d4'; }
-  else if(auraStyleMode==='purple'){ hctx.fillStyle='#a855f7'; }
-  else { hctx.fillStyle='#fbbf24'; }
-  hctx.fillRect(0,0,w,h);
-  hctx.restore();
+    actx.fillStyle=g;
+  } else if(auraStyleMode==='cyan'){ actx.fillStyle='#06b6d4'; }
+  else if(auraStyleMode==='purple'){ actx.fillStyle='#a855f7'; }
+  else { actx.fillStyle='#fbbf24'; }
+  actx.fillRect(0,0,w,h);
+  actx.restore();
 
-  // 2. Renderizar el halo resplandeciente en el lienzo principal
-  ctx.save();
-  ctx.globalCompositeOperation='screen';
-  ctx.drawImage(haloCanvas, 0, 0, w, h);
-  ctx.restore();
-
-  // 3. Renderizar la captura frontal nítida del usuario
+  // 2. Componer la foto
+  ctx.drawImage(auraLayer, 0, 0, w, h);
   ctx.save();
   if(auraCardState.inputSource==='camera'){
     ctx.translate(w,0); ctx.scale(-1,1);
   }
-  ctx.globalCompositeOperation='source-over';
   ctx.drawImage(source, 0, 0, w, h);
   ctx.restore();
-}
 
-function captureAuraCardPhoto(){
-  const canvas=document.getElementById('auraCardCanvas');
-  auraCapturedDataUrl=canvas.toDataURL('image/png');
+  auraCapturedDataUrl = canvas.toDataURL('image/png');
   stopAuraCamStream();
   renderAuraCardPreview();
 }
