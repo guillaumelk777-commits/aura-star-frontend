@@ -125,40 +125,8 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .aura-mode-selector{display:flex;gap:8px;width:min(92vw,380px);margin-bottom:10px}
 .aura-mode-selector button{flex:1;padding:10px;border-radius:12px;font-size:.75rem;font-weight:800;background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--border)}
 .aura-mode-selector button.active{background:var(--surface2);border-color:var(--gold)}
-
-/* REGLAS CSS DEL FILTRO DE TURBULENCIA / LLAMARADA DINÁMICA DE AURA */
-.aura-energy-box {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-.aura-energy-box video, .aura-energy-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-.aura-glow-effect {
-  position: absolute;
-  inset: -15px;
-  pointer-events: none;
-  filter: url('#auraGooFilter') blur(12px) brightness(1.6);
-  opacity: 0.85;
-  mix-blend-mode: screen;
-}
 </style></head>
 <body>
-
-<!-- INYECCIÓN DEL FILTRO VECTORIAL TURBULENTO NATIVO -->
-<svg style="position: absolute; width: 0; height: 0;" aria-hidden="true">
-  <filter id="auraGooFilter">
-    <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" result="noise">
-      <animate attributeName="baseFrequency" dur="6s" values="0.01;0.04;0.01" repeatCount="indefinite" />
-    </feTurbulence>
-    <feDisplacementMap in="SourceGraphic" in2="noise" scale="35" xChannelSelector="R" yChannelSelector="G" />
-  </filter>
-</svg>
 
 <div class="app"><header><div class="brand"><span class="brand-icon"></span><div class="logo">AURA STAR</div></div><button class="avatar" id="avatar" onclick="show('profile')">★</button></header>
 <main>
@@ -1162,7 +1130,7 @@ async function calculateAndSubmitAuraTest(){
 }
 async function maybeShowAuraTest(u){ if(!auraTestCompleted(u)) setTimeout(openAuraTest, 400); }
 
-// MÓDULO AURA DINÁMICO POR FILTRO VECTORIAL TURBULENTO (SVG/CSS NATIVO)
+// MÓDULO AURA DINÁMICO CON PROYECCIÓN POR MÁSCARA DE LUMINANCIA NATIVA
 let auraCardState={stream:null,resultCanvas:null,inputSource:'camera',loadedImage:null};
 let auraStyleMode='gold';
 
@@ -1279,18 +1247,19 @@ function updateAuraGlowBox(){
   const glowBox = document.getElementById('auraGlowBox');
   if(!glowBox) return;
 
-  let bgGradient = 'radial-gradient(circle, rgba(251,191,36,0.85) 20%, rgba(245,158,11,0.6) 60%, transparent 80%)';
+  let bgGradient = 'radial-gradient(circle at 50% 40%, rgba(251,191,36,0.95) 15%, rgba(245,158,11,0.65) 45%, transparent 75%)';
   if(auraStyleMode === 'rainbow'){
-    bgGradient = 'radial-gradient(circle, rgba(168,85,247,0.8) 0%, rgba(59,130,246,0.7) 35%, rgba(34,197,94,0.6) 60%, rgba(251,191,36,0.5) 80%, transparent 100%)';
+    bgGradient = 'radial-gradient(circle at 50% 40%, rgba(168,85,247,0.9) 0%, rgba(59,130,246,0.8) 25%, rgba(34,197,94,0.7) 50%, rgba(251,191,36,0.6) 75%, transparent 100%)';
   } else if(auraStyleMode === 'cyan'){
-    bgGradient = 'radial-gradient(circle, rgba(6,182,212,0.85) 20%, rgba(14,165,233,0.6) 60%, transparent 80%)';
+    bgGradient = 'radial-gradient(circle at 50% 40%, rgba(6,182,212,0.95) 15%, rgba(14,165,233,0.65) 45%, transparent 75%)';
   } else if(auraStyleMode === 'purple'){
-    bgGradient = 'radial-gradient(circle, rgba(168,85,247,0.85) 20%, rgba(126,34,206,0.6) 60%, transparent 80%)';
+    bgGradient = 'radial-gradient(circle at 50% 40%, rgba(168,85,247,0.95) 15%, rgba(126,34,206,0.65) 45%, transparent 75%)';
   }
   
   glowBox.style.background = bgGradient;
 }
 
+// CAPTURA CON SEGMENTACIÓN DE CONTORNO LUMINOSO NATIVO
 function captureAuraCardPhoto(){
   toast('Generando tarjeta…');
   const video = document.getElementById('auraCardVideo');
@@ -1303,19 +1272,63 @@ function captureAuraCardPhoto(){
   canvas.width = w; canvas.height = h;
   const ctx = canvas.getContext('2d');
 
-  // 1. Proyectar llamarada de Aura al fondo
+  // 1. Extraer máscara de luminancia de la persona para generar el contorno real
+  const srcCanvas = document.createElement('canvas');
+  srcCanvas.width = w; srcCanvas.height = h;
+  const sctx = srcCanvas.getContext('2d');
+  
+  sctx.save();
+  if(auraCardState.inputSource==='camera'){
+    sctx.translate(w,0); sctx.scale(-1,1);
+  }
+  sctx.drawImage(source, 0, 0, w, h);
+  sctx.restore();
+
+  const srcData = sctx.getImageData(0, 0, w, h);
+  const data = srcData.data;
+
+  // Crear mapa de silueta por contraste/brillo
+  const edgeCanvas = document.createElement('canvas');
+  edgeCanvas.width = w; edgeCanvas.height = h;
+  const ectx = edgeCanvas.getContext('2d');
+  const edgeData = ectx.createImageData(w, h);
+
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const idx = (y * w + x) * 4;
+      const r = data[idx], g = data[idx+1], b = data[idx+2];
+      const brightness = (r * 0.299 + g * 0.587 + b * 0.114);
+
+      // Si pertenece a la figura principal
+      if (brightness > 35) {
+        edgeData.data[idx] = 255;
+        edgeData.data[idx+1] = 255;
+        edgeData.data[idx+2] = 255;
+        edgeData.data[idx+3] = 255;
+      }
+    }
+  }
+  ectx.putImageData(edgeData, 0, 0);
+
+  // 2. Dibujar llamaradas de Aura escalando y desenfocando la máscara del contorno
+  ctx.save();
+  ctx.fillStyle = '#06070d';
+  ctx.fillRect(0, 0, w, h);
+
   const auraLayer = document.createElement('canvas');
   auraLayer.width = w; auraLayer.height = h;
   const actx = auraLayer.getContext('2d');
-  
+
+  // Tratar la capa de contorno dilata
   actx.save();
-  if(auraCardState.inputSource==='camera'){
-    actx.translate(w,0); actx.scale(-1,1);
-  }
-  actx.filter = 'blur(20px) brightness(1.7)';
-  actx.drawImage(source, -15, -15, w + 30, h + 30);
+  actx.translate(w/2, h/2);
+  actx.scale(1.08, 1.08); // Expansión alrededor del sujeto
+  actx.translate(-w/2, -h/2);
+  actx.filter = 'blur(18px) brightness(1.8)';
+  actx.drawImage(edgeCanvas, 0, -8);
   actx.restore();
 
+  // Colorizar halo de contorno
   actx.save();
   actx.globalCompositeOperation = 'source-atop';
   if(auraStyleMode==='rainbow'){
@@ -1330,14 +1343,13 @@ function captureAuraCardPhoto(){
   actx.fillRect(0,0,w,h);
   actx.restore();
 
-  // 2. Componer la foto
+  // Proyectar destellos en la tarjeta final
+  ctx.globalCompositeOperation = 'screen';
   ctx.drawImage(auraLayer, 0, 0, w, h);
-  ctx.save();
-  if(auraCardState.inputSource==='camera'){
-    ctx.translate(w,0); ctx.scale(-1,1);
-  }
-  ctx.drawImage(source, 0, 0, w, h);
-  ctx.restore();
+
+  // 3. Montar la imagen del usuario sobre el aura
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.drawImage(srcCanvas, 0, 0, w, h);
 
   auraCapturedDataUrl = canvas.toDataURL('image/png');
   stopAuraCamStream();
