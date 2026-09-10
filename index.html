@@ -1129,7 +1129,7 @@ async function calculateAndSubmitAuraTest(){
 }
 async function maybeShowAuraTest(u){ if(!auraTestCompleted(u)) setTimeout(openAuraTest, 400); }
 
-// TARJETA DE AURA (CÁMARA O GALERÍA CON PROCESAMIENTO NATIVO)
+// MÓDULO AURA ETÉREA (PROYECCIÓN ENVOLVENTE EN CANVAS NATIVO)
 let auraCardState={stream:null,resultCanvas:null,inputSource:'camera',loadedImage:null};
 let auraStyleMode='gold', auraWaveTime=0, auraAnimLoop=null;
 
@@ -1248,6 +1248,7 @@ function startAuraLoop(){
   auraAnimLoop=requestAnimationFrame(loop);
 }
 
+// RENDERIZADO ENVOLVENTE (PROYECTA EL HALO DESDE LA PROPIA CAPTURA)
 function drawAuraFrame(){
   const canvas=document.getElementById('auraCardCanvas');
   const video=document.getElementById('auraCardVideo');
@@ -1264,51 +1265,46 @@ function drawAuraFrame(){
   auraWaveTime += 0.05;
   ctx.clearRect(0,0,w,h);
 
-  // 1. Silueta vectorial
-  const silCanvas=document.createElement('canvas');
-  silCanvas.width=w; silCanvas.height=h;
-  const sctx=silCanvas.getContext('2d');
+  // 1. Proyectar primero la imagen escalada y difuminada que "abraza" los bordes de la persona
+  const haloCanvas=document.createElement('canvas');
+  haloCanvas.width=w; haloCanvas.height=h;
+  const hctx=haloCanvas.getContext('2d');
 
-  const cx=w/2, headR=w*0.18, headY=h*0.35;
-  sctx.beginPath();
-  sctx.arc(cx, headY, headR, 0, Math.PI*2);
-  sctx.moveTo(cx - w*0.32, h);
-  sctx.quadraticCurveTo(cx - w*0.28, h*0.55, cx - headR*0.8, headY + headR*0.7);
-  sctx.lineTo(cx + headR*0.8, headY + headR*0.7);
-  sctx.quadraticCurveTo(cx + w*0.28, h*0.55, cx + w*0.32, h);
-  sctx.closePath();
+  const pulse = 1.06 + Math.sin(auraWaveTime)*0.035;
 
+  hctx.save();
+  if(auraCardState.inputSource==='camera'){
+    hctx.translate(w,0); hctx.scale(-1,1);
+  }
+  hctx.translate(w/2, h/2);
+  hctx.scale(pulse, pulse);
+  hctx.translate(-w/2, -h/2);
+  hctx.filter='blur(22px) brightness(1.7)';
+  hctx.drawImage(source, 0, 0, w, h);
+  hctx.restore();
+
+  // Recortar y tintar el halo según el estilo seleccionado
+  hctx.save();
+  hctx.globalCompositeOperation='source-atop';
   if(auraStyleMode==='rainbow'){
-    const g=sctx.createLinearGradient(0,0,0,h);
+    const g=hctx.createLinearGradient(0,0,0,h);
     g.addColorStop(0,'#a855f7'); g.addColorStop(0.3,'#3b82f6');
     g.addColorStop(0.6,'#22c55e'); g.addColorStop(0.85,'#fbbf24');
     g.addColorStop(1,'#ef4444');
-    sctx.fillStyle=g;
-  } else if(auraStyleMode==='cyan'){ sctx.fillStyle='#06b6d4'; }
-  else if(auraStyleMode==='purple'){ sctx.fillStyle='#a855f7'; }
-  else { sctx.fillStyle='#fbbf24'; }
-  sctx.fill();
+    hctx.fillStyle=g;
+  } else if(auraStyleMode==='cyan'){ hctx.fillStyle='#06b6d4'; }
+  else if(auraStyleMode==='purple'){ hctx.fillStyle='#a855f7'; }
+  else { hctx.fillStyle='#fbbf24'; }
+  hctx.fillRect(0,0,w,h);
+  hctx.restore();
 
-  // 2. Capas de resplandor
+  // 2. Renderizar el halo resplandeciente en el lienzo principal
   ctx.save();
   ctx.globalCompositeOperation='screen';
-
-  const pulse = 1 + Math.sin(auraWaveTime)*0.04;
-  ctx.save();
-  ctx.translate(w/2, h/2); ctx.scale(pulse, pulse); ctx.translate(-w/2, -h/2);
-  ctx.filter='blur(26px) brightness(1.6)';
-  ctx.drawImage(silCanvas, 0, -10);
+  ctx.drawImage(haloCanvas, 0, 0, w, h);
   ctx.restore();
 
-  const waveY = Math.sin(auraWaveTime*1.2)*8 - 10;
-  ctx.filter='blur(14px) brightness(1.8)';
-  ctx.drawImage(silCanvas, 0, waveY);
-
-  ctx.filter='blur(4px) brightness(2.2)';
-  ctx.drawImage(silCanvas, 0, -2);
-  ctx.restore();
-
-  // 3. Imagen del usuario
+  // 3. Renderizar la captura frontal nítida del usuario
   ctx.save();
   if(auraCardState.inputSource==='camera'){
     ctx.translate(w,0); ctx.scale(-1,1);
