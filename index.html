@@ -109,7 +109,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .aura-card-canvas-wrap{width:min(92vw,380px);border-radius:24px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.5);border:1px solid rgba(246,196,83,.35);position:relative}
 .aura-card-canvas-wrap canvas{display:block;width:100%;height:auto}
 
-/* DISEÑO DE PLAYER CARD — DATOS ARRIBA A LA IZQUIERDA */
+/* PLAYER CARD — DATOS ARRIBA A LA IZQUIERDA */
 .aura-card-overlay-topleft {
   position: absolute;
   top: 14px;
@@ -139,6 +139,8 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .aura-style-row{display:flex;gap:8px;width:min(92vw,380px);margin-top:12px}
 .aura-style-row button{flex:1;padding:9px 4px;border-radius:11px;font-size:.7rem;font-weight:800;background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--border)}
 .aura-style-row button.active{border-color:rgba(246,196,83,.5);background:rgba(246,196,83,.12)}
+.aura-style-row button:disabled{opacity:0.3;cursor:not-allowed;border-color:var(--border);background:transparent}
+
 .aura-mode-selector{display:flex;gap:8px;width:min(92vw,380px);margin-bottom:10px}
 .aura-mode-selector button{flex:1;padding:10px;border-radius:12px;font-size:.75rem;font-weight:800;background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--border)}
 .aura-mode-selector button.active{background:var(--surface2);border-color:var(--gold)}
@@ -218,8 +220,14 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
     <h3 style="margin:0 0 6px">🛡️ Modo Moderador / Admin</h3>
     <p class="hint" style="margin-top:0">Herramientas internas. Las acciones sensibles quedan registradas.</p>
     <div id="adminSummary" class="mode-info" style="margin-bottom:10px">Cargando resumen…</div>
-    <input id="adminSearchUser" class="search" placeholder="Buscar usuario por nombre o ID…" oninput="searchAdminUsers()">
+    
+    <input id="adminSearchUser" class="search" placeholder="Buscar usuario por nombre o ID…" oninput="searchAdminUsersDebounced()">
     <div id="adminUserResults"><div class="empty">Escribí al menos 2 caracteres.</div></div>
+
+    <hr style="border:0;border-top:1px solid var(--border);margin:16px 0">
+    <h4 style="margin:0 0 8px;color:#ffe7a0">⚡ Batallas Activas para Moderación</h4>
+    <button class="secondary" style="padding:8px 12px;font-size:.78rem;width:auto" onclick="loadAdminBattles()">🔄 Cargar Batallas Suspectas</button>
+    <div id="adminBattleResults" style="margin-top:10px"></div>
   </div>
 </section>
 
@@ -281,7 +289,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
   </div>
 </div>
 
-<!-- TARJETA DE AURA MODAL -->
+<!-- TARJETA DE AURA EN EL MODAL -->
 <div id="auraCardModal" class="aura-card-modal">
   <div id="auraCardStage"></div>
 </div>
@@ -292,6 +300,7 @@ const OAUTH_REDIRECT='https://guillaumelk777-commits.github.io/aura-star-fronten
 const sb=supabase.createClient(CONFIG.SUPABASE_URL,CONFIG.SUPABASE_ANON_KEY);
 let CURRENT_USER=null,IS_ADMIN=false,CURRENT_USERNAME='',CURRENT_AURA_POINTS=0,LAST_PROFILE=null;
 let cache=[],pendingNewBattles=[],currentMode='video',scanStream=null,scanTimer=null,currentGiftMethod='username',currentCity='Trelew',currentFeedTab='global';
+let auraTestActive=false, adminSearchTimer=null;
 
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 function getUserId(){return CURRENT_USER?.id||''}
@@ -474,12 +483,13 @@ async function handleAuth(){
 }
 
 sb.auth.onAuthStateChange((event,session)=>{
+  if(event==='TOKEN_REFRESHED') return;
   CURRENT_USER=session?.user||null;
   if(event==='SIGNED_IN'&&CURRENT_USER) setTimeout(()=>initUser(),50);
-  if(event==='TOKEN_REFRESHED'&&CURRENT_USER) setTimeout(()=>initUser(),50);
   if(event==='SIGNED_OUT'){
     CURRENT_USER=null;
     IS_ADMIN=false;
+    auraTestActive=false;
     document.getElementById('login').classList.add('active');
     document.getElementById('onboard').classList.remove('active');
   }
@@ -1050,33 +1060,75 @@ async function startPurchase(packageId){
   }catch(e){ toast('Error en checkout'); }
 }
 
-// ADMIN
+// ADMIN / MODERACIÓN
 async function loadAdminSection(){
   const box=document.getElementById('adminSection');
   if(!box)return;
   try{
     const u=await api('/users/'+encodeURIComponent(getUserId()));
     const allowed=!!(u.is_admin||u.moderation_role==='admin');
+    IS_ADMIN = allowed; // Sincroniza permiso global con el detalle de batallas
     box.style.display=allowed?'block':'none';
     if(allowed){
       const s=await api('/admin/summary');
       document.getElementById('adminSummary').innerHTML=`👥 ${s.users} usuarios · ⚡ ${s.active_battles} batallas activas`;
+      loadAdminBattles();
     }
   }catch(e){box.style.display='none'}
 }
+
+function searchAdminUsersDebounced(){
+  clearTimeout(adminSearchTimer);
+  adminSearchTimer = setTimeout(searchAdminUsers, 300);
+}
+
 async function searchAdminUsers(){
   const q=document.getElementById('adminSearchUser')?.value.trim(),box=document.getElementById('adminUserResults');
   if(!box||q.length<2)return;
   try{
     const users=await api('/admin/users/search?q='+encodeURIComponent(q));
-    box.innerHTML=users.length?users.map(u=>`<div class="admin-result"><b>@${esc(u.username)}</b><div class="admin-actions"><button class="secondary" onclick="adminGrant('${esc(u.id)}','aura',50)">+50 Aura</button></div></div>`).join(''):'<div class="empty">Sin resultados.</div>';
+    box.innerHTML=users.length?users.map(u=>`
+      <div class="admin-result">
+        <b>@${esc(u.username)}</b> <small style="color:var(--muted)">(ID: ${esc(u.id)})</small>
+        <div class="admin-actions">
+          <input type="number" id="grantAmount_${esc(u.id)}" class="search" style="width:80px;padding:6px;margin:0" value="50" min="1">
+          <button class="secondary" style="width:auto;padding:6px 10px" onclick="adminGrantCustom('${esc(u.id)}','aura')">+ Aura</button>
+          <button class="secondary" style="width:auto;padding:6px 10px" onclick="adminGrantCustom('${esc(u.id)}','giftable')">+ Estrellas</button>
+        </div>
+      </div>
+    `).join(''):'<div class="empty">Sin resultados.</div>';
   }catch(e){}
 }
-async function adminGrant(userId,type,amount){
-  try{ await api('/admin/grant-points',{method:'POST',body:JSON.stringify({target_user_id:userId,type,points:amount,reason:'Admin'})}); toast('Puntos otorgados.'); }catch(e){toast(e.message)}
+
+async function adminGrantCustom(userId, type){
+  const input = document.getElementById(`grantAmount_${userId}`);
+  const amount = Number(input?.value || 50);
+  try{
+    await api('/admin/grant-points',{method:'POST',body:JSON.stringify({target_user_id:userId,type,points:amount,reason:'Admin'})});
+    toast(`Puntos (${amount}) otorgados.`);
+  }catch(e){toast(e.message)}
 }
+
+async function loadAdminBattles(){
+  const box = document.getElementById('adminBattleResults');
+  if(!box) return;
+  box.innerHTML = '<div class="empty">Cargando batallas activas…</div>';
+  try {
+    const battles = await api('/battles?limit=15');
+    box.innerHTML = battles.length ? battles.map(b => `
+      <div class="admin-result" style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <b>${esc(b.title)}</b>
+          <div class="admin-meta">${esc(b.mode)} · ${b.votes_creator + b.votes_opponent} votos</div>
+        </div>
+        <button class="danger" style="width:auto;padding:6px 10px" onclick="adminDeleteBattle('${b.id}')">🗑️ Borrar</button>
+      </div>
+    `).join('') : '<div class="empty">No hay batallas activas para moderar.</div>';
+  } catch(e) { box.innerHTML = '<div class="empty">Error al cargar batallas.</div>'; }
+}
+
 async function adminDeleteBattle(battleId) {
-  if (!confirm('¿Eliminar batalla?')) return;
+  if (!confirm('¿Eliminar esta batalla de forma permanente?')) return;
   try {
     const r = await api('/admin/battles/' + battleId, { method: 'DELETE' });
     toast(r.message); show('home'); loadBattles(false);
@@ -1141,18 +1193,33 @@ async function openTournament(id){
   }catch(e){ box.innerHTML='<div class="empty">No se pudo cargar el torneo.</div>'; }
 }
 
-// TEST DE AURA INICIAL
+// TEST DE AURA INICIAL (CON CONTROL DE DUPLICACIÓN, REINTENTO Y SINCRONIZACIÓN DE PERFIL)
 const AURA_TEST_QUESTIONS=[
   {q:'Cuando aparece un desafío inesperado, ¿qué hacés primero?',o:[['Voy de frente.','Me gusta actuar rápido.'],['Observo y pienso.','Prefiero entender antes de moverme.'],['Busco una alternativa.','Siempre intento encontrar otro camino.'],['Me adapto sobre la marcha.','La presión me activa.']]},
   {q:'¿Qué situación te representa más?',o:[['Ser el centro de atención.','Disfruto mostrar lo que hago.'],['Sorprender sin avisar.','Me gusta lo inesperado.'],['Ayudar a alguien a destacar.','Prefiero potenciar a otros.'],['Competir hasta el final.','No me gusta rendirme.']]},
   {q:'Si tenés que elegir una energía para tu día, ¿cuál preferís?',o:[['Intensa.','Mucho movimiento y acción.'],['Tranquila.','Calma, foco y control.'],['Creativa.','Ideas, música y cosas nuevas.'],['Social.','Personas, risas y conexión.']]},
   {q:'¿Qué hacés cuando algo no sale como esperabas?',o:[['Lo intento de nuevo.','No me gusta dejarlo a medias.'],['Cambio de estrategia.','Si no funciona, pruebo otra cosa.'],['Me tomo un momento.','Prefiero recuperar el foco.'],['Me río y sigo.','No dejo que me corte la energía.']]}
 ];
-let auraTestState={index:0,answers:[]};
+
 function auraTestCompleted(u){ return !!(u && u.aura_test_completed); }
-function openAuraTest(){ document.getElementById('auraTest')?.classList.add('active'); }
-function closeAuraTest(){ document.getElementById('auraTest')?.classList.remove('active'); }
-function beginAuraTest(){ auraTestState={index:0,answers:[]}; document.getElementById('auraTestIntro').classList.add('hidden'); renderAuraQuestion(); }
+
+function openAuraTest(){ 
+  if(auraTestActive) return;
+  auraTestActive = true;
+  document.getElementById('auraTest')?.classList.add('active'); 
+}
+
+function closeAuraTest(){ 
+  auraTestActive = false;
+  document.getElementById('auraTest')?.classList.remove('active'); 
+}
+
+function beginAuraTest(){ 
+  auraTestState = {index:0, answers:[]}; 
+  document.getElementById('auraTestIntro').classList.add('hidden'); 
+  renderAuraQuestion(); 
+}
+
 function renderAuraQuestion(){
   const q=AURA_TEST_QUESTIONS[auraTestState.index];
   const box=document.getElementById('auraTestQuestion');
@@ -1160,24 +1227,62 @@ function renderAuraQuestion(){
   const step=`<div class="aura-test-step">Pregunta ${auraTestState.index+1} de ${AURA_TEST_QUESTIONS.length}</div><div class="aura-test-progress"><i style="width:${((auraTestState.index+1)/AURA_TEST_QUESTIONS.length)*100}%"></i></div>`;
   box.innerHTML=`${step}<div class="aura-test-card"><div class="aura-question">${esc(q.q)}</div><div class="aura-options">${q.o.map((x,i)=>`<button class="aura-option" onclick="selectAuraAnswer(${i})"><b>${esc(x[0])}</b><span>${esc(x[1])}</span></button>`).join('')}</div></div>`;
 }
+
 function selectAuraAnswer(i){
   auraTestState.answers[auraTestState.index]=i;
-  if(auraTestState.index<AURA_TEST_QUESTIONS.length-1){ auraTestState.index++; renderAuraQuestion(); }
-  else{ document.getElementById('auraTestQuestion').classList.add('hidden'); calculateAndSubmitAuraTest(); }
-}
-async function calculateAndSubmitAuraTest(){
-  try {
-    const r = await api('/users/aura-test', { method: 'POST', body: JSON.stringify({ answers: auraTestState.answers, camera_used: false }) });
-    document.getElementById('auraResult').classList.add('active');
-    document.getElementById('auraResultNumber').textContent = r.credited_aura ?? '?';
-  } catch(e) {
-    if(e.status===409){ document.getElementById('auraResult').classList.add('active'); document.getElementById('auraResultNumber').textContent = e.total_aura ?? '?'; }
-    else closeAuraTest();
+  if(auraTestState.index < AURA_TEST_QUESTIONS.length - 1){ 
+    auraTestState.index++; 
+    renderAuraQuestion(); 
+  } else { 
+    document.getElementById('auraTestQuestion').classList.add('hidden'); 
+    calculateAndSubmitAuraTest(); 
   }
 }
-async function maybeShowAuraTest(u){ if(!auraTestCompleted(u)) setTimeout(openAuraTest, 400); }
 
-// MÓDULO AURA CON DATOS ARRIBA A LA IZQUIERDA (PLAYER CARD)
+async function calculateAndSubmitAuraTest(){
+  if(auraTestState.answers.length < AURA_TEST_QUESTIONS.length) {
+    toast('Faltan responder preguntas.');
+    return;
+  }
+  
+  toast('Guardando tu Aura inicial…');
+  try {
+    const r = await api('/users/aura-test', { 
+      method: 'POST', 
+      body: JSON.stringify({ answers: auraTestState.answers, camera_used: false }) 
+    });
+
+    // Re-sincronizar el perfil real para asegurar coincidencia absoluta con el backend
+    const updatedUser = await api('/users/' + encodeURIComponent(getUserId()));
+    const finalAura = Number(updatedUser?.aura_points) || Number(r.credited_aura) || 20;
+
+    CURRENT_AURA_POINTS = finalAura;
+    if(LAST_PROFILE) LAST_PROFILE.aura_points = finalAura;
+
+    document.getElementById('auraResult').classList.add('active');
+    document.getElementById('auraResultNumber').textContent = finalAura;
+  } catch(e) {
+    if(e.status === 409){ 
+      document.getElementById('auraResult').classList.add('active'); 
+      document.getElementById('auraResultNumber').textContent = e.total_aura || 20; 
+    } else {
+      toast('Error al guardar el resultado: ' + (e.message || 'Error de conexión'));
+      document.getElementById('auraTestQuestion').classList.remove('hidden');
+      document.getElementById('auraTestQuestion').innerHTML = `
+        <div class="aura-test-card" style="text-align:center">
+          <p class="hint">No se pudieron guardar tus respuestas.</p>
+          <button class="primary" onclick="calculateAndSubmitAuraTest()">🔄 Reintentar guardar</button>
+        </div>
+      `;
+    }
+  }
+}
+
+async function maybeShowAuraTest(u){ 
+  if(!auraTestCompleted(u) && !auraTestActive) setTimeout(openAuraTest, 400); 
+}
+
+// MÓDULO AURA DINÁMICO
 let auraCardState={stream:null,resultCanvas:null,inputSource:'camera',loadedImage:null};
 let auraStyleMode='gold';
 
@@ -1220,10 +1325,10 @@ function renderAuraCardCameraStage(){
     </div>
 
     <div class="aura-style-row">
-      <button type="button" class="active" data-style="gold" onclick="setAuraStyle('gold')">✨ Dorado Etéreo</button>
-      <button type="button" data-style="rainbow" onclick="setAuraStyle('rainbow')">🌈 Espectro</button>
-      <button type="button" data-style="cyan" onclick="setAuraStyle('cyan')">🔵 Neón</button>
-      <button type="button" data-style="purple" onclick="setAuraStyle('purple')">🟣 Místico</button>
+      <button type="button" disabled data-style="gold" onclick="setAuraStyle('gold')">✨ Dorado Etéreo</button>
+      <button type="button" disabled data-style="rainbow" onclick="setAuraStyle('rainbow')">🌈 Espectro</button>
+      <button type="button" disabled data-style="cyan" onclick="setAuraStyle('cyan')">🔵 Neón</button>
+      <button type="button" disabled data-style="purple" onclick="setAuraStyle('purple')">🟣 Místico</button>
     </div>
 
     <div class="aura-card-actions">
@@ -1402,7 +1507,6 @@ function renderAuraCardPreview(){
     <div class="aura-card-canvas-wrap" id="auraCardBox">
       <img src="${auraCapturedDataUrl}" style="display:block;width:100%">
       
-      <!-- INSIGNIA DE DATOS EN LA ESQUINA SUPERIOR IZQUIERDA -->
       <div class="aura-card-overlay-topleft">
         <div class="aura-card-username">@${esc(u.username||'usuario')}</div>
         ${currentCity ? `<div class="aura-card-city">📍 ${esc(currentCity)}</div>` : ''}
@@ -1410,6 +1514,13 @@ function renderAuraCardPreview(){
       </div>
       
       <div class="aura-card-brand">✦ AURA STAR ✦</div>
+    </div>
+
+    <div class="aura-style-row" style="margin-top:14px">
+      <button type="button" class="${auraStyleMode==='gold'?'active':''}" data-style="gold" onclick="changePreviewAuraStyle('gold')">✨ Dorado Etéreo</button>
+      <button type="button" class="${auraStyleMode==='rainbow'?'active':''}" data-style="rainbow" onclick="changePreviewAuraStyle('rainbow')">🌈 Espectro</button>
+      <button type="button" class="${auraStyleMode==='cyan'?'active':''}" data-style="cyan" onclick="changePreviewAuraStyle('cyan')">🔵 Neón</button>
+      <button type="button" class="${auraStyleMode==='purple'?'active':''}" data-style="purple" onclick="changePreviewAuraStyle('purple')">🟣 Místico</button>
     </div>
 
     <div class="aura-card-actions">
@@ -1423,6 +1534,12 @@ function renderAuraCardPreview(){
       <button class="secondary" onclick="renderAuraCardCameraStage()">🔄 Repetir foto</button>
     </div>
   `;
+}
+
+function changePreviewAuraStyle(style){
+  auraStyleMode = style;
+  document.querySelectorAll('.aura-style-row button').forEach(b=>b.classList.toggle('active',b.dataset.style===style));
+  toast('Filtro cambiado');
 }
 
 async function buildAuraCardFile(){
