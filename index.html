@@ -139,7 +139,6 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 .aura-style-row{display:flex;gap:8px;width:min(92vw,380px);margin-top:12px}
 .aura-style-row button{flex:1;padding:9px 4px;border-radius:11px;font-size:.7rem;font-weight:800;background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--border)}
 .aura-style-row button.active{border-color:rgba(246,196,83,.5);background:rgba(246,196,83,.12)}
-.aura-style-row button:disabled{opacity:0.3;cursor:not-allowed;border-color:var(--border);background:transparent}
 
 .aura-mode-selector{display:flex;gap:8px;width:min(92vw,380px);margin-bottom:10px}
 .aura-mode-selector button{flex:1;padding:10px;border-radius:12px;font-size:.75rem;font-weight:800;background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--border)}
@@ -164,6 +163,24 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
   filter: url('#auraGooFilter') blur(12px) brightness(1.6);
   opacity: 0.85;
   mix-blend-mode: screen;
+}
+
+/* ESTILOS DE COMENTARIOS EN EL FEED COMPACTO */
+.feed-comments-preview {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+}
+.feed-comment-item {
+  font-size: .75rem;
+  color: #cbd5e1;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.feed-comment-item b {
+  color: var(--gold2);
 }
 </style></head>
 <body>
@@ -226,7 +243,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(246,196,83,.6)!importa
 
     <hr style="border:0;border-top:1px solid var(--border);margin:16px 0">
     <h4 style="margin:0 0 8px;color:#ffe7a0">⚡ Batallas Activas para Moderación</h4>
-    <button class="secondary" style="padding:8px 12px;font-size:.78rem;width:auto" onclick="loadAdminBattles()">🔄 Cargar Batallas Suspectas</button>
+    <button class="secondary" style="padding:8px 12px;font-size:.78rem;width:auto" onclick="loadAdminBattles()">🔄 Cargar Batallas Sospechosas</button>
     <div id="adminBattleResults" style="margin-top:10px"></div>
   </div>
 </section>
@@ -327,7 +344,8 @@ async function api(path,opt={}){
   }
   const d=await r.json().catch(()=>({}));
   if(!r.ok){
-    const err=Object.assign(new Error(d.error||`Error de API (${r.status})`),{status:r.status,code:d.code});
+    // FIX DE PRIORIDAD DE PROPIEDADES HTTP
+    const err=Object.assign(new Error(d.error||`Error de API (${r.status})`), d, {status: r.status, code: d.code});
     if(r.status===401){ 
       CURRENT_USER=null;
       document.getElementById('login').classList.add('active');
@@ -342,10 +360,20 @@ function switchFeedTab(tab) {
   document.getElementById('tabFeedGlobal').classList.toggle('active', tab === 'global');
   document.getElementById('tabFeedLocal').classList.toggle('active', tab === 'local');
   document.getElementById('sectionFeedGlobal').style.display = tab === 'global' ? 'block' : 'none';
-  document.getElementById('sectionFeedLocal').style.display = tab === 'local' ? 'none' : 'none';
   
-  if (tab === 'global') { loadBattles(); }
-  else { loadLocalFeed(); }
+  // FIX DEL FEED LOCAL: Muestra 'block' en lugar de 'none'
+  document.getElementById('sectionFeedLocal').style.display = tab === 'local' ? 'block' : 'none';
+  
+  if (tab === 'global') { 
+    if (cache.length > 0) {
+      document.getElementById('battles').innerHTML = cache.map(battleCard).join('');
+      loadBattles(true);
+    } else {
+      loadBattles(false);
+    }
+  } else { 
+    loadLocalFeed(); 
+  }
 }
 
 function autoDetectCurrentCity(targetInputId, notify = false) {
@@ -524,6 +552,21 @@ function battleCard(b){
   const hasOpponent = local ? Boolean(targetB) : Boolean(b.opponent_id && b.media_url_opponent);
   const disableVoting = !hasOpponent || b.status !== 'active';
 
+  // COMENTARIOS EN EL FEED (APLICA A TODOS LOS TIPOS DE BATALLAS)
+  const comments = Array.isArray(b.latest_comments) ? b.latest_comments : [];
+  const totalComments = b.total_comments || 0;
+  let commentsHtml = '';
+  if (comments.length > 0) {
+    commentsHtml = `
+      <div class="feed-comments-preview" onclick="openBattle('${b.id}')" style="cursor:pointer">
+        ${comments.map(c => `<div class="feed-comment-item"><b>@${esc(c.username)}:</b> ${esc(c.comment)}</div>`).join('')}
+        ${totalComments > 2 ? `<small class="linkbtn" style="font-size:.7rem;margin-top:2px;display:inline-block">Ver los ${totalComments} comentarios →</small>` : ''}
+      </div>
+    `;
+  } else {
+    commentsHtml = `<div class="feed-comments-preview" onclick="openBattle('${b.id}')" style="cursor:pointer"><small class="muted" style="font-size:.72rem">💬 Sé el primero en comentar…</small></div>`;
+  }
+
   if (local) {
     let action = '';
     if (b.local_neutral && b.creator_id === getUserId() && total >= 30 && Math.abs(a - o) >= 3) {
@@ -565,6 +608,9 @@ function battleCard(b){
         <div class="meta" style="margin-top:10px">
           <span id="total-${b.id}">${total} votos presenciales · diferencia ${Math.abs(a - o)}</span>
         </div>
+
+        <!-- VISTA PREVIA DE COMENTARIOS EN FEED LOCAL -->
+        ${commentsHtml}
       </div>
     `;
   }
@@ -607,6 +653,9 @@ function battleCard(b){
       <div class="meta" style="margin-top:8px">
         <span id="total-${b.id}">${total} votos</span>
       </div>
+
+      <!-- VISTA PREVIA DE COMENTARIOS EN FEED GLOBAL -->
+      ${commentsHtml}
     </div>
   `;
 }
@@ -681,7 +730,7 @@ function renderBattle(b){
       ${action}${adminDeleteBtn}
     </div>
 
-    <!-- SECCIÓN DE COMENTARIOS -->
+    <!-- SECCIÓN DE COMENTARIOS COMPLETA EN DETALLE -->
     <div class="card" style="margin-top:16px">
       <h3 style="margin:0 0 10px;color:#ffe7a0">💬 Comentarios</h3>
       <form id="commentForm" onsubmit="postComment(event, '${b.id}')" style="display:flex;gap:8px;margin-bottom:14px">
@@ -1262,7 +1311,7 @@ async function openTournament(id){
   }catch(e){ box.innerHTML='<div class="empty">No se pudo cargar el torneo.</div>'; }
 }
 
-// TEST DE AURA INICIAL (CON CONTROL DE DUPLICACIÓN, REINTENTO Y SINCRONIZACIÓN DE PERFIL)
+// TEST DE AURA INICIAL (CON ATÓMICA DE PUNTOS Y LECTURA ESTRICTA)
 const AURA_TEST_QUESTIONS=[
   {q:'Cuando aparece un desafío inesperado, ¿qué hacés primero?',o:[['Voy de frente.','Me gusta actuar rápido.'],['Observo y pienso.','Prefiero entender antes de moverme.'],['Busco una alternativa.','Siempre intento encontrar otro camino.'],['Me adapto sobre la marcha.','La presión me activa.']]},
   {q:'¿Qué situación te representa más?',o:[['Ser el centro de atención.','Disfruto mostrar lo que hago.'],['Sorprender sin avisar.','Me gusta lo inesperado.'],['Ayudar a alguien a destacar.','Prefiero potenciar a otros.'],['Competir hasta el final.','No me gusta rendirme.']]},
@@ -1321,24 +1370,28 @@ async function calculateAndSubmitAuraTest(){
       body: JSON.stringify({ answers: auraTestState.answers, camera_used: false }) 
     });
 
-    const updatedUser = await api('/users/' + encodeURIComponent(getUserId()));
-    const finalAura = Number(updatedUser?.aura_points) || Number(r.credited_aura) || 20;
+    const finalAura = r.total_aura ?? r.credited_aura ?? null;
+    
+    if (finalAura === null || isNaN(finalAura) || finalAura <= 0) {
+      throw new Error('No se pudo verificar la acreditación de tu Aura.');
+    }
 
-    CURRENT_AURA_POINTS = finalAura;
-    if(LAST_PROFILE) LAST_PROFILE.aura_points = finalAura;
+    CURRENT_AURA_POINTS = Number(finalAura);
+    if(LAST_PROFILE) LAST_PROFILE.aura_points = CURRENT_AURA_POINTS;
 
     document.getElementById('auraResult').classList.add('active');
-    document.getElementById('auraResultNumber').textContent = finalAura;
+    document.getElementById('auraResultNumber').textContent = CURRENT_AURA_POINTS;
   } catch(e) {
     if(e.status === 409){ 
+      const existingAura = e.total_aura ?? 20;
       document.getElementById('auraResult').classList.add('active'); 
-      document.getElementById('auraResultNumber').textContent = e.total_aura || 20; 
+      document.getElementById('auraResultNumber').textContent = existingAura; 
     } else {
       toast('Error al guardar el resultado: ' + (e.message || 'Error de conexión'));
       document.getElementById('auraTestQuestion').classList.remove('hidden');
       document.getElementById('auraTestQuestion').innerHTML = `
         <div class="aura-test-card" style="text-align:center">
-          <p class="hint">No se pudieron guardar tus respuestas.</p>
+          <p class="hint">No se pudieron guardar tus respuestas en la base de datos.</p>
           <button class="primary" onclick="calculateAndSubmitAuraTest()">🔄 Reintentar guardar</button>
         </div>
       `;
@@ -1392,11 +1445,12 @@ function renderAuraCardCameraStage(){
       <input type="file" id="auraFileInput" accept="image/*" style="display:none" onchange="handleAuraFileSelect(event)">
     </div>
 
+    <!-- HABILITACIÓN DE BARRAS DE FILTROS EN VIVO -->
     <div class="aura-style-row">
-      <button type="button" disabled data-style="gold" onclick="setAuraStyle('gold')">✨ Dorado Etéreo</button>
-      <button type="button" disabled data-style="rainbow" onclick="setAuraStyle('rainbow')">🌈 Espectro</button>
-      <button type="button" disabled data-style="cyan" onclick="setAuraStyle('cyan')">🔵 Neón</button>
-      <button type="button" disabled data-style="purple" onclick="setAuraStyle('purple')">🟣 Místico</button>
+      <button type="button" class="${auraStyleMode==='gold'?'active':''}" data-style="gold" onclick="setAuraStyle('gold')">✨ Dorado Etéreo</button>
+      <button type="button" class="${auraStyleMode==='rainbow'?'active':''}" data-style="rainbow" onclick="setAuraStyle('rainbow')">🌈 Espectro</button>
+      <button type="button" class="${auraStyleMode==='cyan'?'active':''}" data-style="cyan" onclick="setAuraStyle('cyan')">🔵 Neón</button>
+      <button type="button" class="${auraStyleMode==='purple'?'active':''}" data-style="purple" onclick="setAuraStyle('purple')">🟣 Místico</button>
     </div>
 
     <div class="aura-card-actions">
