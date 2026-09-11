@@ -655,18 +655,87 @@ function backToFeed(){show('home')}
 function mediaHtml(url,mode){if(!url)return'<div style="aspect-ratio:9/16;border-radius:15px;background:#090c14;display:grid;place-items:center;color:var(--muted)">Sin participación</div>';if(mode==='photo')return`<img src="${esc(url)}" alt="Participación" oncontextmenu="return false;">`;if(mode==='audio')return`<div class="audio-box"><div style="font-size:2rem;margin-bottom:10px">🎙️</div><audio controls controlsList="nodownload" src="${esc(url)}"></audio></div>`;return`<video controls controlsList="nodownload" disablePictureInPicture playsinline preload="metadata" src="${esc(url)}" oncontextmenu="return false;"></video>`}
 
 function renderBattle(b){
-  const local=b.mode==='local';
-  const [pa,pb]=battlePeople(b);
-  const a=+b.votes_creator||0,o=+b.votes_opponent||0,total=a+o,diff=Math.abs(a-o);
-  let action='';
-  if(local&&b.local_neutral&&b.creator_id===getUserId()&&total>=30&&diff>=3)
-    action='<button class="primary" onclick="arbiterClose(\''+b.id+'\')">⚖️ Cerrar batalla como árbitro</button>';
-  if(!local&&!b.opponent_id)
-    action='<button class="primary" onclick="joinMediaBattle(\''+b.id+'\')">⚔️ Unirme y presentar mi '+modeLabel(b.mode).toLowerCase()+'</button>';
-  const timer=local?`<div class="timer">⏱️ ${timeLeft(b.local_closes_at)} restantes</div>`:'';
+  const local = b.mode === 'local';
+  const [pa, pb] = battlePeople(b);
+  const a = +b.votes_creator || 0, o = +b.votes_opponent || 0, total = a + o, diff = Math.abs(a - o);
+  let action = '';
+  if(local && b.local_neutral && b.creator_id === getUserId() && total >= 30 && diff >= 3)
+    action = '<button class="primary" onclick="arbiterClose(\''+b.id+'\')">⚖️ Cerrar batalla como árbitro</button>';
+  if(!local && !b.opponent_id)
+    action = '<button class="primary" onclick="joinMediaBattle(\''+b.id+'\')">⚔️ Unirme y presentar mi '+modeLabel(b.mode).toLowerCase()+'</button>';
+  const timer = local ? `<div class="timer">⏱️ ${timeLeft(b.local_closes_at)} restantes</div>` : '';
   const adminDeleteBtn = IS_ADMIN ? `<button class="danger" style="margin-top:10px" onclick="adminDeleteBattle('${b.id}')">🗑️ Eliminar batalla (Admin)</button>` : '';
 
-  document.getElementById('battleDetail').innerHTML=`<button class="backbtn" onclick="backToFeed()"><span>←</span> Volver al feed</button><div class="hero"><span class="badge">${local?'🏟️ EN VIVO · '+esc(b.city||'Trelew'):modeLabel(b.mode)}</span><h1>${esc(b.title)}</h1></div><div class="card">${local?'':`<div class="media-grid"><div>${mediaHtml(b.media_url_creator,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pa)}</small></div><div>${mediaHtml(b.media_url_opponent,b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pb)}</small></div></div>`}<div class="players"><div class="player">${esc(pa)}<div class="score">${a}</div></div><div class="vs">VS</div><div class="player">${esc(pb)}<div class="score">${o}</div></div></div><div class="bar"><i style="width:${Math.round(a/Math.max(1,total)*100)}%"></i></div><div class="meta"><span>${total} votos · diferencia ${diff}</span>${timer}</div><div class="vote-grid" style="margin-top:14px"><button class="vote a" onclick="vote('${b.id}','${esc(local?b.local_participant_a:b.creator_id)}')">Votar ${esc(pa)}</button><button class="vote b" onclick="vote('${b.id}','${esc(local?b.local_participant_b:b.opponent_id||'')}')" ${pb==='Esperando…'?'disabled':''}>Votar ${esc(pb)}</button></div>${action}${adminDeleteBtn}</div>`;
+  document.getElementById('battleDetail').innerHTML = `
+    <button class="backbtn" onclick="backToFeed()"><span>←</span> Volver al feed</button>
+    <div class="hero"><span class="badge">${local ? '🏟️ EN VIVO · ' + esc(b.city || 'Trelew') : modeLabel(b.mode)}</span><h1>${esc(b.title)}</h1></div>
+    <div class="card">
+      ${local ? '' : `<div class="media-grid"><div>${mediaHtml(b.media_url_creator, b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pa)}</small></div><div>${mediaHtml(b.media_url_opponent, b.mode)}<small style="display:block;text-align:center;margin-top:6px;font-weight:800">${esc(pb)}</small></div></div>`}
+      <div class="players"><div class="player">${esc(pa)}<div class="score">${a}</div></div><div class="vs">VS</div><div class="player">${esc(pb)}<div class="score">${o}</div></div></div>
+      <div class="bar"><i style="width:${Math.round(a / Math.max(1, total) * 100)}%"></i></div>
+      <div class="meta"><span>${total} votos · diferencia ${diff}</span>${timer}</div>
+      <div class="vote-grid" style="margin-top:14px">
+        <button class="vote a" onclick="vote('${b.id}','${esc(local ? b.local_participant_a : b.creator_id)}')">Votar ${esc(pa)}</button>
+        <button class="vote b" onclick="vote('${b.id}','${esc(local ? b.local_participant_b : b.opponent_id || '')}')" ${pb === 'Esperando…' ? 'disabled' : ''}>Votar ${esc(pb)}</button>
+      </div>
+      ${action}${adminDeleteBtn}
+    </div>
+
+    <!-- SECCIÓN DE COMENTARIOS -->
+    <div class="card" style="margin-top:16px">
+      <h3 style="margin:0 0 10px;color:#ffe7a0">💬 Comentarios</h3>
+      <form id="commentForm" onsubmit="postComment(event, '${b.id}')" style="display:flex;gap:8px;margin-bottom:14px">
+        <input id="commentInput" class="search" style="margin:0" placeholder="Escribí un comentario..." maxlength="280" required>
+        <button type="submit" class="primary" style="width:auto;margin:0;padding:0 18px">Enviar</button>
+      </form>
+      <div id="commentsList"><div class="empty">Cargando comentarios…</div></div>
+    </div>
+  `;
+
+  loadComments(b.id);
+}
+
+async function loadComments(battleId) {
+  const box = document.getElementById('commentsList');
+  if (!box) return;
+  try {
+    const comments = await api('/battles/' + battleId + '/comments');
+    if (!comments.length) {
+      box.innerHTML = '<div class="empty" style="padding:15px 0">Aún no hay comentarios. ¡Votá y sé el primero en opinar!</div>';
+      return;
+    }
+    box.innerHTML = comments.map(c => `
+      <div style="border-bottom:1px solid var(--border);padding:10px 0">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <b style="font-size:.82rem;color:var(--gold2)">@${esc(c.username)}</b>
+          <small style="font-size:.68rem;color:var(--muted)">${new Date(c.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</small>
+        </div>
+        <div style="font-size:.85rem;color:#fff;line-height:1.3">${esc(c.comment)}</div>
+      </div>
+    `).join('');
+  } catch (e) {
+    box.innerHTML = '<div class="empty" style="padding:15px 0">No se pudieron cargar los comentarios.</div>';
+  }
+}
+
+async function postComment(e, battleId) {
+  e.preventDefault();
+  const input = document.getElementById('commentInput');
+  const text = input?.value.trim();
+  if (!text) return;
+
+  try {
+    toast('Publicando comentario…');
+    await api('/battles/' + battleId + '/comments', {
+      method: 'POST',
+      body: JSON.stringify({ comment: text })
+    });
+    input.value = '';
+    toast('💬 Comentario publicado');
+    loadComments(battleId);
+  } catch (err) {
+    toast(err.message || 'No se pudo publicar el comentario');
+  }
 }
 
 async function joinMediaBattle(id){
@@ -1067,7 +1136,7 @@ async function loadAdminSection(){
   try{
     const u=await api('/users/'+encodeURIComponent(getUserId()));
     const allowed=!!(u.is_admin||u.moderation_role==='admin');
-    IS_ADMIN = allowed; // Sincroniza permiso global con el detalle de batallas
+    IS_ADMIN = allowed;
     box.style.display=allowed?'block':'none';
     if(allowed){
       const s=await api('/admin/summary');
@@ -1252,7 +1321,6 @@ async function calculateAndSubmitAuraTest(){
       body: JSON.stringify({ answers: auraTestState.answers, camera_used: false }) 
     });
 
-    // Re-sincronizar el perfil real para asegurar coincidencia absoluta con el backend
     const updatedUser = await api('/users/' + encodeURIComponent(getUserId()));
     const finalAura = Number(updatedUser?.aura_points) || Number(r.credited_aura) || 20;
 
